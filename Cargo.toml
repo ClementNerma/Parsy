@@ -1,0 +1,10 @@
+[package]
+name = "parsy"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+serde = ["dep:serde"]
+
+[dependencies]
+serde = { optional = true, version = "1.0.152", features = ["derive"] }
