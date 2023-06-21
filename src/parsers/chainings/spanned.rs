@@ -18,7 +18,7 @@ impl<T, P: Parser<T>> Spanned<T, P> {
 }
 
 impl<T, P: Parser<T>> Parser<Eaten<T>> for Spanned<T, P> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<Eaten<T>> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<Eaten<T>> {
         let parsed = self.parser.parse(input)?;
         Ok(Eaten::ate(parsed.at, parsed))
     }

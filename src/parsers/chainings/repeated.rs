@@ -69,7 +69,7 @@ impl<T, P: Parser<T>, C: Container<T>> Repeated<T, P, C> {
 }
 
 impl<T, P: Parser<T>, C: Container<T>> Parser<C> for Repeated<T, P, C> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<C> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<C> {
         let start = input.at();
         let mut eaten_len = 0;
 

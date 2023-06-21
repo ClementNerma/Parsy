@@ -18,7 +18,7 @@ impl<T, P: Parser<T>> Lookahead<T, P> {
 }
 
 impl<T, P: Parser<T>> Parser<T> for Lookahead<T, P> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<T> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
         let parsed = self.parser.parse(&mut input.clone())?;
         Ok(Eaten::ate(input.range(0), parsed.data))
     }

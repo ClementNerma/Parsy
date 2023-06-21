@@ -7,6 +7,7 @@ pub struct Late<T> {
 }
 
 impl<T> Late<T> {
+    #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         Self {
             parser_ref: Rc::new(RefCell::new(None)),
@@ -32,7 +33,7 @@ impl<T> Clone for Late<T> {
 }
 
 impl<T> Parser<T> for Late<T> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<T> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
         self.parser_ref
             .borrow()
             .as_ref()

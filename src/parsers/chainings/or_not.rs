@@ -18,7 +18,7 @@ impl<T, P: Parser<T>> OrNot<T, P> {
 }
 
 impl<T, P: Parser<T>> Parser<Option<T>> for OrNot<T, P> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<Option<T>> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<Option<T>> {
         let start = input.at();
 
         match self.parser.parse(input) {

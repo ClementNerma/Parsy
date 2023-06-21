@@ -22,7 +22,7 @@ impl<F, FP: Parser<F>, O, OF: Fn(F) -> O + Clone> Map<F, FP, O, OF> {
 }
 
 impl<F, FP: Parser<F>, O, OF: Fn(F) -> O + Clone> Parser<O> for Map<F, FP, O, OF> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<O> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<O> {
         Ok(self.parser.parse(input)?.map(&self.mapper))
     }
 }

@@ -22,7 +22,7 @@ impl<F, FP: Parser<F>, O, OP: Parser<O>> NotFollowedBy<F, FP, O, OP> {
 }
 
 impl<F, FP: Parser<F>, O, OP: Parser<O>> Parser<F> for NotFollowedBy<F, FP, O, OP> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<F> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<F> {
         let parsed = self.parser.parse(input)?;
 
         match self.following.parse(input) {

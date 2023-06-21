@@ -79,12 +79,12 @@ impl<T, TP: Parser<T> + Clone, S, SP: Parser<S> + Clone, C: Container<T>> Clone
         Self {
             parser: self.parser.clone(),
             separator: self.separator.clone(),
-            min: self.min.clone(),
-            max: self.max.clone(),
-            exactly: self.exactly.clone(),
-            _t: self._t.clone(),
-            _s: self._s.clone(),
-            _c: self._c.clone(),
+            min: self.min,
+            max: self.max,
+            exactly: self.exactly,
+            _t: self._t,
+            _s: self._s,
+            _c: self._c,
         }
     }
 }
@@ -92,7 +92,7 @@ impl<T, TP: Parser<T> + Clone, S, SP: Parser<S> + Clone, C: Container<T>> Clone
 impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> Parser<C>
     for SeparatedBy<T, TP, S, SP, C>
 {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<C> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<C> {
         let mut out = C::create();
         let mut size = 0;
         let mut ate = 0;

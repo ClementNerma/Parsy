@@ -18,7 +18,7 @@ impl<T, P: Parser<T>> StringCollected<T, P> {
 }
 
 impl<T, P: Parser<T>> Parser<String> for StringCollected<T, P> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<String> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<String> {
         let parsed = self.parser.parse(input)?;
 
         Ok(Eaten::ate(parsed.at, input.extract(parsed.at).to_string()))

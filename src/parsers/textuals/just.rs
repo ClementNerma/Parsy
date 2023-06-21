@@ -12,7 +12,7 @@ impl Just {
 }
 
 impl Parser<&'static str> for Just {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<&'static str> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<&'static str> {
         let start = input.at();
 
         input

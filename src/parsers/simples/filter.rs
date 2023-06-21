@@ -12,7 +12,7 @@ impl<F: Fn(char) -> bool> Filter<F> {
 }
 
 impl<F: Fn(char) -> bool> Parser<char> for Filter<F> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<char> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<char> {
         let start = input.at();
 
         let c = input

@@ -17,7 +17,7 @@ impl<T, P: Parser<T>> Full<T, P> {
 }
 
 impl<T, P: Parser<T>> Parser<T> for Full<T, P> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<T> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
         let data = self.parser.parse(input)?;
 
         if data.at.len != input.original().len() {

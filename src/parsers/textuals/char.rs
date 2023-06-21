@@ -12,7 +12,7 @@ impl Char {
 }
 
 impl Parser<char> for Char {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<char> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<char> {
         let start = input.at();
 
         input

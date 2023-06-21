@@ -42,7 +42,7 @@ impl<T> Recursive<T> {
 }
 
 impl<T> Parser<T> for Recursive<T> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<T> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
         self.parser.parse(input)
     }
 }
@@ -78,7 +78,7 @@ impl<T> RecursiveRef<T> {
 }
 
 impl<T> Parser<T> for RecursiveRef<T> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<T> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
         self.parser_ref
             .borrow()
             .as_ref()

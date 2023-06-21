@@ -33,9 +33,9 @@ impl<L, LP: Parser<L> + Clone, M, MP: Parser<M> + Clone, R, RP: Parser<R> + Clon
             left: self.left.clone(),
             middle: self.middle.clone(),
             right: self.right.clone(),
-            _l: self._l.clone(),
-            _m: self._m.clone(),
-            _r: self._r.clone(),
+            _l: self._l,
+            _m: self._m,
+            _r: self._r,
         }
     }
 }
@@ -43,7 +43,7 @@ impl<L, LP: Parser<L> + Clone, M, MP: Parser<M> + Clone, R, RP: Parser<R> + Clon
 impl<L, LP: Parser<L>, M, MP: Parser<M>, R, RP: Parser<R>> Parser<M>
     for DelimitedBy<L, LP, M, MP, R, RP>
 {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<M> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<M> {
         let start = self.left.parse(input).unwrap();
         let middle = self.middle.parse(input)?;
         let end = self.right.parse(input).unwrap();

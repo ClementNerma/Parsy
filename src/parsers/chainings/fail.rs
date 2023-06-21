@@ -20,7 +20,7 @@ impl<T, P: Parser<T>> Fail<T, P> {
 // TODO: Once issue <https://github.com/rust-lang/rust/issues/35121> is solved,
 //       change the '()' type to '!'
 impl<T, P: Parser<T>> Parser<()> for Fail<T, P> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<()> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<()> {
         let start = input.at();
 
         match self.parser.parse(input) {

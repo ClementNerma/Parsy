@@ -20,7 +20,7 @@ impl<T, P: Parser<T>, U: Clone> To<T, P, U> {
 }
 
 impl<T, P: Parser<T>, U: Clone> Parser<U> for To<T, P, U> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<U> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<U> {
         self.parser
             .parse(input)
             .map(|eaten| eaten.replace(self.data.clone()))

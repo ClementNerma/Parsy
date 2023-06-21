@@ -7,6 +7,7 @@ pub struct Whitespaces {
 }
 
 impl Whitespaces {
+    #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         Self {
             multiple: false,
@@ -26,7 +27,7 @@ impl Whitespaces {
 }
 
 impl Parser<()> for Whitespaces {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<()> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<()> {
         let trimmed = if self.no_newline {
             input
                 .inner()

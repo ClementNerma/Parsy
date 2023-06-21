@@ -92,6 +92,7 @@ pub struct Location {
 
 impl Location {
     #[must_use]
+    #[allow(clippy::should_implement_trait)]
     pub fn add(self, offset: usize) -> Self {
         Self {
             file_id: self.file_id,

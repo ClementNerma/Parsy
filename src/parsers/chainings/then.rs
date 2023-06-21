@@ -22,7 +22,7 @@ impl<F, FP: Parser<F>, O, OP: Parser<O>> Then<F, FP, O, OP> {
 }
 
 impl<F, FP: Parser<F>, O, OP: Parser<O>> Parser<(F, O)> for Then<F, FP, O, OP> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<(F, O)> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<(F, O)> {
         let from = self.from.parse(input)?;
         let to = self.to.parse(input)?;
         Ok(from.combine(to))

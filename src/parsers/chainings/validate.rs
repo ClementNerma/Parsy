@@ -27,7 +27,7 @@ impl<T, P: Parser<T>, F: Fn(&T) -> bool> Validate<T, P, F> {
 }
 
 impl<T, P: Parser<T>, F: Fn(&T) -> bool> Parser<T> for Validate<T, P, F> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<T> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
         let start = input.at();
         let parsed = self.parser.parse(input)?;
 

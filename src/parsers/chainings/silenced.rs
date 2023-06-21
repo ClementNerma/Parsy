@@ -18,7 +18,7 @@ impl<T, P: Parser<T>> Silenced<T, P> {
 }
 
 impl<T, P: Parser<T>> Parser<()> for Silenced<T, P> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<()> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<()> {
         self.parser.parse(input).map(|input| input.replace(()))
     }
 }

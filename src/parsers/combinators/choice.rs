@@ -49,7 +49,7 @@ macro_rules! _impl_choice {
         // }
 
         impl<$($X: Parser<Output>),+, Output> Parser<Output> for Choice<($($X,)+), Output> {
-            fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<Output> {
+            fn parse_inner(&self, input: &mut ParserInput) -> PResult<Output> {
                 // let mut errors = vec![];
 
                 #[allow(non_snake_case)]

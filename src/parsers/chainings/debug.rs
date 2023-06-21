@@ -31,7 +31,7 @@ impl<T, P: Parser<T> + Clone, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>) + Clone> C
         Self {
             parser: self.parser.clone(),
             debugger: self.debugger.clone(),
-            _t: self._t.clone(),
+            _t: self._t,
         }
     }
 }
@@ -39,8 +39,8 @@ impl<T, P: Parser<T> + Clone, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>) + Clone> C
 impl<T, P: Parser<T>, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>) + Clone> Parser<T>
     for Debugging<T, P, F>
 {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<T> {
-        (self.debugger)(DebugType::Input(&input));
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
+        (self.debugger)(DebugType::Input(input));
 
         let result = self.parser.parse(input);
 

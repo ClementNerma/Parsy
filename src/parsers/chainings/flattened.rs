@@ -32,7 +32,7 @@ impl<T, S: IntoIterator<Item = T>, I: IntoIterator<Item = S>, P: Parser<I>, C: C
 impl<T, S: IntoIterator<Item = T>, I: IntoIterator<Item = S>, P: Parser<I>, C: Container<T>>
     Parser<C> for Flattened<T, S, I, P, C>
 {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<C> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<C> {
         let parsed = self.parser.parse(input)?;
         Ok(parsed.map(|data| C::from_iter(data.into_iter().flatten())))
     }

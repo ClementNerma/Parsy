@@ -20,7 +20,7 @@ impl<T, P: Parser<T>> Labelled<T, P> {
 }
 
 impl<T, P: Parser<T>> Parser<T> for Labelled<T, P> {
-    fn parse_inner<'a>(&self, input: &mut ParserInput<'a>) -> PResult<T> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
         self.parser
             .parse(input)
             .map_err(|err| err.labellize(self.label))
