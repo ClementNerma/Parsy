@@ -21,11 +21,14 @@ impl<T, P: Parser<T>> Parser<T> for Full<T, P> {
         let data = self.parser.parse(input)?;
 
         if data.at.len != input.original().len() {
-            return Err(data.at.custom_err(format!(
-                "Input was not consumed entirely (consumed {} char(s) on {})",
-                data.at.len,
-                input.original().len()
-            )));
+            return Err(data.at.custom_err(
+                // format!(
+                //     "Input was not consumed entirely",
+                //     data.at.len,
+                //     input.original().len()
+                // )
+                "Input was not consumed entirely",
+            ));
         }
 
         Ok(data)

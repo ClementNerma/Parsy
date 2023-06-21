@@ -120,39 +120,11 @@ pub trait Parser<T> {
         StringCollected::new(self)
     }
 
-    fn labelled(self, label: &'static str) -> Labelled<T, Self>
-    where
-        Self: Sized,
-    {
-        Labelled::new(self, label)
-    }
-
     fn critical(self, message: &'static str) -> Critical<T, Self>
     where
         Self: Sized,
     {
-        Critical::new(self, Some(message), true)
-    }
-
-    fn critical_inherit(self) -> Critical<T, Self>
-    where
-        Self: Sized,
-    {
-        Critical::new(self, None, true)
-    }
-
-    fn critical_ignore_eoi(self, message: &'static str) -> Critical<T, Self>
-    where
-        Self: Sized,
-    {
-        Critical::new(self, Some(message), false)
-    }
-
-    fn critical_inherit_ignore_eoi(self) -> Critical<T, Self>
-    where
-        Self: Sized,
-    {
-        Critical::new(self, None, false)
+        Critical::new(self, message)
     }
 
     fn silent(self) -> Silenced<T, Self>

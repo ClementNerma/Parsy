@@ -1,5 +1,3 @@
-use std::borrow::Cow;
-
 use crate::{ParserExpectation, ParsingError, ParsingErrorInner};
 
 #[derive(Debug, Clone, Copy)]
@@ -132,17 +130,17 @@ impl CodeRange {
         ))
     }
 
-    pub fn expected_str(self, expected: impl Into<Cow<'static, str>>) -> ParsingError {
+    pub fn expected_str(self, expected: &'static str) -> ParsingError {
         ParsingError::new(ParsingErrorInner::new(
             self,
-            ParserExpectation::Str(expected.into()),
+            ParserExpectation::Str(expected),
         ))
     }
 
-    pub fn custom_err(self, message: impl Into<Cow<'static, str>>) -> ParsingError {
+    pub fn custom_err(self, message: &'static str) -> ParsingError {
         ParsingError::new(ParsingErrorInner::new(
             self,
-            ParserExpectation::Custom(message.into()),
+            ParserExpectation::Custom(message),
         ))
     }
 

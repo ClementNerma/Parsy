@@ -1,4 +1,4 @@
-use std::{borrow::Cow, marker::PhantomData};
+use std::marker::PhantomData;
 
 use crate::{PResult, Parser, ParserInput};
 
@@ -6,7 +6,7 @@ use crate::{PResult, Parser, ParserInput};
 pub struct Validate<T, P: Parser<T>, F: Fn(&T) -> bool> {
     parser: P,
     validator: F,
-    err_msg: Option<String>,
+    err_msg: Option<&'static str>,
     _t: PhantomData<T>,
 }
 
@@ -20,8 +20,8 @@ impl<T, P: Parser<T>, F: Fn(&T) -> bool> Validate<T, P, F> {
         }
     }
 
-    pub fn with_err_msg<S: Into<String>>(mut self, msg: S) -> Self {
-        self.err_msg = Some(msg.into());
+    pub fn with_err_msg(mut self, msg: &'static str) -> Self {
+        self.err_msg = Some(msg);
         self
     }
 }
@@ -36,8 +36,8 @@ impl<T, P: Parser<T>, F: Fn(&T) -> bool> Parser<T> for Validate<T, P, F> {
         } else {
             // TODO: ranged error (from input start to parsed end)
             Err(start.range(0).custom_err(match &self.err_msg {
-                Some(msg) => Cow::Owned(msg.clone()),
-                None => Cow::Borrowed("validator failed"),
+                Some(msg) => msg,
+                None => "validator failed",
             }))
         }
     }

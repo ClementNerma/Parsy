@@ -1,5 +1,3 @@
-use std::borrow::Cow;
-
 use crate::{CodeRange, Eaten, FileId, Location};
 
 pub type PResult<T> = ::std::result::Result<Eaten<T>, ParsingError>;
@@ -7,15 +5,13 @@ pub type PResult<T> = ::std::result::Result<Eaten<T>, ParsingError>;
 #[derive(Debug)]
 pub struct ParsingError {
     inner: ParsingErrorInner,
-    label: Option<Cow<'static, str>>,
-    critical: Option<CriticalErrorNature>,
+    critical: Option<&'static str>,
 }
 
 impl ParsingError {
     pub fn new(inner: ParsingErrorInner) -> Self {
         Self {
             inner,
-            label: None,
             critical: None,
         }
     }
@@ -28,27 +24,15 @@ impl ParsingError {
         self.inner
     }
 
-    pub fn label(&self) -> Option<&str> {
-        self.label.as_deref()
-    }
-
-    pub fn critical(&self) -> Option<&CriticalErrorNature> {
-        self.critical.as_ref()
+    pub fn critical(&self) -> Option<&'static str> {
+        self.critical
     }
 
     pub fn is_critical(&self) -> bool {
         self.critical.is_some()
     }
 
-    pub fn labellize(mut self, label: impl Into<Cow<'static, str>>) -> Self {
-        if self.label.is_none() {
-            self.label = Some(label.into());
-        }
-
-        self
-    }
-
-    pub fn criticalize(mut self, critical: CriticalErrorNature) -> Self {
+    pub fn criticalize(mut self, critical: &'static str) -> Self {
         if self.critical.is_none() {
             self.critical = Some(critical);
         }
@@ -60,21 +44,9 @@ impl ParsingError {
 #[derive(Debug)]
 pub enum ParserExpectation {
     Char(char),
-    Str(Cow<'static, str>),
-    Custom(Cow<'static, str>),
+    Str(&'static str),
+    Custom(&'static str),
     Break,
-}
-
-#[derive(Debug)]
-pub enum CriticalErrorNature {
-    Direct(CriticalErrorMsgContent),
-    UnexpectedEndOfInput(CriticalErrorMsgContent),
-}
-
-#[derive(Debug)]
-pub enum CriticalErrorMsgContent {
-    Inherit,
-    Custom(Cow<'static, str>),
 }
 
 #[derive(Debug)]
