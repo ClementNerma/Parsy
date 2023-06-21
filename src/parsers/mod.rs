@@ -71,6 +71,6 @@ pub fn late<T>() -> Late<T> {
     Late::new()
 }
 
-pub fn custom<F: Fn(&mut ParserInput) -> PResult<O> + Clone, O>(func: F) -> Custom<F, O> {
+pub fn custom<F: Fn(&mut ParserInput) -> PResult<O>, O>(func: F) -> Custom<F, O> {
     Custom::new(func)
 }
