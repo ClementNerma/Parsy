@@ -155,5 +155,5 @@ pub enum FileId {
     None,
     Id(u64),
     Internal,
-    SourceLess { name: Option<&'static str> },
+    Custom(u64),
 }
