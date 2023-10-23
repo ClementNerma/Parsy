@@ -153,7 +153,7 @@ impl CodeRange {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum FileId {
     None,
-    Id(u64),
+    SourceFile(u64),
     Internal,
     Custom(u64),
 }
