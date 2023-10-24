@@ -121,7 +121,7 @@ impl Location {
 impl std::fmt::Debug for Location {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let Self { file_id, offset } = self;
-        write!(f, "{offset} @ {file_id:?}")
+        write!(f, "{file_id:?} offset {offset}")
     }
 }
 
@@ -185,7 +185,7 @@ impl std::fmt::Debug for CodeRange {
 
         write!(
             f,
-            "{start:?} => {} (len = {len})",
+            "{start:?} to {} (len = {len})",
             start.offset + len.min(&1) - 1
         )
     }
