@@ -1,6 +1,6 @@
 use crate::{ParserExpectation, ParsingError, ParsingErrorInner};
 
-#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
+#[derive(Clone, Copy, Hash, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Eaten<T> {
     pub at: CodeRange,
@@ -55,6 +55,13 @@ impl<T> Eaten<T> {
             },
             data: (self.data, other.data),
         }
+    }
+}
+
+impl<T: std::fmt::Debug> std::fmt::Debug for Eaten<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let Self { at, data } = self;
+        write!(f, "Eaten({at:?} => {data:?})")
     }
 }
 
