@@ -186,7 +186,7 @@ impl std::fmt::Debug for CodeRange {
         write!(
             f,
             "{start:?} to {} (len = {len})",
-            start.offset + len.min(&1) - 1
+            start.offset + len.max(&1) - 1
         )
     }
 }
