@@ -81,7 +81,7 @@ impl<T> MaybeEaten<T> {
     }
 }
 
-#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
+#[derive(Clone, Copy, Hash, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Location {
     pub file_id: FileId,
@@ -111,7 +111,14 @@ impl Location {
     }
 }
 
-#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
+impl std::fmt::Debug for Location {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let Self { file_id, offset } = self;
+        write!(f, "{offset} @ {file_id:?}")
+    }
+}
+
+#[derive(Clone, Copy, Hash, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CodeRange {
     pub start: Location,
@@ -162,6 +169,18 @@ impl CodeRange {
                 && other.start.offset >= self.start.offset
                 && other.start.offset + other.len <= self.start.offset + self.len),
         }
+    }
+}
+
+impl std::fmt::Debug for CodeRange {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let Self { start, len } = self;
+
+        write!(
+            f,
+            "{start:?} => {} (len = {len})",
+            start.offset + len.min(&1) - 1
+        )
     }
 }
 
