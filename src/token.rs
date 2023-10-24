@@ -147,6 +147,28 @@ impl CodeRange {
     pub fn just_break(self) -> ParsingError {
         ParsingError::new(ParsingErrorInner::new(self, ParserExpectation::Break))
     }
+
+    pub fn contains(&self, other: CodeRange) -> Result<bool, CodeRangeComparisonError> {
+        match (self.start.file_id, other.start.file_id) {
+            (FileId::None | FileId::Internal, _) | (_, FileId::None | FileId::Internal) => {
+                Err(CodeRangeComparisonError::FileIdIsNoneOrInternal)
+            }
+
+            (FileId::Custom(_), FileId::SourceFile(_))
+            | (FileId::SourceFile(_), FileId::Custom(_)) => Ok(false),
+
+            (FileId::SourceFile(id), FileId::SourceFile(other_id))
+            | (FileId::Custom(id), FileId::Custom(other_id)) => Ok(id == other_id
+                && other.start.offset >= self.start.offset
+                && other.start.offset + other.len <= self.start.offset + self.len),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum CodeRangeComparisonError {
+    FileIdIsNoneOrInternal,
+    NotInSameFile,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
