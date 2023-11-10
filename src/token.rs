@@ -65,29 +65,6 @@ impl<T: std::fmt::Debug> std::fmt::Debug for Eaten<T> {
     }
 }
 
-#[derive(Debug, Clone, Copy)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum MaybeEaten<T> {
-    Eaten(Eaten<T>),
-    Raw(T),
-}
-
-impl<T> MaybeEaten<T> {
-    pub fn data(&self) -> &T {
-        match &self {
-            Self::Eaten(eaten) => &eaten.data,
-            Self::Raw(raw) => raw,
-        }
-    }
-
-    pub fn eaten(&self) -> Option<&Eaten<T>> {
-        match self {
-            MaybeEaten::Eaten(eaten) => Some(eaten),
-            MaybeEaten::Raw(_) => None,
-        }
-    }
-}
-
 #[derive(Clone, Copy, Hash, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Location {
