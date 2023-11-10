@@ -164,7 +164,9 @@ impl CodeRange {
 
     pub fn contains(&self, other: CodeRange) -> Result<bool, CodeRangeComparisonError> {
         match (self.start.file_id, other.start.file_id) {
-            (FileId::None, _) | (_, FileId::None) => Err(CodeRangeComparisonError::FileIdIsNone),
+            (FileId::None | FileId::Internal, _) | (_, FileId::None | FileId::Internal) => {
+                Err(CodeRangeComparisonError::FileIdIsNoneOrInternal)
+            }
 
             (FileId::Custom(_), FileId::SourceFile(_))
             | (FileId::SourceFile(_), FileId::Custom(_)) => Ok(false),
@@ -191,7 +193,7 @@ impl std::fmt::Debug for CodeRange {
 
 #[derive(Debug, Clone, Copy)]
 pub enum CodeRangeComparisonError {
-    FileIdIsNone,
+    FileIdIsNoneOrInternal,
     NotInSameFile,
 }
 
@@ -199,6 +201,7 @@ pub enum CodeRangeComparisonError {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum FileId {
     None,
+    Internal,
     SourceFile(u64),
     Custom(u64),
 }
