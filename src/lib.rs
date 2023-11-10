@@ -3,11 +3,14 @@
 #![warn(unused_extern_crates)]
 
 mod error;
+mod input;
 mod parser;
-pub mod parsers;
 mod token;
 
+pub mod parsers;
+
 pub use error::*;
+pub use input::*;
 pub use parser::*;
 pub use parsers::*;
 pub use token::*;
