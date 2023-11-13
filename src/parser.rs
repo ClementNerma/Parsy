@@ -120,6 +120,13 @@ pub trait Parser<T> {
         StringCollected::new(self)
     }
 
+    fn collect_string_and_data(self) -> StringCollectedWithData<T, Self>
+    where
+        Self: Sized,
+    {
+        StringCollectedWithData::new(self)
+    }
+
     fn critical(self, message: &'static str) -> Critical<T, Self>
     where
         Self: Sized,
