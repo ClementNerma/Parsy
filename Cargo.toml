@@ -10,4 +10,4 @@ repository = "https://github.com/ClementNerma/Parsy"
 serde = ["dep:serde"]
 
 [dependencies]
-serde = { optional = true, version = "1.0.186", features = ["derive"] }
+serde = { optional = true, version = "1.0.192", features = ["derive"] }
