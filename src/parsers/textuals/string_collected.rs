@@ -17,10 +17,13 @@ impl<T, P: Parser<T>> StringCollected<T, P> {
     }
 }
 
-impl<T, P: Parser<T>> Parser<String> for StringCollected<T, P> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<String> {
+impl<T, P: Parser<T>> Parser<(String, T)> for StringCollected<T, P> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<(String, T)> {
         let parsed = self.parser.parse(input)?;
 
-        Ok(Eaten::ate(parsed.at, input.extract(parsed.at).to_string()))
+        Ok(Eaten::ate(
+            parsed.at,
+            (input.extract(parsed.at).to_string(), parsed.data),
+        ))
     }
 }
