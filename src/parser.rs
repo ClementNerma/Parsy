@@ -97,6 +97,16 @@ pub trait Parser<T> {
         Map::new(self, mapper)
     }
 
+    fn fallible_map<F: Fn(&T) -> Result<U, String>, U>(
+        self,
+        mapper: F,
+    ) -> FallibleMap<T, Self, U, F>
+    where
+        Self: Sized,
+    {
+        FallibleMap::new(self, mapper)
+    }
+
     fn spanned(self) -> Spanned<T, Self>
     where
         Self: Sized,

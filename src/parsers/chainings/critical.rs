@@ -1,4 +1,4 @@
-use std::marker::PhantomData;
+use std::{borrow::Cow, marker::PhantomData};
 
 use crate::{PResult, Parser, ParserInput};
 
@@ -33,6 +33,6 @@ impl<T, P: Parser<T>> Parser<T> for Critical<T, P> {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
         self.parser
             .parse(input)
-            .map_err(|err| err.criticalize(self.message))
+            .map_err(|err| err.criticalize(Cow::Borrowed(self.message)))
     }
 }

@@ -1,3 +1,5 @@
+use std::borrow::Cow;
+
 use crate::{CodeRange, Eaten};
 
 pub type PResult<T> = ::std::result::Result<Eaten<T>, ParsingError>;
@@ -5,7 +7,7 @@ pub type PResult<T> = ::std::result::Result<Eaten<T>, ParsingError>;
 #[derive(Debug)]
 pub struct ParsingError {
     inner: ParsingErrorInner,
-    critical: Option<&'static str>,
+    critical: Option<Cow<'static, str>>,
 }
 
 impl ParsingError {
@@ -24,15 +26,15 @@ impl ParsingError {
         self.inner
     }
 
-    pub fn critical(&self) -> Option<&'static str> {
-        self.critical
+    pub fn critical(&self) -> Option<&str> {
+        self.critical.as_deref()
     }
 
     pub fn is_critical(&self) -> bool {
         self.critical.is_some()
     }
 
-    pub fn criticalize(mut self, critical: &'static str) -> Self {
+    pub fn criticalize(mut self, critical: Cow<'static, str>) -> Self {
         if self.critical.is_none() {
             self.critical = Some(critical);
         }
