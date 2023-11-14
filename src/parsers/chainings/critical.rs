@@ -23,7 +23,7 @@ impl<T, P: Parser<T> + Clone> Clone for Critical<T, P> {
     fn clone(&self) -> Self {
         Self {
             parser: self.parser.clone(),
-            message: self.message.clone(),
+            message: self.message,
             _t: PhantomData,
         }
     }
