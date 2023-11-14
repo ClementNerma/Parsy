@@ -148,8 +148,11 @@ impl CodeRange {
             (FileId::Custom(_), FileId::SourceFile(_))
             | (FileId::SourceFile(_), FileId::Custom(_)) => Ok(false),
 
-            (FileId::SourceFile(id), FileId::SourceFile(other_id))
-            | (FileId::Custom(id), FileId::Custom(other_id)) => Ok(id == other_id
+            (FileId::SourceFile(id), FileId::SourceFile(other_id)) => Ok(id == other_id
+                && other.start.offset >= self.start.offset
+                && other.start.offset + other.len <= self.start.offset + self.len),
+
+            (FileId::Custom(id), FileId::Custom(other_id)) => Ok(id == other_id
                 && other.start.offset >= self.start.offset
                 && other.start.offset + other.len <= self.start.offset + self.len),
         }
@@ -179,6 +182,22 @@ pub enum CodeRangeComparisonError {
 pub enum FileId {
     None,
     Internal,
-    SourceFile(u64),
+    SourceFile(SourceFileID),
     Custom(u64),
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct SourceFileID(u64);
+
+impl From<u64> for SourceFileID {
+    fn from(value: u64) -> Self {
+        Self(value)
+    }
+}
+
+impl From<SourceFileID> for u64 {
+    fn from(value: SourceFileID) -> Self {
+        value.0
+    }
 }
