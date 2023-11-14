@@ -97,10 +97,7 @@ pub trait Parser<T> {
         Map::new(self, mapper)
     }
 
-    fn fallible_map<F: Fn(&T) -> Result<U, String>, U>(
-        self,
-        mapper: F,
-    ) -> FallibleMap<T, Self, U, F>
+    fn fallible_map<F: Fn(T) -> Result<U, String>, U>(self, mapper: F) -> FallibleMap<T, Self, U, F>
     where
         Self: Sized,
     {
