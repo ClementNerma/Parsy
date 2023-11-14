@@ -36,16 +36,12 @@ impl<T, P: Parser<T> + Clone, U, F: Fn(T) -> Result<U, String> + Clone> Clone
 
 impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> Parser<U> for FallibleMap<T, P, U, F> {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<U> {
-        let start = input.at();
-
         let Eaten { data, at } = self.parser.parse(input)?;
 
         (self.mapper)(data)
             .map(|data| Eaten::ate(at, data))
             .map_err(|err| {
-                start
-                    .range(0)
-                    .custom_err("mapper returned an Err variant")
+                at.custom_err("mapper returned an Err variant")
                     .criticalize(Cow::Owned(err))
             })
     }
