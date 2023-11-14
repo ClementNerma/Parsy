@@ -2,7 +2,6 @@ use std::marker::PhantomData;
 
 use crate::{PResult, Parser, ParserInput};
 
-#[derive(Clone)]
 pub struct Choice<T: IntoChoice<O>, O> {
     parsers: T,
     _o: PhantomData<O>,
@@ -41,12 +40,14 @@ macro_rules! _impl_choice {
             }
         }
 
-        // impl<$($X: Parser<Output>),+, Output> Choice<($($X,)+), Output> {
-        //     #[allow(dead_code)]
-        //     pub fn new(parsers: ($($X,)+)) -> Self {
-        //         Self { parsers, _o: PhantomData }
-        //     }
-        // }
+        impl<$($X: Parser<Output> + Clone),+, Output> Clone for Choice<($($X,)+), Output> {
+            fn clone(&self) -> Self {
+                Self {
+                    parsers: self.parsers.clone(),
+                    _o: PhantomData
+                }
+            }
+        }
 
         impl<$($X: Parser<Output>),+, Output> Parser<Output> for Choice<($($X,)+), Output> {
             fn parse_inner(&self, input: &mut ParserInput) -> PResult<Output> {
