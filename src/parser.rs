@@ -1,5 +1,6 @@
 use crate::{
     chainings::*, combinators::*, container::*, textuals::*, FileId, PResult, ParserInput,
+    ParsingError,
 };
 
 pub trait Parser<T> {
@@ -102,6 +103,13 @@ pub trait Parser<T> {
         Self: Sized,
     {
         FallibleMap::new(self, mapper)
+    }
+
+    fn and_then<F: Fn(T) -> Result<U, ParsingError>, U>(self, mapper: F) -> AndThen<T, Self, U, F>
+    where
+        Self: Sized,
+    {
+        AndThen::new(self, mapper)
     }
 
     fn spanned(self) -> Spanned<T, Self>

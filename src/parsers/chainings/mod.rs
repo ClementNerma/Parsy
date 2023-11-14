@@ -1,3 +1,4 @@
+mod and_then;
 mod critical;
 mod debug;
 mod delimited_by;
@@ -19,6 +20,7 @@ mod then_ignore;
 mod to;
 mod validate;
 
+pub use and_then::AndThen;
 pub use critical::Critical;
 pub use debug::{DebugType, Debugging};
 pub use delimited_by::DelimitedBy;
