@@ -40,6 +40,7 @@ macro_rules! _impl_choice {
             }
         }
 
+        // NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
         impl<$($X: Parser<Output> + Clone),+, Output> Clone for Choice<($($X,)+), Output> {
             fn clone(&self) -> Self {
                 Self {

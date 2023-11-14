@@ -2,7 +2,6 @@ use std::marker::PhantomData;
 
 use crate::{container::Container, Eaten, PResult, Parser, ParserInput};
 
-#[derive(Clone)]
 pub struct Repeated<T, P: Parser<T>, C: Container<T>> {
     parser: P,
     min: Option<usize>,
@@ -65,6 +64,20 @@ impl<T, P: Parser<T>, C: Container<T>> Repeated<T, P, C> {
 
         self.exactly = Some(exactly);
         self
+    }
+}
+
+// NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
+impl<T, P: Parser<T> + Clone, C: Container<T>> Clone for Repeated<T, P, C> {
+    fn clone(&self) -> Self {
+        Self {
+            parser: self.parser.clone(),
+            min: self.min,
+            max: self.max,
+            exactly: self.exactly,
+            _p: PhantomData,
+            _c: PhantomData,
+        }
     }
 }
 

@@ -2,7 +2,6 @@ use std::marker::PhantomData;
 
 use crate::{PResult, Parser, ParserInput};
 
-#[derive(Clone)]
 pub struct Validate<T, P: Parser<T>, F: Fn(&T) -> bool> {
     parser: P,
     validator: F,
@@ -23,6 +22,18 @@ impl<T, P: Parser<T>, F: Fn(&T) -> bool> Validate<T, P, F> {
     pub fn with_err_msg(mut self, msg: &'static str) -> Self {
         self.err_msg = Some(msg);
         self
+    }
+}
+
+// NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
+impl<T, P: Parser<T> + Clone, F: Fn(&T) -> bool + Clone> Clone for Validate<T, P, F> {
+    fn clone(&self) -> Self {
+        Self {
+            parser: self.parser.clone(),
+            validator: self.validator.clone(),
+            err_msg: self.err_msg,
+            _t: PhantomData,
+        }
     }
 }
 

@@ -2,7 +2,6 @@ use std::marker::PhantomData;
 
 use crate::{PResult, Parser, ParserInput};
 
-#[derive(Clone)]
 pub struct FollowedBy<F, FP: Parser<F>, O, OP: Parser<O>> {
     parser: FP,
     following: OP,
@@ -15,6 +14,18 @@ impl<F, FP: Parser<F>, O, OP: Parser<O>> FollowedBy<F, FP, O, OP> {
         Self {
             parser,
             following,
+            _f: PhantomData,
+            _o: PhantomData,
+        }
+    }
+}
+
+// NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
+impl<F, FP: Parser<F> + Clone, O, OP: Parser<O> + Clone> Clone for FollowedBy<F, FP, O, OP> {
+    fn clone(&self) -> Self {
+        Self {
+            parser: self.parser.clone(),
+            following: self.following.clone(),
             _f: PhantomData,
             _o: PhantomData,
         }

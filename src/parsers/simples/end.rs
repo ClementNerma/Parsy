@@ -1,6 +1,6 @@
 use crate::{Eaten, PResult, Parser, ParserInput};
 
-#[derive(Clone)]
+#[derive(Clone, Copy)]
 pub struct End;
 
 impl End {

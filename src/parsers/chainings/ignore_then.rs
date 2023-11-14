@@ -2,7 +2,6 @@ use std::marker::PhantomData;
 
 use crate::{PResult, Parser, ParserInput};
 
-#[derive(Clone)]
 pub struct IgnoreThen<F, FP: Parser<F>, O, OP: Parser<O>> {
     from: FP,
     to: OP,
@@ -15,6 +14,18 @@ impl<F, FP: Parser<F>, O, OP: Parser<O>> IgnoreThen<F, FP, O, OP> {
         Self {
             from,
             to,
+            _f: PhantomData,
+            _o: PhantomData,
+        }
+    }
+}
+
+// NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
+impl<F, FP: Parser<F> + Clone, O, OP: Parser<O> + Clone> Clone for IgnoreThen<F, FP, O, OP> {
+    fn clone(&self) -> Self {
+        Self {
+            from: self.from.clone(),
+            to: self.to.clone(),
             _f: PhantomData,
             _o: PhantomData,
         }

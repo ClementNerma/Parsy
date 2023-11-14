@@ -2,7 +2,6 @@ use std::{cell::RefCell, marker::PhantomData, rc::Rc};
 
 use crate::{PResult, Parser, ParserInput};
 
-#[derive(Clone)]
 pub struct Recursive<T> {
     parser: RecursiveRef<T>,
     _t: PhantomData<T>,
@@ -38,6 +37,16 @@ impl<T> Recursive<T> {
             },
             ret,
         )
+    }
+}
+
+// NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
+impl<T> Clone for Recursive<T> {
+    fn clone(&self) -> Self {
+        Self {
+            parser: self.parser.clone(),
+            _t: PhantomData,
+        }
     }
 }
 

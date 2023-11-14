@@ -2,7 +2,6 @@ use std::marker::PhantomData;
 
 use crate::{container::Container, PResult, Parser, ParserInput};
 
-#[derive(Clone)]
 pub struct Flattened<
     T,
     S: IntoIterator<Item = T>,
@@ -22,6 +21,25 @@ impl<T, S: IntoIterator<Item = T>, I: IntoIterator<Item = S>, P: Parser<I>, C: C
     pub fn new(parser: P) -> Self {
         Self {
             parser,
+            _i: PhantomData,
+            _t: PhantomData,
+            _c: PhantomData,
+        }
+    }
+}
+
+// NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
+impl<
+        T,
+        S: IntoIterator<Item = T>,
+        I: IntoIterator<Item = S>,
+        P: Parser<I> + Clone,
+        C: Container<T>,
+    > Clone for Flattened<T, S, I, P, C>
+{
+    fn clone(&self) -> Self {
+        Self {
+            parser: self.parser.clone(),
             _i: PhantomData,
             _t: PhantomData,
             _c: PhantomData,
