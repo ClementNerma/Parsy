@@ -16,19 +16,22 @@ impl<T, P: Parser<T>> Full<T, P> {
     }
 }
 
+// NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
+impl<T, P: Parser<T> + Clone> Clone for Full<T, P> {
+    fn clone(&self) -> Self {
+        Self {
+            parser: self.parser.clone(),
+            _t: PhantomData,
+        }
+    }
+}
+
 impl<T, P: Parser<T>> Parser<T> for Full<T, P> {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
         let data = self.parser.parse(input)?;
 
         if data.at.len != input.original().len() {
-            return Err(data.at.custom_err(
-                // format!(
-                //     "Input was not consumed entirely",
-                //     data.at.len,
-                //     input.original().len()
-                // )
-                "Input was not consumed entirely",
-            ));
+            return Err(data.at.custom_err("Input was not consumed entirely"));
         }
 
         Ok(data)

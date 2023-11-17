@@ -18,6 +18,17 @@ impl<T, P: Parser<T>> CustomErr<T, P> {
     }
 }
 
+// NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
+impl<T, P: Parser<T> + Clone> Clone for CustomErr<T, P> {
+    fn clone(&self) -> Self {
+        Self {
+            parser: self.parser.clone(),
+            message: self.message,
+            _t: PhantomData,
+        }
+    }
+}
+
 impl<T, P: Parser<T>> Parser<T> for CustomErr<T, P> {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
         self.parser
