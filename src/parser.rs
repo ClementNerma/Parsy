@@ -91,7 +91,7 @@ pub trait Parser<T> {
         OrNot::new(self)
     }
 
-    fn map<U, F: Fn(T) -> U + Clone>(self, mapper: F) -> Map<T, Self, U, F>
+    fn map<F: Fn(T) -> U + Clone, U>(self, mapper: F) -> Map<T, Self, U, F>
     where
         Self: Sized,
     {
