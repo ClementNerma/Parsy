@@ -1,6 +1,6 @@
 use std::{borrow::Cow, marker::PhantomData};
 
-use crate::{PResult, Parser, ParserExpectation, ParserInput};
+use crate::{PResult, Parser, ParserInput};
 
 pub struct Critical<T, P: Parser<T>> {
     parser: P,
@@ -40,14 +40,7 @@ impl<T, P: Parser<T>> Parser<T> for Critical<T, P> {
                     if is_empty {
                         Cow::Borrowed("unexpected end of input")
                     } else {
-                        Cow::Owned(match err.inner().expected() {
-                            ParserExpectation::Char(c) => format!("expected character '{c}'"),
-                            ParserExpectation::Str(str) => format!("expected string '{str}'"),
-                            ParserExpectation::Custom(custom) => (*custom).to_owned(),
-                            ParserExpectation::Break => {
-                                "parser returned a break instruction".to_owned()
-                            }
-                        })
+                        Cow::Owned(format!("{}", err.inner().expected()))
                     }
                 }
             };

@@ -1,4 +1,4 @@
-use std::borrow::Cow;
+use std::{borrow::Cow, fmt};
 
 use crate::{CodeRange, Eaten};
 
@@ -49,6 +49,19 @@ pub enum ParserExpectation {
     Str(&'static str),
     Custom(&'static str),
     Break,
+}
+
+impl fmt::Display for ParserExpectation {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Char(c) => write!(f, "expected character '{c}'"),
+            Self::Str(str) => write!(f, "expected string '{str}'"),
+            Self::Custom(custom) => write!(f, "{custom}"),
+            Self::Break => {
+                write!(f, "parser returned a break instruction")
+            }
+        }
+    }
 }
 
 #[derive(Debug)]
