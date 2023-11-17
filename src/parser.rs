@@ -98,11 +98,11 @@ pub trait Parser<T> {
         Map::new(self, mapper)
     }
 
-    fn fallible_map<F: Fn(T) -> Result<U, String>, U>(self, mapper: F) -> FallibleMap<T, Self, U, F>
+    fn try_map<F: Fn(T) -> Result<U, String>, U>(self, mapper: F) -> TryMap<T, Self, U, F>
     where
         Self: Sized,
     {
-        FallibleMap::new(self, mapper)
+        TryMap::new(self, mapper)
     }
 
     fn and_then<F: Fn(T) -> Result<U, ParsingError>, U>(self, mapper: F) -> AndThen<T, Self, U, F>
