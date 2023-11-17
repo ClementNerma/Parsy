@@ -89,10 +89,10 @@ impl<T, P: Parser<T>, C: Container<T>> Parser<C> for Repeated<T, P, C> {
         let mut out = C::create();
         let mut size = 0;
 
-        loop {
+        let err = loop {
             match self.parser.parse(input) {
                 Err(err) if err.is_critical() => return Err(err),
-                Err(_) => break,
+                Err(err) => break Some(err),
                 Ok(eaten) => {
                     eaten_len += eaten.at.len;
                     size += 1;
@@ -101,22 +101,24 @@ impl<T, P: Parser<T>, C: Container<T>> Parser<C> for Repeated<T, P, C> {
 
                     if let Some(max) = self.max {
                         if size > max {
-                            break;
+                            break None;
                         }
                     }
 
                     if let Some(exactly) = self.exactly {
                         if size == exactly {
-                            break;
+                            break None;
                         }
                     }
                 }
             }
-        }
+        };
 
         if let Some(min) = self.min {
             if size < min {
-                return Err(input.range(0).custom_err("Not enough repetitions"));
+                return Err(err
+                    .filter(|_| min == 0)
+                    .unwrap_or_else(|| input.range(0).custom_err("Not enough repetitions")));
             }
         }
 

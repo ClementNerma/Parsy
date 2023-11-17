@@ -98,11 +98,11 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> Parser<C>
         let mut ate = 0;
         let start = input.at();
 
-        loop {
+        let err = loop {
             let parsed = match self.parser.parse(input) {
                 Ok(parsed) => parsed,
                 Err(err) if err.is_critical() => return Err(err),
-                Err(_) => break,
+                Err(err) => break Some(err),
             };
 
             out.add(parsed.data);
@@ -111,13 +111,13 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> Parser<C>
 
             if let Some(max) = self.max {
                 if size > max {
-                    break;
+                    break None;
                 }
             }
 
             if let Some(exactly) = self.exactly {
                 if size == exactly {
-                    break;
+                    break None;
                 }
             }
 
@@ -127,15 +127,17 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> Parser<C>
                     if err.is_critical() {
                         return Err(err);
                     } else {
-                        break;
+                        break None;
                     }
                 }
             }
-        }
+        };
 
         if let Some(min) = self.min {
             if size < min {
-                return Err(input.range(0).custom_err("Not enough repetitions"));
+                return Err(err
+                    .filter(|_| min == 0)
+                    .unwrap_or_else(|| input.range(0).custom_err("Not enough repetitions")));
             }
         }
 
