@@ -146,7 +146,14 @@ pub trait Parser<T> {
     where
         Self: Sized,
     {
-        Critical::new(self, message)
+        Critical::new(self, Some(message))
+    }
+
+    fn critical_expectation(self) -> Critical<T, Self>
+    where
+        Self: Sized,
+    {
+        Critical::new(self, None)
     }
 
     fn silent(self) -> Silenced<T, Self>

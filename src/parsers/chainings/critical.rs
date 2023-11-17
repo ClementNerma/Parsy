@@ -1,15 +1,15 @@
 use std::{borrow::Cow, marker::PhantomData};
 
-use crate::{PResult, Parser, ParserInput};
+use crate::{PResult, Parser, ParserExpectation, ParserInput};
 
 pub struct Critical<T, P: Parser<T>> {
     parser: P,
-    message: &'static str,
+    message: Option<&'static str>,
     _t: PhantomData<T>,
 }
 
 impl<T, P: Parser<T>> Critical<T, P> {
-    pub fn new(parser: P, message: &'static str) -> Self {
+    pub fn new(parser: P, message: Option<&'static str>) -> Self {
         Self {
             parser,
             message,
@@ -31,8 +31,28 @@ impl<T, P: Parser<T> + Clone> Clone for Critical<T, P> {
 
 impl<T, P: Parser<T>> Parser<T> for Critical<T, P> {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
-        self.parser
-            .parse(input)
-            .map_err(|err| err.criticalize(Cow::Borrowed(self.message)))
+        let is_empty = input.inner().is_empty();
+
+        self.parser.parse(input).map_err(|err| {
+            let message = match self.message {
+                Some(message) => Cow::Borrowed(message),
+                None => {
+                    if is_empty {
+                        Cow::Borrowed("unexpected end of input")
+                    } else {
+                        Cow::Owned(match err.inner().expected() {
+                            ParserExpectation::Char(c) => format!("expected character '{c}'"),
+                            ParserExpectation::Str(str) => format!("expected string '{str}'"),
+                            ParserExpectation::Custom(custom) => (*custom).to_owned(),
+                            ParserExpectation::Break => {
+                                "parser returned a break instruction".to_owned()
+                            }
+                        })
+                    }
+                }
+            };
+
+            err.criticalize(message)
+        })
     }
 }
