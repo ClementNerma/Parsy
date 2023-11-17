@@ -36,13 +36,16 @@ impl<T, P: Parser<T>> Parser<T> for Critical<T, P> {
         self.parser.parse(input).map_err(|err| {
             let message = match self.message {
                 Some(message) => Cow::Borrowed(message),
-                None => {
-                    if is_empty {
-                        Cow::Borrowed("unexpected end of input")
-                    } else {
-                        Cow::Owned(format!("{}", err.inner().expected()))
+                None => match err.atomic_error() {
+                    Some(message) => Cow::Borrowed(message),
+                    None => {
+                        if is_empty {
+                            Cow::Borrowed("unexpected end of input")
+                        } else {
+                            Cow::Owned(format!("{}", err.inner().expected()))
+                        }
                     }
-                }
+                },
             };
 
             err.criticalize(message)

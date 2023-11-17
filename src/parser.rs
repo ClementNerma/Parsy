@@ -142,11 +142,11 @@ pub trait Parser<T> {
         StringCollectedWithData::new(self)
     }
 
-    fn custom_err(self, message: &'static str) -> CustomErr<T, Self>
+    fn atomic_err(self, message: &'static str) -> AtomicErr<T, Self>
     where
         Self: Sized,
     {
-        CustomErr::new(self, message)
+        AtomicErr::new(self, message)
     }
 
     fn critical(self, message: &'static str) -> Critical<T, Self>

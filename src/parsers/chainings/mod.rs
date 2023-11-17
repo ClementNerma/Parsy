@@ -1,6 +1,6 @@
 mod and_then;
+mod atomic_err;
 mod critical;
-mod custom_err;
 mod debug;
 mod delimited_by;
 mod fail;
@@ -22,8 +22,8 @@ mod try_map;
 mod validate;
 
 pub use and_then::AndThen;
+pub use atomic_err::AtomicErr;
 pub use critical::Critical;
-pub use custom_err::CustomErr;
 pub use debug::{DebugType, Debugging};
 pub use delimited_by::DelimitedBy;
 pub use fail::Fail;

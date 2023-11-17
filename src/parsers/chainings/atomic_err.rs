@@ -2,13 +2,13 @@ use std::marker::PhantomData;
 
 use crate::{PResult, Parser, ParserInput};
 
-pub struct CustomErr<T, P: Parser<T>> {
+pub struct AtomicErr<T, P: Parser<T>> {
     parser: P,
     message: &'static str,
     _t: PhantomData<T>,
 }
 
-impl<T, P: Parser<T>> CustomErr<T, P> {
+impl<T, P: Parser<T>> AtomicErr<T, P> {
     pub fn new(parser: P, message: &'static str) -> Self {
         Self {
             parser,
@@ -19,7 +19,7 @@ impl<T, P: Parser<T>> CustomErr<T, P> {
 }
 
 // NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
-impl<T, P: Parser<T> + Clone> Clone for CustomErr<T, P> {
+impl<T, P: Parser<T> + Clone> Clone for AtomicErr<T, P> {
     fn clone(&self) -> Self {
         Self {
             parser: self.parser.clone(),
@@ -29,10 +29,13 @@ impl<T, P: Parser<T> + Clone> Clone for CustomErr<T, P> {
     }
 }
 
-impl<T, P: Parser<T>> Parser<T> for CustomErr<T, P> {
+impl<T, P: Parser<T>> Parser<T> for AtomicErr<T, P> {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
-        self.parser
-            .parse(input)
-            .map_err(|err| err.inner().at().custom_err(self.message))
+        self.parser.parse(input).map_err(|err| {
+            err.inner()
+                .at()
+                .custom_err(self.message)
+                .with_atomic_error(self.message)
+        })
     }
 }

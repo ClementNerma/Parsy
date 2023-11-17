@@ -7,6 +7,7 @@ pub type PResult<T> = ::std::result::Result<Eaten<T>, ParsingError>;
 #[derive(Debug)]
 pub struct ParsingError {
     inner: ParsingErrorInner,
+    atomic_error: Option<&'static str>,
     critical: Option<Cow<'static, str>>,
 }
 
@@ -14,6 +15,7 @@ impl ParsingError {
     pub fn new(inner: ParsingErrorInner) -> Self {
         Self {
             inner,
+            atomic_error: None,
             critical: None,
         }
     }
@@ -39,6 +41,15 @@ impl ParsingError {
             self.critical = Some(critical);
         }
 
+        self
+    }
+
+    pub fn atomic_error(&self) -> Option<&'static str> {
+        self.atomic_error
+    }
+
+    pub fn with_atomic_error(mut self, atomic_err: &'static str) -> Self {
+        self.atomic_error = Some(atomic_err);
         self
     }
 }
