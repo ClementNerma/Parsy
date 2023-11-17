@@ -28,10 +28,19 @@ impl<T, P: Parser<T> + Clone> Clone for Full<T, P> {
 
 impl<T, P: Parser<T>> Parser<T> for Full<T, P> {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
+        if input.offset() > 0 {
+            return Err(input.range(0).custom_err("Expected start of input"));
+        }
+
         let data = self.parser.parse(input)?;
 
         if data.at.len != input.original().len() {
-            return Err(data.at.custom_err("Input was not consumed entirely"));
+            return Err(data
+                .at
+                .start
+                .add(data.at.len)
+                .range(0)
+                .custom_err("Unexpected end of input"));
         }
 
         Ok(data)
