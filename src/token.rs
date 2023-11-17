@@ -93,7 +93,45 @@ impl Location {
     pub fn range(self, len: usize) -> CodeRange {
         CodeRange::new(self, len)
     }
+
+    pub fn compute_offset_in(
+        &self,
+        input: &str,
+    ) -> Result<LocationInString, LocationOutOfBoundsErr> {
+        if self.offset >= input.len() {
+            return Err(LocationOutOfBoundsErr);
+        }
+
+        let bef = &input[..self.offset];
+
+        let mut line_number: usize = 0;
+        let mut last_line = None;
+
+        for line in bef.split('\n') {
+            last_line = Some(line.strip_suffix('\r').unwrap_or(line));
+            line_number += 1;
+        }
+
+        let col = match last_line {
+            None => 0,
+            Some(line) => line.len(),
+        };
+
+        Ok(LocationInString {
+            line: line_number.saturating_sub(1),
+            col,
+        })
+    }
 }
+
+#[derive(Debug, Clone, Copy)]
+pub struct LocationInString {
+    pub line: usize,
+    pub col: usize,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct LocationOutOfBoundsErr;
 
 impl std::fmt::Debug for Location {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
