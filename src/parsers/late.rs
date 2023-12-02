@@ -1,7 +1,10 @@
 use std::{cell::RefCell, rc::Rc};
 
+use perfect_derive::perfect_derive;
+
 use crate::{PResult, Parser, ParserInput};
 
+#[perfect_derive(Debug, Clone, Copy)]
 pub struct Late<T> {
     parser_ref: Rc<RefCell<Option<Box<dyn Parser<T>>>>>,
 }
@@ -20,15 +23,6 @@ impl<T> Late<T> {
         assert!(borrowed.is_none(), "This late parser was already set");
 
         borrowed.replace(Box::new(parser));
-    }
-}
-
-// NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
-impl<T> Clone for Late<T> {
-    fn clone(&self) -> Self {
-        Self {
-            parser_ref: self.parser_ref.clone(),
-        }
     }
 }
 

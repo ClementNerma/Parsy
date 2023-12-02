@@ -1,5 +1,7 @@
 use std::marker::PhantomData;
 
+use perfect_derive::perfect_derive;
+
 use crate::{parser::Parser, PResult, ParserInput};
 
 #[derive(Debug)]
@@ -8,13 +10,14 @@ pub enum DebugType<'a, 'b, T> {
     Result(&'a PResult<T>),
 }
 
-pub struct Debugging<T, P: Parser<T>, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>) + Clone> {
+#[perfect_derive(Debug, Clone, Copy)]
+pub struct Debugging<T, P: Parser<T>, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>)> {
     parser: P,
     debugger: F,
     _t: PhantomData<T>,
 }
 
-impl<T, P: Parser<T>, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>) + Clone> Debugging<T, P, F> {
+impl<T, P: Parser<T>, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>)> Debugging<T, P, F> {
     pub fn new(parser: P, debugger: F) -> Self {
         Self {
             parser,
@@ -24,21 +27,7 @@ impl<T, P: Parser<T>, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>) + Clone> Debugging
     }
 }
 
-impl<T, P: Parser<T> + Clone, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>) + Clone> Clone
-    for Debugging<T, P, F>
-{
-    fn clone(&self) -> Self {
-        Self {
-            parser: self.parser.clone(),
-            debugger: self.debugger.clone(),
-            _t: self._t,
-        }
-    }
-}
-
-impl<T, P: Parser<T>, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>) + Clone> Parser<T>
-    for Debugging<T, P, F>
-{
+impl<T, P: Parser<T>, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>)> Parser<T> for Debugging<T, P, F> {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
         (self.debugger)(DebugType::Input(input));
 

@@ -1,7 +1,10 @@
 use std::marker::PhantomData;
 
+use perfect_derive::perfect_derive;
+
 use crate::{container::Container, Eaten, PResult, Parser, ParserInput};
 
+#[perfect_derive(Debug, Clone, Copy)]
 pub struct SeparatedBy<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> {
     parser: TP,
     separator: SP,
@@ -68,24 +71,6 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> SeparatedBy<T, TP, S, 
 
         self.exactly = Some(exactly);
         self
-    }
-}
-
-// NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
-impl<T, TP: Parser<T> + Clone, S, SP: Parser<S> + Clone, C: Container<T>> Clone
-    for SeparatedBy<T, TP, S, SP, C>
-{
-    fn clone(&self) -> Self {
-        Self {
-            parser: self.parser.clone(),
-            separator: self.separator.clone(),
-            min: self.min,
-            max: self.max,
-            exactly: self.exactly,
-            _t: self._t,
-            _s: self._s,
-            _c: self._c,
-        }
     }
 }
 

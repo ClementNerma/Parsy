@@ -1,7 +1,10 @@
 use std::marker::PhantomData;
 
+use perfect_derive::perfect_derive;
+
 use crate::{Eaten, PResult, Parser, ParserInput, ParsingError};
 
+#[perfect_derive(Clone, Copy)]
 pub struct AndThen<T, P: Parser<T>, U, F: Fn(T) -> Result<U, ParsingError>> {
     parser: P,
     mapper: F,
@@ -14,20 +17,6 @@ impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, ParsingError>> AndThen<T, P, U, F
         Self {
             parser,
             mapper,
-            _t: PhantomData,
-            _u: PhantomData,
-        }
-    }
-}
-
-// NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
-impl<T, P: Parser<T> + Clone, U, F: Fn(T) -> Result<U, ParsingError> + Clone> Clone
-    for AndThen<T, P, U, F>
-{
-    fn clone(&self) -> Self {
-        Self {
-            parser: self.parser.clone(),
-            mapper: self.mapper.clone(),
             _t: PhantomData,
             _u: PhantomData,
         }

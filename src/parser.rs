@@ -239,7 +239,7 @@ pub trait Parser<T> {
         Flattened::new(self)
     }
 
-    fn to<U: Clone>(self, data: U) -> To<T, Self, U>
+    fn to<U: Copy>(self, data: U) -> To<T, Self, U>
     where
         Self: Sized,
     {

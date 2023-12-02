@@ -1,7 +1,10 @@
 use std::marker::PhantomData;
 
+use perfect_derive::perfect_derive;
+
 use crate::{PResult, Parser, ParserInput};
 
+#[perfect_derive(Clone, Copy)]
 pub struct SilentChoice<T: IntoSilentChoice<Outputs>, Outputs> {
     parsers: T,
     _o: PhantomData<Outputs>,
@@ -34,13 +37,6 @@ macro_rules! _impl_silent_choice {
         impl<$($X: Parser<$Xo>, $Xo),+> IntoSilentChoice<($($Xo,)+)> for ($($X,)+) {
             fn into_silent_choice(self) -> SilentChoice<Self, ($($Xo,)+)> where Self: Sized {
                 SilentChoice::<Self, ($($Xo,)+)>::new(self)
-            }
-        }
-
-        // NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
-        impl<$($X: Parser<$Xo> + Clone, $Xo),+> Clone for SilentChoice<($($X,)+), ($($Xo,)+)> {
-            fn clone(&self) -> Self {
-                Self { parsers: self.parsers.clone(), _o: PhantomData }
             }
         }
 

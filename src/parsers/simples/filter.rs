@@ -1,6 +1,8 @@
+use perfect_derive::perfect_derive;
+
 use crate::{PResult, Parser, ParserInput};
 
-#[derive(Clone, Copy)]
+#[perfect_derive(Clone, Copy)]
 pub struct Filter<F: Fn(char) -> bool> {
     func: F,
 }

@@ -1,7 +1,10 @@
 use std::{cell::RefCell, marker::PhantomData, rc::Rc};
 
+use perfect_derive::perfect_derive;
+
 use crate::{PResult, Parser, ParserInput};
 
+#[perfect_derive(Debug, Clone, Copy)]
 pub struct Recursive<T> {
     parser: RecursiveRef<T>,
     _t: PhantomData<T>,
@@ -40,33 +43,15 @@ impl<T> Recursive<T> {
     }
 }
 
-// NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
-impl<T> Clone for Recursive<T> {
-    fn clone(&self) -> Self {
-        Self {
-            parser: self.parser.clone(),
-            _t: PhantomData,
-        }
-    }
-}
-
 impl<T> Parser<T> for Recursive<T> {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
         self.parser.parse(input)
     }
 }
 
+#[perfect_derive(Debug, Clone, Copy)]
 pub struct RecursiveRef<T> {
     parser_ref: Rc<RefCell<Option<Box<dyn Parser<T>>>>>,
-}
-
-// NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
-impl<T> Clone for RecursiveRef<T> {
-    fn clone(&self) -> Self {
-        Self {
-            parser_ref: self.parser_ref.clone(),
-        }
-    }
 }
 
 impl<T> RecursiveRef<T> {

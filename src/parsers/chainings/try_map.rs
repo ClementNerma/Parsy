@@ -1,7 +1,10 @@
 use std::{borrow::Cow, marker::PhantomData};
 
+use perfect_derive::perfect_derive;
+
 use crate::{Eaten, PResult, Parser, ParserInput};
 
+#[perfect_derive(Debug, Clone, Copy)]
 pub struct TryMap<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> {
     parser: P,
     mapper: F,
@@ -14,20 +17,6 @@ impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> TryMap<T, P, U, F> {
         Self {
             parser,
             mapper,
-            _t: PhantomData,
-            _u: PhantomData,
-        }
-    }
-}
-
-// NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
-impl<T, P: Parser<T> + Clone, U, F: Fn(T) -> Result<U, String> + Clone> Clone
-    for TryMap<T, P, U, F>
-{
-    fn clone(&self) -> Self {
-        Self {
-            parser: self.parser.clone(),
-            mapper: self.mapper.clone(),
             _t: PhantomData,
             _u: PhantomData,
         }

@@ -1,7 +1,10 @@
 use std::marker::PhantomData;
 
+use perfect_derive::perfect_derive;
+
 use crate::{PResult, Parser, ParserInput};
 
+#[perfect_derive(Debug, Clone, Copy)]
 pub struct AtomicErr<T, P: Parser<T>> {
     parser: P,
     message: &'static str,
@@ -13,17 +16,6 @@ impl<T, P: Parser<T>> AtomicErr<T, P> {
         Self {
             parser,
             message,
-            _t: PhantomData,
-        }
-    }
-}
-
-// NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
-impl<T, P: Parser<T> + Clone> Clone for AtomicErr<T, P> {
-    fn clone(&self) -> Self {
-        Self {
-            parser: self.parser.clone(),
-            message: self.message,
             _t: PhantomData,
         }
     }

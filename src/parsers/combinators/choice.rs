@@ -1,7 +1,10 @@
 use std::marker::PhantomData;
 
+use perfect_derive::perfect_derive;
+
 use crate::{PResult, Parser, ParserInput};
 
+#[perfect_derive(Clone, Copy)]
 pub struct Choice<T: IntoChoice<O>, O> {
     parsers: T,
     _o: PhantomData<O>,
@@ -37,16 +40,6 @@ macro_rules! _impl_choice {
         impl<$($X: Parser<Output>),+, Output> IntoChoice<Output> for ($($X,)+) {
             fn into_choice(self) -> Choice<Self, Output> where Self: Sized {
                 Choice::new(self)
-            }
-        }
-
-        // NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
-        impl<$($X: Parser<Output> + Clone),+, Output> Clone for Choice<($($X,)+), Output> {
-            fn clone(&self) -> Self {
-                Self {
-                    parsers: self.parsers.clone(),
-                    _o: PhantomData
-                }
             }
         }
 

@@ -1,7 +1,10 @@
 use std::marker::PhantomData;
 
+use perfect_derive::perfect_derive;
+
 use crate::{PResult, Parser, ParserInput};
 
+#[perfect_derive(Debug, Clone, Copy)]
 pub struct Full<T, P: Parser<T>> {
     parser: P,
     _t: PhantomData<T>,
@@ -11,16 +14,6 @@ impl<T, P: Parser<T>> Full<T, P> {
     pub fn new(parser: P) -> Self {
         Self {
             parser,
-            _t: PhantomData,
-        }
-    }
-}
-
-// NOTE: This is required because of https://github.com/rust-lang/rust/issues/26925
-impl<T, P: Parser<T> + Clone> Clone for Full<T, P> {
-    fn clone(&self) -> Self {
-        Self {
-            parser: self.parser.clone(),
             _t: PhantomData,
         }
     }
