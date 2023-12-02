@@ -1,11 +1,37 @@
-use crate::{chainings::DelimitedBy, Parser};
+use std::marker::PhantomData;
 
-use super::Whitespaces;
+use perfect_derive::perfect_derive;
 
-pub type Padded<T, P> = DelimitedBy<(), Whitespaces, T, P, (), Whitespaces>;
+use crate::{PResult, Parser, ParserInput};
 
-impl<M, MP: Parser<M>> Padded<M, MP> {
-    pub fn padded(middle: MP) -> Padded<M, MP> {
-        Padded::new(Whitespaces::new(), middle, Whitespaces::new())
+#[perfect_derive(Debug, Clone, Copy)]
+pub struct Padded<T, TP: Parser<T>, P, PP: Parser<P>> {
+    middle: TP,
+    padding: PP,
+    _m: PhantomData<T>,
+    _p: PhantomData<P>,
+}
+
+impl<T, TP: Parser<T>, P, PP: Parser<P>> Padded<T, TP, P, PP> {
+    pub fn new(middle: TP, padding: PP) -> Self {
+        Self {
+            middle,
+            padding,
+            _m: PhantomData,
+            _p: PhantomData,
+        }
+    }
+}
+
+impl<T, TP: Parser<T>, P, PP: Parser<P>> Parser<T> for Padded<T, TP, P, PP> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
+        let start = self.padding.parse(input)?;
+        let middle = self.middle.parse(input)?;
+        let end = self.padding.parse(input)?;
+
+        Ok(start
+            .combine(middle)
+            .combine(end)
+            .map(|((_, data), _)| data))
     }
 }

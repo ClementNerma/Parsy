@@ -170,11 +170,11 @@ pub trait Parser<T> {
         Silenced::new(self)
     }
 
-    fn padded(self) -> Padded<T, Self>
+    fn padded_by<P, PP: Parser<P>>(self, padding: PP) -> Padded<T, Self, P, PP>
     where
         Self: Sized,
     {
-        Padded::padded(self)
+        Padded::new(self, padding)
     }
 
     fn line_padded(self) -> LinePadded<T, Self>
