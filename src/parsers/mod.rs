@@ -47,6 +47,10 @@ pub fn choice<T: IntoChoice<O>, O>(parsers: T) -> Choice<T, O> {
     Choice::new(parsers)
 }
 
+pub fn silent_choice<T: IntoSilentChoice<O>, O>(parsers: T) -> SilentChoice<T, O> {
+    SilentChoice::new(parsers)
+}
+
 pub fn not<T, P: Parser<T>>(parser: P) -> Not<T, P> {
     Not::new(parser)
 }
