@@ -1,6 +1,6 @@
 use crate::{ParserExpectation, ParsingError, ParsingErrorInner};
 
-#[derive(Clone, Copy, Hash, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Eaten<T> {
     pub at: CodeRange,
@@ -55,13 +55,6 @@ impl<T> Eaten<T> {
             },
             data: (self.data, other.data),
         }
-    }
-}
-
-impl<T: std::fmt::Debug> std::fmt::Debug for Eaten<T> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let Self { at, data } = self;
-        write!(f, "Eaten({at:?} => {data:?})")
     }
 }
 
@@ -136,7 +129,7 @@ pub struct LocationOutOfBoundsErr;
 impl std::fmt::Debug for Location {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let Self { file_id, offset } = self;
-        write!(f, "{file_id:?} offset {offset}")
+        write!(f, "offset {offset} @ {file_id:?}")
     }
 }
 
@@ -200,10 +193,11 @@ impl CodeRange {
 impl std::fmt::Debug for CodeRange {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let Self { start, len } = self;
-
+        let Location { file_id, offset } = start;
         write!(
             f,
-            "{start:?} to {} (len = {len})",
+            "offset {} to {} @ {file_id:?}",
+            offset,
             start.offset + len.max(&1) - 1
         )
     }
