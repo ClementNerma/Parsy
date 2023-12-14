@@ -7,14 +7,16 @@ pub fn complex_test() {
         .at_least(1)
         .at_most(1)
         .then(just(" "))
-        .then(choice((just("world"), just("World"))))
+        .then(choice((just("World"), just("world"))))
+        .then(lookahead(char('!')))
         .followed_by(just("!"))
-        .then(just("!"))
+        .then(filter(|c| c == '!'))
+        .then(whitespaces())
         .then(end())
         .spanned()
         .full();
 
-    let input = "Hello world!";
+    let input = "Hello world!\n";
 
     let parsed = parser.parse_str(input).unwrap();
 
