@@ -43,7 +43,7 @@ impl<T> Container<T> for Vec<T> {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Copy)]
 pub struct NoAllocContainer;
 
 impl<T> Container<T> for NoAllocContainer {

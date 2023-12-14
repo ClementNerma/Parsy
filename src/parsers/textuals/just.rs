@@ -1,6 +1,6 @@
 use crate::{PResult, Parser, ParserInput};
 
-#[derive(Clone)]
+#[derive(Clone, Copy)]
 pub struct Just {
     str: &'static str,
 }
