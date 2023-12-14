@@ -47,7 +47,7 @@ impl<'a> ParserInput<'a> {
     }
 
     pub fn try_eat(&mut self, len: usize) -> Option<Eaten<&str>> {
-        if len > self.str.len() {
+        if len > self.str.len() || !self.str.is_char_boundary(len) {
             return None;
         }
 
