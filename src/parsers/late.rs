@@ -10,7 +10,6 @@ pub struct Late<T> {
 }
 
 impl<T> Late<T> {
-    #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         Self {
             parser_ref: Rc::new(RefCell::new(None)),
@@ -23,6 +22,12 @@ impl<T> Late<T> {
         assert!(borrowed.is_none(), "This late parser was already set");
 
         borrowed.replace(Box::new(parser));
+    }
+}
+
+impl<T> Default for Late<T> {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

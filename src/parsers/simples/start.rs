@@ -4,9 +4,14 @@ use crate::{Eaten, PResult, Parser, ParserInput};
 pub struct Start;
 
 impl Start {
-    #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         Self
+    }
+}
+
+impl Default for Start {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

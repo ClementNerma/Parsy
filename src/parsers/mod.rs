@@ -16,19 +16,23 @@ use self::late::Late;
 use self::recursive::{Recursive, RecursiveRef};
 
 pub fn start() -> Start {
-    Start::new()
+    Start
 }
 
 pub fn end() -> End {
-    End::new()
+    End
 }
 
 pub fn empty() -> Empty {
-    Empty::new()
+    Empty
 }
 
 pub fn whitespaces() -> Whitespaces {
-    Whitespaces::new()
+    Whitespaces::default()
+}
+
+pub fn newline() -> Newline {
+    Newline
 }
 
 pub fn char(char: char) -> Char {
