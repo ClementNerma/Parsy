@@ -122,7 +122,7 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> Parser<C>
             if size < min {
                 return Err(err
                     .filter(|_| size == 0)
-                    .unwrap_or_else(|| input.range(0).custom_err("Not enough repetitions")));
+                    .unwrap_or_else(|| input.at().custom_err("Not enough repetitions")));
             }
         }
 

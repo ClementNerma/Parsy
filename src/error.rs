@@ -1,6 +1,6 @@
 use std::{borrow::Cow, fmt};
 
-use crate::{CodeRange, Eaten};
+use crate::{Eaten, Location};
 
 pub type PResult<T> = ::std::result::Result<Eaten<T>, ParsingError>;
 
@@ -78,13 +78,13 @@ impl fmt::Display for ParserExpectation {
 #[derive(Debug)]
 #[must_use]
 pub struct ParsingErrorInner {
-    at: CodeRange,
+    at: Location,
     len: usize,
     expected: ParserExpectation,
 }
 
 impl ParsingErrorInner {
-    pub fn new(at: CodeRange, expected: ParserExpectation) -> Self {
+    pub fn new(at: Location, expected: ParserExpectation) -> Self {
         Self {
             at,
             expected,
@@ -92,7 +92,7 @@ impl ParsingErrorInner {
         }
     }
 
-    pub fn at(&self) -> CodeRange {
+    pub fn at(&self) -> Location {
         self.at
     }
 

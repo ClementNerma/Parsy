@@ -115,6 +115,31 @@ impl Location {
             col,
         })
     }
+
+    pub fn expected_char(self, expected: char) -> ParsingError {
+        ParsingError::new(ParsingErrorInner::new(
+            self,
+            ParserExpectation::Char(expected),
+        ))
+    }
+
+    pub fn expected_str(self, expected: &'static str) -> ParsingError {
+        ParsingError::new(ParsingErrorInner::new(
+            self,
+            ParserExpectation::Str(expected),
+        ))
+    }
+
+    pub fn custom_err(self, message: &'static str) -> ParsingError {
+        ParsingError::new(ParsingErrorInner::new(
+            self,
+            ParserExpectation::Custom(message),
+        ))
+    }
+
+    pub fn just_break(self) -> ParsingError {
+        ParsingError::new(ParsingErrorInner::new(self, ParserExpectation::Break))
+    }
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -143,31 +168,6 @@ pub struct CodeRange {
 impl CodeRange {
     pub fn new(start: Location, len: usize) -> Self {
         Self { start, len }
-    }
-
-    pub fn expected_char(self, expected: char) -> ParsingError {
-        ParsingError::new(ParsingErrorInner::new(
-            self,
-            ParserExpectation::Char(expected),
-        ))
-    }
-
-    pub fn expected_str(self, expected: &'static str) -> ParsingError {
-        ParsingError::new(ParsingErrorInner::new(
-            self,
-            ParserExpectation::Str(expected),
-        ))
-    }
-
-    pub fn custom_err(self, message: &'static str) -> ParsingError {
-        ParsingError::new(ParsingErrorInner::new(
-            self,
-            ParserExpectation::Custom(message),
-        ))
-    }
-
-    pub fn just_break(self) -> ParsingError {
-        ParsingError::new(ParsingErrorInner::new(self, ParserExpectation::Break))
     }
 
     pub fn contains(&self, other: CodeRange) -> Result<bool, CodeRangeComparisonError> {

@@ -107,7 +107,7 @@ impl<T, P: Parser<T>, C: Container<T>> Parser<C> for Repeated<T, P, C> {
             if size < min {
                 return Err(err
                     .filter(|_| size == 0)
-                    .unwrap_or_else(|| input.range(0).custom_err("Not enough repetitions")));
+                    .unwrap_or_else(|| input.at().custom_err("Not enough repetitions")));
             }
         }
 

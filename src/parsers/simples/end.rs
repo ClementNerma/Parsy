@@ -15,7 +15,7 @@ impl Parser<()> for End {
         if input.inner().is_empty() {
             Ok(Eaten::ate(input.range(0), ()))
         } else {
-            Err(input.range(0).custom_err("Expected end of input"))
+            Err(input.at().custom_err("Expected end of input"))
         }
     }
 }

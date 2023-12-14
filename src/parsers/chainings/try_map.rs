@@ -30,7 +30,8 @@ impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> Parser<U> for TryMap<T, 
         (self.mapper)(data)
             .map(|data| Eaten::ate(at, data))
             .map_err(|err| {
-                at.custom_err("mapper returned an Err variant")
+                at.start
+                    .custom_err("mapper returned an Err variant")
                     .criticalize(Cow::Owned(err))
             })
     }

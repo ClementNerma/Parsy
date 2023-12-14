@@ -28,7 +28,7 @@ impl<F, FP: Parser<F>, O, OP: Parser<O>> Parser<F> for NotFollowedBy<F, FP, O, O
         let parsed = self.parser.parse(input)?;
 
         match self.following.parse(input) {
-            Ok(eaten) => Err(eaten.at.custom_err("Parser should not have matched")),
+            Ok(eaten) => Err(eaten.at.start.custom_err("Parser should not have matched")),
             Err(err) if err.is_critical() => Err(err),
             Err(_) => Ok(parsed),
         }

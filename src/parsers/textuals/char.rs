@@ -18,6 +18,6 @@ impl Parser<char> for Char {
         input
             .try_eat_char()
             .filter(|eaten| eaten.data == self.char)
-            .ok_or_else(|| start.range(0).expected_char(self.char))
+            .ok_or_else(|| start.expected_char(self.char))
     }
 }

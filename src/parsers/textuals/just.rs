@@ -23,6 +23,6 @@ impl Parser<&'static str> for Just {
             // If so, replace success data with the stored string to get a 'static lifetime
             .map(|eaten| eaten.replace(self.str))
             // Otherwise, generate an error
-            .ok_or_else(|| start.range(0).expected_str(self.str))
+            .ok_or_else(|| start.expected_str(self.str))
     }
 }

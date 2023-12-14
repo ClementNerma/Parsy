@@ -39,9 +39,7 @@ impl Parser<()> for Whitespaces {
         let trimmed = input_str.len() - trimmed.len();
 
         if self.multiple && trimmed == 0 {
-            Err(input
-                .range(0)
-                .custom_err("Expected at least one whitespace"))
+            Err(input.at().custom_err("Expected at least one whitespace"))
         } else {
             Ok(Eaten::ate(input.range(trimmed), ()))
         }
