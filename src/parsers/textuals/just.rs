@@ -17,11 +17,9 @@ impl Parser<&'static str> for Just {
 
         input
             // Try to eat the string
-            .try_eat(self.str.len())
+            .try_eat(self.str.len(), self.str)
             // Ensure it was correctly eaten
             .filter(|eaten| eaten.data == self.str)
-            // Replace the token with the stored string (to get a 'static lifetime)
-            .map(|eaten| eaten.replace(self.str))
             // Otherwise, generate an error
             .ok_or_else(|| start.range(0).expected_str(self.str))
     }

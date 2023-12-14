@@ -48,7 +48,11 @@ impl<'a> ParserInput<'a> {
         self.str = &self.str[from.at.len..];
     }
 
-    fn eat<T>(&mut self, len: usize, data: T) -> Eaten<T> {
+    pub fn try_eat<T>(&mut self, len: usize, data: T) -> Option<Eaten<T>> {
+        if len > self.str.len() {
+            return None;
+        }
+
         let ate = Eaten {
             at: self.range(len),
             data,
@@ -57,23 +61,15 @@ impl<'a> ParserInput<'a> {
         self.str = &self.str[len..];
         self.at = self.at.add(len);
 
-        ate
+        Some(ate)
     }
 
     pub fn try_eat_char(&mut self) -> Option<Eaten<char>> {
         let char = self.str.chars().next()?;
 
-        Some(self.eat(char.len_utf8(), char))
-    }
+        let ate = self.try_eat(char.len_utf8(), char).unwrap();
 
-    pub fn try_eat(&mut self, bytes: usize) -> Option<Eaten<&str>> {
-        if bytes > self.str.len() {
-            return None;
-        }
-
-        let str = &self.str[..bytes];
-
-        Some(self.eat(str.len(), str))
+        Some(ate)
     }
 
     pub fn extract(&self, range: CodeRange) -> &str {
