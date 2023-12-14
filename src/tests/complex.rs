@@ -1,4 +1,4 @@
-use crate::{chainings::DebugType, parser::Parser, parsers::*};
+use crate::{atoms::whitespace, chainings::DebugType, parser::Parser, parsers::*};
 
 #[test]
 pub fn complex_test() {
@@ -49,6 +49,16 @@ pub fn late_test() {
     a.finish(char('a'));
 
     ba.parse_str("aba").unwrap();
+}
+
+#[test]
+pub fn utf8() {
+    let parser = just("é").then(whitespace()).then(char('è')).full();
+
+    parser.parse_str("é è").unwrap();
+    parser.parse_str("e è").err().unwrap();
+    parser.parse_str("é e").err().unwrap();
+    parser.parse_str("e e").err().unwrap();
 }
 
 #[allow(dead_code)]
