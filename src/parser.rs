@@ -9,11 +9,11 @@ pub trait Parser<T> {
     fn parse(&self, input: &mut ParserInput) -> PResult<T> {
         let result = self.parse_inner(&mut input.clone());
 
-        let Ok(eaten) = result else { return result };
+        result.map(|eaten| {
+            input.apply(&eaten);
 
-        input.apply(&eaten);
-
-        Ok(eaten)
+            eaten
+        })
     }
 
     fn parse_str(&self, str: &str) -> PResult<T> {

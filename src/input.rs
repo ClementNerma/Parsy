@@ -37,25 +37,23 @@ impl<'a> ParserInput<'a> {
     }
 
     pub fn apply<T>(&mut self, from: &Eaten<T>) {
-        // if cfg!(debug_assertions) {
         assert_eq!(
             self.at, from.at.start,
             "Provided eaten content does not start at the same position as the input"
         );
-        // }
 
         self.at = self.at.add(from.at.len);
         self.str = &self.str[from.at.len..];
     }
 
-    pub fn try_eat<T>(&mut self, len: usize, data: T) -> Option<Eaten<T>> {
+    pub fn try_eat(&mut self, len: usize) -> Option<Eaten<&str>> {
         if len > self.str.len() {
             return None;
         }
 
         let ate = Eaten {
             at: self.range(len),
-            data,
+            data: &self.str[..len],
         };
 
         self.str = &self.str[len..];
@@ -67,9 +65,9 @@ impl<'a> ParserInput<'a> {
     pub fn try_eat_char(&mut self) -> Option<Eaten<char>> {
         let char = self.str.chars().next()?;
 
-        let ate = self.try_eat(char.len_utf8(), char).unwrap();
+        let ate = self.try_eat(char.len_utf8()).unwrap();
 
-        Some(ate)
+        Some(ate.replace(char))
     }
 
     pub fn extract(&self, range: CodeRange) -> &str {

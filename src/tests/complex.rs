@@ -1,4 +1,4 @@
-use crate::{parser::Parser, parsers::*};
+use crate::{chainings::DebugType, parser::Parser, parsers::*};
 
 #[test]
 pub fn complex_test() {
@@ -49,12 +49,13 @@ pub fn late_test() {
     ba.parse_str("aba").unwrap();
 }
 
-// fn simple_debug<T>(debug: DebugType<'_, '_, T>) {
-//     match debug {
-//         DebugType::Input(input) => println!("{input:#?}"),
-//         DebugType::Result(result) => match result {
-//             Ok(ok) => println!("{:#?}", ok.at),
-//             Err(err) => println!("{err:#?}"),
-//         },
-//     }
-// }
+#[allow(dead_code)]
+fn simple_debug<T>(debug: DebugType<'_, '_, T>) {
+    match debug {
+        DebugType::Input(input) => println!("{input:#?}"),
+        DebugType::Result(result) => match result {
+            Ok(ok) => println!("{:#?}", ok.at),
+            Err(err) => println!("{err:#?}"),
+        },
+    }
+}
