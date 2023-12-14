@@ -28,15 +28,15 @@ impl Whitespaces {
 
 impl Parser<()> for Whitespaces {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<()> {
+        let input_str = input.inner();
+
         let trimmed = if self.no_newline {
-            input
-                .inner()
-                .trim_start_matches(|c: char| c.is_whitespace() && c != '\n' && c != '\r')
+            input_str.trim_start_matches(|c: char| c.is_whitespace() && c != '\n' && c != '\r')
         } else {
-            input.inner().trim_start()
+            input_str.trim_start()
         };
 
-        let trimmed = input.inner().len() - trimmed.len();
+        let trimmed = input_str.len() - trimmed.len();
 
         if self.multiple && trimmed == 0 {
             Err(input
