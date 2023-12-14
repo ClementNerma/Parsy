@@ -24,7 +24,7 @@ impl<F: Fn(char) -> bool> Parser<char> for Filter<F> {
         if (self.func)(c.data) {
             Ok(c)
         } else {
-            Err(start.range(1).custom_err("Character filter failed"))
+            Err(start.range(c.data.len_utf8()).custom_err("Character filter failed"))
         }
     }
 }
