@@ -131,7 +131,7 @@ pub trait Parser<T> {
         StringCollected::new(self)
     }
 
-    fn collect_string_and_data(self) -> StringCollectedWithData<T, Self>
+    fn collect_string_with_data(self) -> StringCollectedWithData<T, Self>
     where
         Self: Sized,
     {
