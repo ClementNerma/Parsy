@@ -76,7 +76,7 @@ impl<T, P: Parser<T>, C: Container<T>> Parser<C> for Repeated<T, P, C> {
         let mut eaten_len = 0;
 
         let mut out = C::create();
-        let mut size = 0;
+        let mut count = 0;
 
         let err = loop {
             match self.parser.parse(input) {
@@ -84,18 +84,18 @@ impl<T, P: Parser<T>, C: Container<T>> Parser<C> for Repeated<T, P, C> {
                 Err(err) => break Some(err),
                 Ok(eaten) => {
                     eaten_len += eaten.at.len;
-                    size += 1;
+                    count += 1;
 
                     out.add(eaten.data);
 
                     if let Some(max) = self.max {
-                        if size > max {
+                        if count > max {
                             break None;
                         }
                     }
 
                     if let Some(exactly) = self.exactly {
-                        if size == exactly {
+                        if count == exactly {
                             break None;
                         }
                     }
@@ -104,9 +104,9 @@ impl<T, P: Parser<T>, C: Container<T>> Parser<C> for Repeated<T, P, C> {
         };
 
         if let Some(min) = self.min {
-            if size < min {
+            if count < min {
                 return Err(err
-                    .filter(|_| size == 0)
+                    .filter(|_| count == 0)
                     .unwrap_or_else(|| input.at().custom_err("Not enough repetitions")));
             }
         }

@@ -61,6 +61,15 @@ pub fn utf8() {
     parser.parse_str("e e").err().unwrap();
 }
 
+#[test]
+pub fn utf8_boundaries() {
+    let parser = char('é').repeated().at_least(1).collect_string();
+
+    let token = parser.parse_str("é").unwrap();
+
+    assert_eq!(token.at.len, 'é'.len_utf8());
+}
+
 #[allow(dead_code)]
 fn simple_debug<T>(debug: DebugType<'_, '_, T>) {
     match debug {
