@@ -36,7 +36,7 @@ impl Parser<()> for Whitespaces {
             input.inner().trim_start()
         };
 
-        let trimmed = input.inner().as_bytes().len() - trimmed.as_bytes().len();
+        let trimmed = input.inner().len() - trimmed.len();
 
         if self.multiple && trimmed == 0 {
             Err(input

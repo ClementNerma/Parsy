@@ -7,11 +7,7 @@ pub trait Parser<T> {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<T>;
 
     fn parse(&self, input: &mut ParserInput) -> PResult<T> {
-        let start = input.clone();
-
-        let result = self.parse_inner(input);
-
-        input.mirror_from(&start);
+        let result = self.parse_inner(&mut input.clone());
 
         let Ok(eaten) = result else { return result };
 

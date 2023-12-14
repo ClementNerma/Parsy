@@ -16,9 +16,13 @@ impl Parser<&'static str> for Just {
         let start = input.at();
 
         input
-            .try_eat(self.str.as_bytes().len())
-            .filter(|eaten| eaten.data.starts_with(self.str))
+            // Try to eat the string
+            .try_eat(self.str.len())
+            // Ensure it was correctly eaten
+            .filter(|eaten| eaten.data == self.str)
+            // Replace the token with the stored string (to get a 'static lifetime)
             .map(|eaten| eaten.replace(self.str))
+            // Otherwise, generate an error
             .ok_or_else(|| start.range(0).expected_str(self.str))
     }
 }

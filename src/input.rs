@@ -36,11 +36,6 @@ impl<'a> ParserInput<'a> {
         self.original
     }
 
-    pub fn mirror_from(&mut self, other: &ParserInput<'a>) {
-        self.str = other.str;
-        self.at = other.at;
-    }
-
     pub fn apply<T>(&mut self, from: &Eaten<T>) {
         // if cfg!(debug_assertions) {
         assert_eq!(
@@ -71,34 +66,14 @@ impl<'a> ParserInput<'a> {
         Some(self.eat(char.len_utf8(), char))
     }
 
-    pub fn try_eat(&mut self, len: usize) -> Option<Eaten<&str>> {
-        let count = self.str.chars().take(len).map(char::len_utf8).sum();
-        let str = &self.str[0..count];
-
-        if str.len() < len {
+    pub fn try_eat(&mut self, bytes: usize) -> Option<Eaten<&str>> {
+        if bytes > self.str.len() {
             return None;
         }
 
-        Some(self.eat(str.as_bytes().len(), str))
-    }
+        let str = &self.str[..bytes];
 
-    pub fn eat_at_most(&mut self, len: usize) -> Eaten<&str> {
-        let count = self.str.chars().take(len).map(char::len_utf8).sum();
-        let str = &self.str[0..count];
-
-        self.eat(str.as_bytes().len(), str)
-    }
-
-    pub fn eat_exact(&mut self, len: usize) -> Result<Eaten<&str>, usize> {
-        let count = self.str.chars().take(len).map(char::len_utf8).sum();
-
-        if count < len {
-            return Err(count);
-        }
-
-        let str = &self.str[0..count];
-
-        Ok(self.eat(str.as_bytes().len(), str))
+        Some(self.eat(str.len(), str))
     }
 
     pub fn extract(&self, range: CodeRange) -> &str {
