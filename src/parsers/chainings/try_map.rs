@@ -2,7 +2,9 @@ use std::{borrow::Cow, marker::PhantomData};
 
 use perfect_derive::perfect_derive;
 
-use crate::{Eaten, PResult, Parser, ParserInput};
+use crate::{
+    Eaten, PResult, Parser, ParserExpectation, ParserInput, ParsingError, ParsingErrorInner,
+};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct TryMap<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> {
@@ -30,9 +32,14 @@ impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> Parser<U> for TryMap<T, 
         (self.mapper)(data)
             .map(|data| Eaten::ate(at, data))
             .map_err(|err| {
-                at.start
-                    .custom_err("mapper returned an Err variant")
-                    .criticalize(Cow::Owned(err))
+                ParsingError::new(
+                    ParsingErrorInner::new(
+                        at.start,
+                        ParserExpectation::Custom("mapper returned an Err variant"),
+                    )
+                    .with_len(at.len),
+                )
+                .criticalize(Cow::Owned(err))
             })
     }
 }

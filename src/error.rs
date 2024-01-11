@@ -107,4 +107,9 @@ impl ParsingErrorInner {
     pub fn expected(&self) -> &ParserExpectation {
         &self.expected
     }
+
+    pub fn with_len(mut self, len: usize) -> Self {
+        self.len = len;
+        self
+    }
 }
