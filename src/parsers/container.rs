@@ -4,10 +4,6 @@ pub trait Container<T> {
     fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self;
 
     fn add(&mut self, value: T);
-    fn append(&mut self, values: &mut Vec<T>);
-    fn append_iter<I: IntoIterator<Item = T>>(&mut self, iter: I);
-
-    fn prepend(self, value: T) -> Self;
 }
 
 impl<T> Container<T> for Vec<T> {
@@ -26,20 +22,41 @@ impl<T> Container<T> for Vec<T> {
     fn add(&mut self, value: T) {
         Vec::push(self, value);
     }
+}
 
-    fn append(&mut self, values: &mut Vec<T>) {
-        Vec::append(self, values);
+impl Container<char> for String {
+    fn create() -> Self {
+        String::new()
     }
 
-    fn append_iter<I: IntoIterator<Item = T>>(&mut self, iter: I) {
-        Vec::extend(self, iter)
+    fn with_capacity(size: usize) -> Self {
+        String::with_capacity(size)
     }
 
-    fn prepend(self, value: T) -> Self {
-        let mut out = Vec::with_capacity(1 + self.len());
-        out.push(value);
-        out.extend(self);
-        out
+    fn from_iter<I: IntoIterator<Item = char>>(iter: I) -> Self {
+        iter.into_iter().collect()
+    }
+
+    fn add(&mut self, value: char) {
+        self.push(value)
+    }
+}
+
+impl Container<String> for String {
+    fn create() -> Self {
+        String::new()
+    }
+
+    fn with_capacity(size: usize) -> Self {
+        String::with_capacity(size)
+    }
+
+    fn from_iter<I: IntoIterator<Item = String>>(iter: I) -> Self {
+        iter.into_iter().collect()
+    }
+
+    fn add(&mut self, value: String) {
+        self.push_str(&value)
     }
 }
 
@@ -62,10 +79,4 @@ impl<T> Container<T> for NoAllocContainer {
     }
 
     fn add(&mut self, _: T) {}
-    fn append(&mut self, _: &mut Vec<T>) {}
-    fn append_iter<I: IntoIterator<Item = T>>(&mut self, _: I) {}
-
-    fn prepend(self, _: T) -> Self {
-        Self
-    }
 }
