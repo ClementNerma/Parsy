@@ -1,11 +1,9 @@
-# Parsy (WIP)
+# Parsy
 
-Still in early stages of development!
+A parsing combinator library, originally inspired by [`chumsky`](https://github.com/zesterer/chumsky).
 
-(**TODO**)
+It aims to provide a simple yet elegant way to combine small parsers to parse anything from small formats to [full-fledged programming languages](https://github.com/ClementNerma/ReShell).
 
-Parsy is a parser combinator library for Rust with an intuitive combinative API.
+_Tutorial still in writing_
 
-Its API is similar to Chumsky from which is got much inspiration.
-
-Compared to Nom, it will be intuitive to use for some people but is slower even without allocating (benchmarks to do).
+You can find examples in the [`examples`](examples/) and [`tests`](src/tests/) directories.
