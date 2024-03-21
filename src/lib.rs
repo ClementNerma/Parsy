@@ -14,6 +14,3 @@ pub use input::*;
 pub use parser::*;
 pub use parsers::*;
 pub use token::*;
-
-#[cfg(test)]
-mod tests;

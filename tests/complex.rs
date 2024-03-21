@@ -1,4 +1,4 @@
-use crate::{atoms::whitespace, chainings::DebugType, parser::Parser, parsers::*};
+use parsy::{atoms::whitespace, chainings::DebugType, parsers::*, Parser};
 
 #[test]
 pub fn complex_test() {
