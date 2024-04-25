@@ -59,7 +59,7 @@ macro_rules! _impl_choice {
                     }
                 )+
 
-                Err(input.at().custom_err("none of choices matched"))
+                Err(input.at().custom_err("none of choices matched", 0))
             }
         }
     }

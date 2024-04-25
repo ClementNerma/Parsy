@@ -73,7 +73,7 @@ impl<T, P: Parser<T>, C: Container<T>> Repeated<T, P, C> {
 impl<T, P: Parser<T>, C: Container<T>> Parser<C> for Repeated<T, P, C> {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<C> {
         let start = input.at();
-        let mut eaten_len = 0;
+        let mut ate = 0;
 
         let mut out = C::create();
         let mut count = 0;
@@ -83,7 +83,7 @@ impl<T, P: Parser<T>, C: Container<T>> Parser<C> for Repeated<T, P, C> {
                 Err(err) if err.is_critical() => return Err(err),
                 Err(err) => break Some(err),
                 Ok(eaten) => {
-                    eaten_len += eaten.at.len;
+                    ate += eaten.at.len;
                     count += 1;
 
                     out.add(eaten.data);
@@ -107,10 +107,10 @@ impl<T, P: Parser<T>, C: Container<T>> Parser<C> for Repeated<T, P, C> {
             if count < min {
                 return Err(err
                     .filter(|_| count == 0)
-                    .unwrap_or_else(|| input.at().custom_err("Not enough repetitions")));
+                    .unwrap_or_else(|| input.at().custom_err("Not enough repetitions", ate)));
             }
         }
 
-        Ok(Eaten::ate(start.range(eaten_len), out))
+        Ok(Eaten::ate(start.range(ate), out))
     }
 }

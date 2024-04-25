@@ -116,29 +116,32 @@ impl Location {
         })
     }
 
-    pub fn expected_char(self, expected: char) -> ParsingError {
+    pub fn expected_char(self, expected: char, len: usize) -> ParsingError {
         ParsingError::new(ParsingErrorInner::new(
             self,
             ParserExpectation::Char(expected),
+            len,
         ))
     }
 
-    pub fn expected_str(self, expected: &'static str) -> ParsingError {
+    pub fn expected_str(self, expected: &'static str, len: usize) -> ParsingError {
         ParsingError::new(ParsingErrorInner::new(
             self,
             ParserExpectation::Str(expected),
+            len,
         ))
     }
 
-    pub fn custom_err(self, message: &'static str) -> ParsingError {
+    pub fn custom_err(self, message: &'static str, len: usize) -> ParsingError {
         ParsingError::new(ParsingErrorInner::new(
             self,
             ParserExpectation::Custom(message),
+            len,
         ))
     }
 
     pub fn just_break(self) -> ParsingError {
-        ParsingError::new(ParsingErrorInner::new(self, ParserExpectation::Break))
+        ParsingError::new(ParsingErrorInner::new(self, ParserExpectation::Break, 0))
     }
 }
 

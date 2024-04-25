@@ -26,7 +26,10 @@ impl<T, P: Parser<T>> Parser<()> for Fail<T, P> {
         let start = input.at();
 
         match self.parser.parse(input) {
-            Ok(eaten) => Err(eaten.at.start.custom_err("Parser should not have matched")),
+            Ok(eaten) => Err(eaten
+                .at
+                .start
+                .custom_err("Parser should not have matched", eaten.at.len)),
             Err(err) => Err(if err.is_critical() {
                 err
             } else {

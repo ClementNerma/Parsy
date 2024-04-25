@@ -37,10 +37,13 @@ impl<T, P: Parser<T>, F: Fn(&T) -> bool> Parser<T> for Validate<T, P, F> {
             Ok(parsed)
         } else {
             // TODO: ranged error (from input start to parsed end)
-            Err(start.custom_err(match &self.err_msg {
-                Some(msg) => msg,
-                None => "validator failed",
-            }))
+            Err(start.custom_err(
+                match &self.err_msg {
+                    Some(msg) => msg,
+                    None => "validator failed",
+                },
+                parsed.at.len,
+            ))
         }
     }
 }

@@ -24,7 +24,7 @@ impl Parser<()> for Newline {
         } else if input_str.starts_with('\r') || input_str.starts_with('\n') {
             1
         } else {
-            return Err(input.at().custom_err("Expected at least one newline"));
+            return Err(input.at().custom_err("Expected at least one newline", 0));
         };
 
         Ok(Eaten::ate(input.range(trimmed), ()))

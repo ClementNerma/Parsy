@@ -22,7 +22,11 @@ impl<T, P: Parser<T>> Not<T, P> {
 impl<T, P: Parser<T>> Parser<()> for Not<T, P> {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<()> {
         match self.parser.parse(input) {
-            Ok(eaten) => Err(eaten.at.start.custom_err("Parser should not have matched")),
+            Ok(eaten) => Err(eaten
+                .at
+                .start
+                .custom_err("Parser should not have matched", eaten.at.len)),
+
             Err(_) => Ok(Eaten::ate(input.range(0), ())),
         }
     }

@@ -26,7 +26,7 @@ impl<T, P: Parser<T>> Parser<T> for AtomicErr<T, P> {
         self.parser.parse(input).map_err(|err| {
             err.inner()
                 .at()
-                .custom_err(self.message)
+                .custom_err(self.message, err.inner().len())
                 .with_atomic_error(self.message)
         })
     }

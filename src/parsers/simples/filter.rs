@@ -19,12 +19,12 @@ impl<F: Fn(char) -> bool> Parser<char> for Filter<F> {
 
         let c = input
             .try_eat_char()
-            .ok_or_else(|| start.custom_err("No character left"))?;
+            .ok_or_else(|| start.custom_err("No character left", 0))?;
 
         if (self.func)(c.data) {
             Ok(c)
         } else {
-            Err(start.custom_err("Character filter failed"))
+            Err(start.custom_err("Character filter failed", 1))
         }
     }
 }

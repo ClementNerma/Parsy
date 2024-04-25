@@ -84,12 +84,8 @@ pub struct ParsingErrorInner {
 }
 
 impl ParsingErrorInner {
-    pub fn new(at: Location, expected: ParserExpectation) -> Self {
-        Self {
-            at,
-            expected,
-            len: 1,
-        }
+    pub fn new(at: Location, expected: ParserExpectation, len: usize) -> Self {
+        Self { at, expected, len }
     }
 
     pub fn at(&self) -> Location {

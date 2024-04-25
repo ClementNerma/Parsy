@@ -22,7 +22,7 @@ impl<T, P: Parser<T>> Full<T, P> {
 impl<T, P: Parser<T>> Parser<T> for Full<T, P> {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
         if input.offset() > 0 {
-            return Err(input.at().custom_err("Expected start of input"));
+            return Err(input.at().custom_err("Expected start of input", 0));
         }
 
         let data = self.parser.parse(input)?;
@@ -32,7 +32,7 @@ impl<T, P: Parser<T>> Parser<T> for Full<T, P> {
                 .at
                 .start
                 .add(data.at.len)
-                .custom_err("Unexpected symbol"));
+                .custom_err("Unexpected symbol", data.at.len));
         }
 
         Ok(data)
