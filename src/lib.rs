@@ -9,8 +9,4 @@ mod token;
 
 pub mod parsers;
 
-pub use error::*;
-pub use input::*;
-pub use parser::*;
-pub use parsers::*;
-pub use token::*;
+pub use self::{error::*, input::*, parser::*, parsers::*, token::*};

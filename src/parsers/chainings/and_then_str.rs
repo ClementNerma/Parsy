@@ -7,14 +7,14 @@ use crate::{
 };
 
 #[perfect_derive(Debug, Clone, Copy)]
-pub struct TryMap<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> {
+pub struct AndThenStr<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> {
     parser: P,
     mapper: F,
     _t: PhantomData<T>,
     _u: PhantomData<U>,
 }
 
-impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> TryMap<T, P, U, F> {
+impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> AndThenStr<T, P, U, F> {
     pub fn new(parser: P, mapper: F) -> Self {
         Self {
             parser,
@@ -25,7 +25,7 @@ impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> TryMap<T, P, U, F> {
     }
 }
 
-impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> Parser<U> for TryMap<T, P, U, F> {
+impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> Parser<U> for AndThenStr<T, P, U, F> {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<U> {
         let Eaten { data, at } = self.parser.parse(input)?;
 

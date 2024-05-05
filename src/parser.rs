@@ -101,6 +101,13 @@ pub trait Parser<T> {
         AndThen::new(self, mapper)
     }
 
+    fn and_then_str<F: Fn(T) -> Result<U, String>, U>(self, mapper: F) -> AndThenStr<T, Self, U, F>
+    where
+        Self: Sized,
+    {
+        AndThenStr::new(self, mapper)
+    }
+
     fn spanned(self) -> Spanned<T, Self>
     where
         Self: Sized,

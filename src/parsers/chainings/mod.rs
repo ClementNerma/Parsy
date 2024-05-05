@@ -1,4 +1,5 @@
 mod and_then;
+mod and_then_str;
 mod atomic_err;
 mod critical;
 mod debug;
@@ -18,12 +19,12 @@ mod spanned;
 mod then;
 mod then_ignore;
 mod to;
-mod try_map;
 mod validate;
 mod validate_with_message;
 
 pub use self::{
     and_then::AndThen,
+    and_then_str::AndThenStr,
     atomic_err::AtomicErr,
     critical::Critical,
     debug::{DebugType, Debugging},
@@ -43,7 +44,6 @@ pub use self::{
     then::Then,
     then_ignore::ThenIgnore,
     to::To,
-    try_map::TryMap,
     validate::Validate,
     validate_with_message::ValidateWithMessage,
 };
