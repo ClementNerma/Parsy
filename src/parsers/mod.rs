@@ -8,12 +8,14 @@ pub mod simples;
 pub mod textuals;
 
 use crate::{parser::Parser, PResult, ParserInput};
-use combinators::*;
-use simples::*;
-use textuals::*;
 
-use self::late::Late;
-use self::recursive::{Recursive, RecursiveRef};
+use self::{
+    combinators::*,
+    late::Late,
+    recursive::{Recursive, RecursiveRef},
+    simples::*,
+    textuals::*,
+};
 
 pub fn start() -> Start {
     Start

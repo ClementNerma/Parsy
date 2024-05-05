@@ -94,13 +94,6 @@ pub trait Parser<T> {
         Map::new(self, mapper)
     }
 
-    fn try_map<F: Fn(T) -> Result<U, String>, U>(self, mapper: F) -> TryMap<T, Self, U, F>
-    where
-        Self: Sized,
-    {
-        TryMap::new(self, mapper)
-    }
-
     fn and_then<F: Fn(T) -> Result<U, ParsingError>, U>(self, mapper: F) -> AndThen<T, Self, U, F>
     where
         Self: Sized,
@@ -152,7 +145,7 @@ pub trait Parser<T> {
         Critical::new(self, Some(message))
     }
 
-    fn critical_expectation(self) -> Critical<T, Self>
+    fn critical_with_no_message(self) -> Critical<T, Self>
     where
         Self: Sized,
     {
@@ -261,6 +254,16 @@ pub trait Parser<T> {
         Self: Sized,
     {
         Validate::new(self, validator)
+    }
+
+    fn validate_with_message<F: Fn(&T) -> Option<&'static str>>(
+        self,
+        validator: F,
+    ) -> ValidateWithMessage<T, Self, F>
+    where
+        Self: Sized,
+    {
+        ValidateWithMessage::new(self, validator)
     }
 
     fn fail(self) -> Fail<T, Self>

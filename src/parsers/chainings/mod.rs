@@ -20,26 +20,30 @@ mod then_ignore;
 mod to;
 mod try_map;
 mod validate;
+mod validate_with_message;
 
-pub use and_then::AndThen;
-pub use atomic_err::AtomicErr;
-pub use critical::Critical;
-pub use debug::{DebugType, Debugging};
-pub use delimited_by::DelimitedBy;
-pub use fail::Fail;
-pub use flattened::Flattened;
-pub use followed_by::FollowedBy;
-pub use full::Full;
-pub use ignore_then::IgnoreThen;
-pub use map::Map;
-pub use not_followed_by::NotFollowedBy;
-pub use or_not::OrNot;
-pub use repeated::Repeated;
-pub use separated_by::SeparatedBy;
-pub use silenced::Silenced;
-pub use spanned::Spanned;
-pub use then::Then;
-pub use then_ignore::ThenIgnore;
-pub use to::To;
-pub use try_map::TryMap;
-pub use validate::Validate;
+pub use self::{
+    and_then::AndThen,
+    atomic_err::AtomicErr,
+    critical::Critical,
+    debug::{DebugType, Debugging},
+    delimited_by::DelimitedBy,
+    fail::Fail,
+    flattened::Flattened,
+    followed_by::FollowedBy,
+    full::Full,
+    ignore_then::IgnoreThen,
+    map::Map,
+    not_followed_by::NotFollowedBy,
+    or_not::OrNot,
+    repeated::Repeated,
+    separated_by::SeparatedBy,
+    silenced::Silenced,
+    spanned::Spanned,
+    then::Then,
+    then_ignore::ThenIgnore,
+    to::To,
+    try_map::TryMap,
+    validate::Validate,
+    validate_with_message::ValidateWithMessage,
+};
