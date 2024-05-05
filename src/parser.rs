@@ -263,16 +263,6 @@ pub trait Parser<T> {
         Validate::new(self, validator)
     }
 
-    fn validate_with_message<F: Fn(&T) -> Option<&'static str>>(
-        self,
-        validator: F,
-    ) -> ValidateWithMessage<T, Self, F>
-    where
-        Self: Sized,
-    {
-        ValidateWithMessage::new(self, validator)
-    }
-
     fn fail(self) -> Fail<T, Self>
     where
         Self: Sized,

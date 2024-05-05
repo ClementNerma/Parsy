@@ -20,7 +20,6 @@ mod then;
 mod then_ignore;
 mod to;
 mod validate;
-mod validate_with_message;
 
 pub use self::{
     and_then::AndThen,
@@ -45,5 +44,4 @@ pub use self::{
     then_ignore::ThenIgnore,
     to::To,
     validate::Validate,
-    validate_with_message::ValidateWithMessage,
 };
