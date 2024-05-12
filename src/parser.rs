@@ -263,13 +263,6 @@ pub trait Parser<T> {
         Validate::new(self, validator)
     }
 
-    fn fail(self) -> Fail<T, Self>
-    where
-        Self: Sized,
-    {
-        Fail::new(self)
-    }
-
     fn debug<F: for<'a, 'b> Fn(DebugType<'a, 'b, T>) + Clone>(
         self,
         debugger: F,

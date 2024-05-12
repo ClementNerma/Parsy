@@ -4,7 +4,6 @@ mod atomic_err;
 mod critical;
 mod debug;
 mod delimited_by;
-mod fail;
 mod flattened;
 mod followed_by;
 mod full;
@@ -28,7 +27,6 @@ pub use self::{
     critical::Critical,
     debug::{DebugType, Debugging},
     delimited_by::DelimitedBy,
-    fail::Fail,
     flattened::Flattened,
     followed_by::FollowedBy,
     full::Full,
