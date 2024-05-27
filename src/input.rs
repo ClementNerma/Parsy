@@ -1,6 +1,6 @@
 use crate::{CodeRange, Eaten, FileId, Location};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct ParserInput<'a> {
     str: &'a str,
     at: Location,

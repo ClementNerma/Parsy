@@ -7,8 +7,13 @@ pub trait Parser<T> {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<T>;
 
     fn parse(&self, input: &mut ParserInput) -> PResult<T> {
-        let result = self.parse_inner(&mut input.clone());
+        // "Clone" (copy) 'input'
+        let mut input_copy = *input;
 
+        let result = self.parse_inner(&mut input_copy);
+
+        // Only apply changes to input (cursor advance) if the parsing was successful
+        // Otherwise, keep the original intact (this is equivalent to rollbacking in case of error)
         result.map(|eaten| {
             input.apply(&eaten);
 
