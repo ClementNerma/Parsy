@@ -32,7 +32,7 @@ impl<T, P: Parser<T>> Parser<T> for Full<T, P> {
                 .at
                 .start
                 .add(data.at.len)
-                .custom_err("Unexpected symbol", data.at.len));
+                .custom_err("Unexpected symbol", 0));
         }
 
         Ok(data)
