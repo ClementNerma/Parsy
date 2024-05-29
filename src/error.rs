@@ -28,7 +28,7 @@ impl ParsingError {
         self.inner
     }
 
-    pub fn critical(&self) -> Option<&str> {
+    pub fn critical_message(&self) -> Option<&str> {
         self.critical.as_deref()
     }
 
