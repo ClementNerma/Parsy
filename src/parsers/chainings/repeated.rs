@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{container::Container, Eaten, PResult, Parser, ParserInput};
+use crate::{container::Container, Eaten, PResult, Parser, ParserInput, ParsingError};
 
 #[perfect_derive(Clone, Copy)]
 pub struct Repeated<T, P: Parser<T>, C: Container<T>> {
@@ -105,9 +105,9 @@ impl<T, P: Parser<T>, C: Container<T>> Parser<C> for Repeated<T, P, C> {
 
         if let Some(min) = self.min {
             if count < min {
-                return Err(err
-                    .filter(|_| count == 0)
-                    .unwrap_or_else(|| input.at().custom_err("Not enough repetitions", ate)));
+                return Err(err.filter(|_| count == 0).unwrap_or_else(|| {
+                    ParsingError::custom(input.at().range(ate), "Not enough repetitions")
+                }));
             }
         }
 

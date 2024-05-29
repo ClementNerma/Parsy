@@ -1,4 +1,4 @@
-use crate::{Eaten, PResult, Parser, ParserInput};
+use crate::{Eaten, PResult, Parser, ParserInput, ParsingError};
 
 #[derive(Clone, Copy)]
 pub struct End;
@@ -20,7 +20,10 @@ impl Parser<()> for End {
         if input.inner().is_empty() {
             Ok(Eaten::ate(input.range(0), ()))
         } else {
-            Err(input.at().custom_err("Expected end of input", 0))
+            Err(ParsingError::custom(
+                input.at().range(0),
+                "Expected end of input",
+            ))
         }
     }
 }

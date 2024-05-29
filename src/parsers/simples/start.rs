@@ -1,4 +1,4 @@
-use crate::{Eaten, PResult, Parser, ParserInput};
+use crate::{Eaten, PResult, Parser, ParserInput, ParsingError};
 
 #[derive(Clone, Copy)]
 pub struct Start;
@@ -20,7 +20,10 @@ impl Parser<()> for Start {
         if input.offset() == 0 {
             Ok(Eaten::ate(input.range(0), ()))
         } else {
-            Err(input.at().custom_err("Expected start of input", 0))
+            Err(ParsingError::custom(
+                input.at().range(0),
+                "Expected start of input",
+            ))
         }
     }
 }

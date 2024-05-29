@@ -1,9 +1,9 @@
-use crate::{CodeRange, Eaten, FileId, Location};
+use crate::{CodeLocation, CodeRange, Eaten, FileId};
 
 #[derive(Debug, Clone, Copy)]
 pub struct ParserInput<'a> {
     str: &'a str,
-    at: Location,
+    at: CodeLocation,
     original: &'a str,
 }
 
@@ -11,7 +11,7 @@ impl<'a> ParserInput<'a> {
     pub fn new(str: &'a str, file_id: FileId) -> Self {
         Self {
             str,
-            at: Location { file_id, offset: 0 },
+            at: CodeLocation { file_id, offset: 0 },
             original: str,
         }
     }
@@ -20,7 +20,7 @@ impl<'a> ParserInput<'a> {
         self.str
     }
 
-    pub fn at(&self) -> Location {
+    pub fn at(&self) -> CodeLocation {
         self.at
     }
 

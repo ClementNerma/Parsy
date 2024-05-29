@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{container::Container, Eaten, PResult, Parser, ParserInput};
+use crate::{container::Container, Eaten, PResult, Parser, ParserInput, ParsingError};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct SeparatedBy<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> {
@@ -120,9 +120,9 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> Parser<C>
 
         if let Some(min) = self.min {
             if size < min {
-                return Err(err
-                    .filter(|_| size == 0)
-                    .unwrap_or_else(|| input.at().custom_err("Not enough repetitions", ate)));
+                return Err(err.filter(|_| size == 0).unwrap_or_else(|| {
+                    ParsingError::custom(input.at().range(ate), "Not enough repetitions")
+                }));
             }
         }
 

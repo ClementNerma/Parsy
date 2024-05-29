@@ -1,4 +1,4 @@
-use crate::{Eaten, PResult, Parser, ParserInput};
+use crate::{Eaten, PResult, Parser, ParserInput, ParsingError};
 
 #[derive(Clone, Copy)]
 pub struct Whitespaces {
@@ -44,7 +44,10 @@ impl Parser<()> for Whitespaces {
         let trimmed = input_str.len() - trimmed.len();
 
         if self.at_least_one && trimmed == 0 {
-            Err(input.at().custom_err("Expected at least one whitespace", 0))
+            Err(ParsingError::custom(
+                input.at().range(0),
+                "Expected at least one whitespace",
+            ))
         } else {
             Ok(Eaten::ate(input.range(trimmed), ()))
         }

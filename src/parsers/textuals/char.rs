@@ -1,4 +1,4 @@
-use crate::{PResult, Parser, ParserInput};
+use crate::{PResult, Parser, ParserInput, ParsingError};
 
 #[derive(Clone, Copy)]
 pub struct Char {
@@ -17,12 +17,12 @@ impl Parser<char> for Char {
 
         let eaten = input
             .try_eat_char()
-            .ok_or_else(|| start.expected_char(self.char, 0))?;
+            .ok_or_else(|| ParsingError::expected_char(start.range(0), self.char))?;
 
         if eaten.data == self.char {
             Ok(eaten)
         } else {
-            Err(start.expected_char(self.char, 1))
+            Err(ParsingError::expected_char(start.range(1), self.char))
         }
     }
 }

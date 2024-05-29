@@ -1,4 +1,4 @@
-use crate::{Eaten, PResult, Parser, ParserInput};
+use crate::{Eaten, PResult, Parser, ParserInput, ParsingError};
 
 #[derive(Clone, Copy)]
 pub struct Newline;
@@ -24,7 +24,10 @@ impl Parser<()> for Newline {
         } else if input_str.starts_with('\r') || input_str.starts_with('\n') {
             1
         } else {
-            return Err(input.at().custom_err("Expected at least one newline", 0));
+            return Err(ParsingError::custom(
+                input.at().range(0),
+                "Expected at least one newline",
+            ));
         };
 
         Ok(Eaten::ate(input.range(trimmed), ()))

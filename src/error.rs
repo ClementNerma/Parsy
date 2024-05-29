@@ -1,6 +1,6 @@
 use std::{borrow::Cow, fmt};
 
-use crate::{Eaten, Location};
+use crate::{CodeLocation, CodeRange, Eaten};
 
 pub type PResult<T> = ::std::result::Result<Eaten<T>, ParsingError>;
 
@@ -52,6 +52,34 @@ impl ParsingError {
         self.atomic_error = Some(atomic_err);
         self
     }
+
+    pub fn expected_char(range: CodeRange, expected: char) -> ParsingError {
+        ParsingError::new(ParsingErrorInner::new(
+            range,
+            ParserExpectation::Char(expected),
+        ))
+    }
+
+    pub fn expected_str(range: CodeRange, expected: &'static str) -> ParsingError {
+        ParsingError::new(ParsingErrorInner::new(
+            range,
+            ParserExpectation::Str(expected),
+        ))
+    }
+
+    pub fn custom(range: CodeRange, message: &'static str) -> ParsingError {
+        ParsingError::new(ParsingErrorInner::new(
+            range,
+            ParserExpectation::Custom(message),
+        ))
+    }
+
+    pub fn just_break(loc: CodeLocation) -> ParsingError {
+        ParsingError::new(ParsingErrorInner::new(
+            loc.range(0),
+            ParserExpectation::Break,
+        ))
+    }
 }
 
 #[derive(Debug)]
@@ -78,34 +106,24 @@ impl fmt::Display for ParserExpectation {
 #[derive(Debug)]
 #[must_use]
 pub struct ParsingErrorInner {
-    at: Location,
-    len: usize,
+    at: CodeRange,
     expected: ParserExpectation,
 }
 
 impl ParsingErrorInner {
-    pub fn new(at: Location, expected: ParserExpectation, len: usize) -> Self {
-        Self { at, expected, len }
+    pub fn new(at: CodeRange, expected: ParserExpectation) -> Self {
+        Self { at, expected }
     }
 
-    pub fn at(&self) -> Location {
+    pub fn at(&self) -> CodeRange {
         self.at
     }
 
-    pub fn len(&self) -> usize {
-        self.len
-    }
-
     pub fn is_empty(&self) -> bool {
-        self.len == 0
+        self.at.len == 0
     }
 
     pub fn expected(&self) -> &ParserExpectation {
         &self.expected
-    }
-
-    pub fn with_len(mut self, len: usize) -> Self {
-        self.len = len;
-        self
     }
 }

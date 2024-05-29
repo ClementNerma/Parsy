@@ -2,9 +2,7 @@ use std::{borrow::Cow, marker::PhantomData};
 
 use perfect_derive::perfect_derive;
 
-use crate::{
-    Eaten, PResult, Parser, ParserExpectation, ParserInput, ParsingError, ParsingErrorInner,
-};
+use crate::{Eaten, PResult, Parser, ParserInput, ParsingError};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct AndThenStr<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> {
@@ -32,12 +30,8 @@ impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> Parser<U> for AndThenStr
         (self.mapper)(data)
             .map(|data| Eaten::ate(at, data))
             .map_err(|err| {
-                ParsingError::new(ParsingErrorInner::new(
-                    at.start,
-                    ParserExpectation::Custom("mapper returned an Err variant"),
-                    at.len,
-                ))
-                .criticalize(Cow::Owned(err))
+                ParsingError::custom(at, "mapper returned an Err variant")
+                    .criticalize(Cow::Owned(err))
             })
     }
 }

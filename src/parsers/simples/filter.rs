@@ -1,6 +1,6 @@
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput};
+use crate::{PResult, Parser, ParserInput, ParsingError};
 
 #[perfect_derive(Clone, Copy)]
 pub struct Filter<F: Fn(char) -> bool> {
@@ -19,12 +19,15 @@ impl<F: Fn(char) -> bool> Parser<char> for Filter<F> {
 
         let c = input
             .try_eat_char()
-            .ok_or_else(|| start.custom_err("No character left", 0))?;
+            .ok_or_else(|| ParsingError::custom(start.range(0), "No character left"))?;
 
         if (self.func)(c.data) {
             Ok(c)
         } else {
-            Err(start.custom_err("Character filter failed", 1))
+            Err(ParsingError::custom(
+                start.range(1),
+                "Character filter failed",
+            ))
         }
     }
 }

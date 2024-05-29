@@ -1,5 +1,3 @@
-use crate::{ParserExpectation, ParsingError, ParsingErrorInner};
-
 #[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Eaten<T> {
@@ -60,12 +58,12 @@ impl<T> Eaten<T> {
 
 #[derive(Clone, Copy, Hash, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct Location {
+pub struct CodeLocation {
     pub file_id: FileId,
     pub offset: usize,
 }
 
-impl Location {
+impl CodeLocation {
     #[must_use]
     #[allow(clippy::should_implement_trait)]
     pub fn add(self, offset: usize) -> Self {
@@ -115,34 +113,6 @@ impl Location {
             col,
         })
     }
-
-    pub fn expected_char(self, expected: char, len: usize) -> ParsingError {
-        ParsingError::new(ParsingErrorInner::new(
-            self,
-            ParserExpectation::Char(expected),
-            len,
-        ))
-    }
-
-    pub fn expected_str(self, expected: &'static str, len: usize) -> ParsingError {
-        ParsingError::new(ParsingErrorInner::new(
-            self,
-            ParserExpectation::Str(expected),
-            len,
-        ))
-    }
-
-    pub fn custom_err(self, message: &'static str, len: usize) -> ParsingError {
-        ParsingError::new(ParsingErrorInner::new(
-            self,
-            ParserExpectation::Custom(message),
-            len,
-        ))
-    }
-
-    pub fn just_break(self) -> ParsingError {
-        ParsingError::new(ParsingErrorInner::new(self, ParserExpectation::Break, 0))
-    }
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -154,7 +124,7 @@ pub struct LocationInString {
 #[derive(Debug, Clone, Copy)]
 pub struct LocationOutOfBoundsErr;
 
-impl std::fmt::Debug for Location {
+impl std::fmt::Debug for CodeLocation {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let Self { file_id, offset } = self;
         write!(f, "offset {offset} @ {file_id:?}")
@@ -164,12 +134,12 @@ impl std::fmt::Debug for Location {
 #[derive(Clone, Copy, Hash, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct CodeRange {
-    pub start: Location,
+    pub start: CodeLocation,
     pub len: usize, // In bytes
 }
 
 impl CodeRange {
-    pub fn new(start: Location, len: usize) -> Self {
+    pub fn new(start: CodeLocation, len: usize) -> Self {
         Self { start, len }
     }
 
@@ -196,7 +166,7 @@ impl CodeRange {
 impl std::fmt::Debug for CodeRange {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let Self { start, len } = self;
-        let Location { file_id, offset } = start;
+        let CodeLocation { file_id, offset } = start;
         write!(
             f,
             "offset {} to {} @ {file_id:?}",

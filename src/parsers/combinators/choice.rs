@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput};
+use crate::{PResult, Parser, ParserInput, ParsingError};
 
 #[perfect_derive(Clone, Copy)]
 pub struct Choice<T: IntoChoice<O>, O> {
@@ -59,7 +59,7 @@ macro_rules! _impl_choice {
                     }
                 )+
 
-                Err(input.at().custom_err("none of choices matched", 0))
+                Err(ParsingError::custom(input.at().range(0), "None of choices matched"))
             }
         }
     }

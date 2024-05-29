@@ -1,4 +1,4 @@
-use crate::{PResult, Parser, ParserInput};
+use crate::{PResult, Parser, ParserInput, ParsingError};
 
 #[derive(Clone, Copy)]
 pub struct Just {
@@ -19,7 +19,7 @@ impl Parser<&'static str> for Just {
             // Try to eat the string
             .try_eat(self.str.len())
             // Otherwise, generate an error
-            .ok_or_else(|| start.expected_str(self.str, 0))?;
+            .ok_or_else(|| ParsingError::expected_str(start.range(0), self.str))?;
 
         // Ensure it was correctly eaten
         if eaten.data == self.str {
@@ -27,7 +27,10 @@ impl Parser<&'static str> for Just {
             Ok(eaten.replace(self.str))
         } else {
             // Otherwise, generate an error
-            Err(start.expected_str(self.str, eaten.at.len))
+            Err(ParsingError::expected_str(
+                start.range(eaten.at.len),
+                self.str,
+            ))
         }
     }
 }

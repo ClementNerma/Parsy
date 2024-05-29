@@ -2,7 +2,7 @@ use std::{borrow::Cow, marker::PhantomData};
 
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput};
+use crate::{PResult, Parser, ParserInput, ParsingError};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Validate<T, P: Parser<T>, F: Fn(&T) -> bool> {
@@ -48,7 +48,7 @@ impl<T, P: Parser<T>, F: Fn(&T) -> bool> Parser<T> for Validate<T, P, F> {
                 None => "validator failed",
             };
 
-            let mut err = start.custom_err(msg, parsed.at.len);
+            let mut err = ParsingError::custom(start.range(parsed.at.len), msg);
 
             if self.critical {
                 err = err.criticalize(Cow::Borrowed(msg));
