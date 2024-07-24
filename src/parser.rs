@@ -122,7 +122,7 @@ pub trait Parser<T> {
         T: IntoIterator,
         C: FromIterator<T::Item>,
     {
-        self.map(|items| C::from_iter(items))
+        self.map(C::from_iter)
     }
 
     fn collect_string(self) -> StringCollected<T, Self>
