@@ -49,11 +49,11 @@ pub fn filter<F: Fn(char) -> bool>(func: F) -> Filter<F> {
     Filter::new(func)
 }
 
-pub fn choice<T: IntoChoice<O>, O>(parsers: T) -> Choice<T, O> {
+pub fn choice<O, T: IntoChoice<O>>(parsers: T) -> Choice<T, O> {
     Choice::new(parsers)
 }
 
-pub fn silent_choice<T: IntoSilentChoice<O>, O>(parsers: T) -> SilentChoice<T, O> {
+pub fn silent_choice<O, T: IntoSilentChoice<O>>(parsers: T) -> SilentChoice<T, O> {
     SilentChoice::new(parsers)
 }
 
