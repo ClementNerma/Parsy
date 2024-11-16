@@ -10,3 +10,8 @@ mod span;
 pub mod parsers;
 
 pub use self::{error::*, input::*, parser::*, parsers::*, span::*};
+
+#[cfg(feature = "error-reporting")]
+mod report;
+#[cfg(feature = "error-reporting")]
+pub use report::*;
