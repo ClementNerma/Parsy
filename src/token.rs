@@ -1,52 +1,52 @@
 #[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct Eaten<T> {
+pub struct Span<T> {
     pub at: CodeRange,
     pub data: T,
 }
 
-impl<T> Eaten<T> {
-    pub fn ate(at: CodeRange, data: T) -> Eaten<T> {
-        Eaten { at, data }
+impl<T> Span<T> {
+    pub fn ate(at: CodeRange, data: T) -> Span<T> {
+        Span { at, data }
     }
 
-    pub fn replace<U>(self, data: U) -> Eaten<U> {
-        Eaten { at: self.at, data }
+    pub fn replace<U>(self, data: U) -> Span<U> {
+        Span { at: self.at, data }
     }
 
     pub fn change_value(&mut self, data: T) {
         self.data = data;
     }
 
-    pub fn forge_here<U>(&self, data: U) -> Eaten<U> {
-        Eaten { at: self.at, data }
+    pub fn forge_here<U>(&self, data: U) -> Span<U> {
+        Span { at: self.at, data }
     }
 
-    pub fn map<U>(self, func: impl FnOnce(T) -> U) -> Eaten<U> {
-        Eaten {
+    pub fn map<U>(self, func: impl FnOnce(T) -> U) -> Span<U> {
+        Span {
             at: self.at,
             data: func(self.data),
         }
     }
 
-    pub fn map_ref<U>(&self, func: impl FnOnce(&T) -> U) -> Eaten<U> {
-        Eaten {
+    pub fn map_ref<U>(&self, func: impl FnOnce(&T) -> U) -> Span<U> {
+        Span {
             at: self.at,
             data: func(&self.data),
         }
     }
 
-    pub fn map_full<U>(self, func: impl FnOnce(Self) -> U) -> Eaten<U> {
-        Eaten {
+    pub fn map_full<U>(self, func: impl FnOnce(Self) -> U) -> Span<U> {
+        Span {
             at: self.at,
             data: func(self),
         }
     }
 
-    pub fn combine<U>(self, other: Eaten<U>) -> Eaten<(T, U)> {
+    pub fn combine<U>(self, other: Span<U>) -> Span<(T, U)> {
         assert_eq!(other.at.start, self.at.start.add(self.at.len));
 
-        Eaten {
+        Span {
             at: CodeRange {
                 start: self.at.start,
                 len: self.at.len + other.at.len,

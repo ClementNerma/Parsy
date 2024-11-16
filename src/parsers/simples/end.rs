@@ -1,4 +1,4 @@
-use crate::{Eaten, PResult, Parser, ParserInput, ParsingError};
+use crate::{Span, PResult, Parser, ParserInput, ParsingError};
 
 #[derive(Clone, Copy)]
 pub struct End;
@@ -18,7 +18,7 @@ impl Default for End {
 impl Parser<()> for End {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<()> {
         if input.inner().is_empty() {
-            Ok(Eaten::ate(input.range(0), ()))
+            Ok(Span::ate(input.range(0), ()))
         } else {
             Err(ParsingError::custom(
                 input.at().range(0),

@@ -1,4 +1,4 @@
-use crate::{Eaten, PResult, Parser, ParserInput, ParsingError};
+use crate::{Span, PResult, Parser, ParserInput, ParsingError};
 
 #[derive(Clone, Copy)]
 pub struct Whitespaces {
@@ -49,7 +49,7 @@ impl Parser<()> for Whitespaces {
                 "Expected at least one whitespace",
             ))
         } else {
-            Ok(Eaten::ate(input.range(trimmed), ()))
+            Ok(Span::ate(input.range(trimmed), ()))
         }
     }
 }

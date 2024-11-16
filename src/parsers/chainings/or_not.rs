@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{Eaten, PResult, Parser, ParserInput};
+use crate::{PResult, Parser, ParserInput, Span};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct OrNot<T, P: Parser<T>> {
@@ -24,9 +24,9 @@ impl<T, P: Parser<T>> Parser<Option<T>> for OrNot<T, P> {
         let start = input.at();
 
         match self.parser.parse(input) {
-            Ok(eaten) => Ok(eaten.map(Some)),
+            Ok(span) => Ok(span.map(Some)),
             Err(err) if err.is_critical() => Err(err),
-            Err(_) => Ok(Eaten::ate(start.range(0), None)),
+            Err(_) => Ok(Span::ate(start.range(0), None)),
         }
     }
 }

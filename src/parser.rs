@@ -14,7 +14,7 @@ pub trait Parser<T> {
 
         // Only apply changes to input (cursor advance) if the parsing was successful
         // Otherwise, keep the original intact (this is equivalent to rollbacking in case of error)
-        result.inspect(|eaten| input.apply(eaten))
+        result.inspect(|span| input.apply(span))
     }
 
     fn parse_str(&self, str: &str) -> PResult<T> {

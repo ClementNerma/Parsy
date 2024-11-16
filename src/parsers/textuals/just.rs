@@ -15,20 +15,20 @@ impl Parser<&'static str> for Just {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<&'static str> {
         let start = input.at();
 
-        let eaten = input
+        let span = input
             // Try to eat the string
             .try_eat(self.str.len())
             // Otherwise, generate an error
             .ok_or_else(|| ParsingError::expected_str(start.range(0), self.str))?;
 
-        // Ensure it was correctly eaten
-        if eaten.data == self.str {
+        // Ensure it was correctly parsed
+        if span.data == self.str {
             // If so, replace success data with the stored string to get a 'static lifetime
-            Ok(eaten.replace(self.str))
+            Ok(span.replace(self.str))
         } else {
             // Otherwise, generate an error
             Err(ParsingError::expected_str(
-                start.range(eaten.at.len),
+                start.range(span.at.len),
                 self.str,
             ))
         }

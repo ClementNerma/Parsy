@@ -1,4 +1,4 @@
-use crate::{CodeLocation, CodeRange, Eaten, FileId};
+use crate::{CodeLocation, CodeRange, FileId, Span};
 
 #[derive(Debug, Clone, Copy)]
 pub struct ParserInput<'a> {
@@ -36,22 +36,22 @@ impl<'a> ParserInput<'a> {
         self.original
     }
 
-    pub fn apply<T>(&mut self, from: &Eaten<T>) {
+    pub fn apply<T>(&mut self, from: &Span<T>) {
         assert_eq!(
             self.at, from.at.start,
-            "Provided eaten content does not start at the same position as the input"
+            "Provided span does not start at the same position as the input"
         );
 
         self.at = self.at.add(from.at.len);
         self.str = &self.str[from.at.len..];
     }
 
-    pub fn try_eat(&mut self, len: usize) -> Option<Eaten<&str>> {
+    pub fn try_eat(&mut self, len: usize) -> Option<Span<&str>> {
         if len > self.str.len() || !self.str.is_char_boundary(len) {
             return None;
         }
 
-        let ate = Eaten {
+        let ate = Span {
             at: self.range(len),
             data: &self.str[..len],
         };
@@ -62,7 +62,7 @@ impl<'a> ParserInput<'a> {
         Some(ate)
     }
 
-    pub fn try_eat_char(&mut self) -> Option<Eaten<char>> {
+    pub fn try_eat_char(&mut self) -> Option<Span<char>> {
         let char = self.str.chars().next()?;
 
         let ate = self.try_eat(char.len_utf8()).unwrap();

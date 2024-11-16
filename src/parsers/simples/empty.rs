@@ -1,4 +1,4 @@
-use crate::{Eaten, PResult, Parser, ParserInput};
+use crate::{Span, PResult, Parser, ParserInput};
 
 #[derive(Clone, Copy)]
 pub struct Empty;
@@ -17,6 +17,6 @@ impl Default for Empty {
 
 impl Parser<()> for Empty {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<()> {
-        Ok(Eaten::ate(input.range(0), ()))
+        Ok(Span::ate(input.range(0), ()))
     }
 }

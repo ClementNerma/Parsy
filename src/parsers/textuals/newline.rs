@@ -1,4 +1,4 @@
-use crate::{Eaten, PResult, Parser, ParserInput, ParsingError};
+use crate::{Span, PResult, Parser, ParserInput, ParsingError};
 
 #[derive(Clone, Copy)]
 pub struct Newline;
@@ -30,6 +30,6 @@ impl Parser<()> for Newline {
             ));
         };
 
-        Ok(Eaten::ate(input.range(trimmed), ()))
+        Ok(Span::ate(input.range(trimmed), ()))
     }
 }

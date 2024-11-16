@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{container::Container, Eaten, PResult, Parser, ParserInput, ParsingError};
+use crate::{container::Container, PResult, Parser, ParserInput, ParsingError, Span};
 
 #[perfect_derive(Clone, Copy)]
 pub struct Repeated<T, P: Parser<T>, C: Container<T>> {
@@ -82,11 +82,11 @@ impl<T, P: Parser<T>, C: Container<T>> Parser<C> for Repeated<T, P, C> {
             match self.parser.parse(input) {
                 Err(err) if err.is_critical() => return Err(err),
                 Err(err) => break Some(err),
-                Ok(eaten) => {
-                    ate += eaten.at.len;
+                Ok(span) => {
+                    ate += span.at.len;
                     count += 1;
 
-                    out.add(eaten.data);
+                    out.add(span.data);
 
                     if let Some(max) = self.max {
                         if count > max {
@@ -111,6 +111,6 @@ impl<T, P: Parser<T>, C: Container<T>> Parser<C> for Repeated<T, P, C> {
             }
         }
 
-        Ok(Eaten::ate(start.range(ate), out))
+        Ok(Span::ate(start.range(ate), out))
     }
 }

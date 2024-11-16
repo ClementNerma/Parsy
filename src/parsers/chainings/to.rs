@@ -23,8 +23,6 @@ impl<T, P: Parser<T>, U: Copy> To<T, P, U> {
 
 impl<T, P: Parser<T>, U: Copy> Parser<U> for To<T, P, U> {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<U> {
-        self.parser
-            .parse(input)
-            .map(|eaten| eaten.replace(self.data))
+        self.parser.parse(input).map(|span| span.replace(self.data))
     }
 }

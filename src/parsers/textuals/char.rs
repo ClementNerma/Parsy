@@ -15,12 +15,12 @@ impl Parser<char> for Char {
     fn parse_inner(&self, input: &mut ParserInput) -> PResult<char> {
         let start = input.at();
 
-        let eaten = input
+        let span = input
             .try_eat_char()
             .ok_or_else(|| ParsingError::expected_char(start.range(0), self.char))?;
 
-        if eaten.data == self.char {
-            Ok(eaten)
+        if span.data == self.char {
+            Ok(span)
         } else {
             Err(ParsingError::expected_char(start.range(1), self.char))
         }

@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{Eaten, PResult, Parser, ParserInput};
+use crate::{Span, PResult, Parser, ParserInput};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Spanned<T, P: Parser<T>> {
@@ -19,9 +19,9 @@ impl<T, P: Parser<T>> Spanned<T, P> {
     }
 }
 
-impl<T, P: Parser<T>> Parser<Eaten<T>> for Spanned<T, P> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<Eaten<T>> {
+impl<T, P: Parser<T>> Parser<Span<T>> for Spanned<T, P> {
+    fn parse_inner(&self, input: &mut ParserInput) -> PResult<Span<T>> {
         let parsed = self.parser.parse(input)?;
-        Ok(Eaten::ate(parsed.at, parsed))
+        Ok(Span::ate(parsed.at, parsed))
     }
 }
