@@ -102,11 +102,14 @@ pub trait Parser<T> {
         AndThen::new(self, mapper)
     }
 
-    fn and_then_str<U, F: Fn(T) -> Result<U, String>>(self, mapper: F) -> AndThenStr<T, Self, U, F>
+    fn and_then_or_str_err<U, F: Fn(T) -> Result<U, String>>(
+        self,
+        mapper: F,
+    ) -> AndThenOrStrErr<T, Self, U, F>
     where
         Self: Sized,
     {
-        AndThenStr::new(self, mapper)
+        AndThenOrStrErr::new(self, mapper)
     }
 
     fn spanned(self) -> Spanned<T, Self>

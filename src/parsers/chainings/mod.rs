@@ -22,7 +22,7 @@ mod validate;
 
 pub use self::{
     and_then::AndThen,
-    and_then_str::AndThenStr,
+    and_then_str::AndThenOrStrErr,
     atomic_err::AtomicErr,
     critical::Critical,
     debug::{DebugType, Debugging},
