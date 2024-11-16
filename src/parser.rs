@@ -88,21 +88,21 @@ pub trait Parser<T> {
         OrNot::new(self)
     }
 
-    fn map<F: Fn(T) -> U + Clone, U>(self, mapper: F) -> Map<T, Self, U, F>
+    fn map<U, F: Fn(T) -> U + Clone>(self, mapper: F) -> Map<T, Self, U, F>
     where
         Self: Sized,
     {
         Map::new(self, mapper)
     }
 
-    fn and_then<F: Fn(T) -> Result<U, ParsingError>, U>(self, mapper: F) -> AndThen<T, Self, U, F>
+    fn and_then<U, F: Fn(T) -> Result<U, ParsingError>>(self, mapper: F) -> AndThen<T, Self, U, F>
     where
         Self: Sized,
     {
         AndThen::new(self, mapper)
     }
 
-    fn and_then_str<F: Fn(T) -> Result<U, String>, U>(self, mapper: F) -> AndThenStr<T, Self, U, F>
+    fn and_then_str<U, F: Fn(T) -> Result<U, String>>(self, mapper: F) -> AndThenStr<T, Self, U, F>
     where
         Self: Sized,
     {
