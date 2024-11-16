@@ -5,8 +5,8 @@
 mod error;
 mod input;
 mod parser;
-mod token;
+mod span;
 
 pub mod parsers;
 
-pub use self::{error::*, input::*, parser::*, parsers::*, token::*};
+pub use self::{error::*, input::*, parser::*, parsers::*, span::*};
