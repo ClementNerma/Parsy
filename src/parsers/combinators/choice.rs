@@ -7,14 +7,14 @@ use crate::{PResult, Parser, ParserInput, ParsingError};
 #[perfect_derive(Clone, Copy)]
 pub struct Choice<T: IntoChoice<O>, O> {
     parsers: T,
-    _o: PhantomData<O>,
+    _p: PhantomData<O>,
 }
 
 impl<T: IntoChoice<O>, O> Choice<T, O> {
     pub fn new(parsers: T) -> Self {
         Self {
             parsers,
-            _o: PhantomData,
+            _p: PhantomData,
         }
     }
 }
@@ -48,7 +48,7 @@ macro_rules! _impl_choice {
                 // let mut errors = vec![];
 
                 #[allow(non_snake_case)]
-                let Choice { parsers: ($($X,)+), _o: _ } = &self;
+                let Choice { parsers: ($($X,)+), _p: _ } = &self;
 
                 $(
                     // TODO: "parse_inner" instead?

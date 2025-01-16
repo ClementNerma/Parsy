@@ -2,14 +2,13 @@ use std::{borrow::Cow, marker::PhantomData};
 
 use perfect_derive::perfect_derive;
 
-use crate::{Span, PResult, Parser, ParserInput, ParsingError};
+use crate::{PResult, Parser, ParserInput, ParsingError, Span};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct AndThenOrStrErr<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> {
     parser: P,
     mapper: F,
-    _t: PhantomData<T>,
-    _u: PhantomData<U>,
+    _p: PhantomData<(T, U)>,
 }
 
 impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> AndThenOrStrErr<T, P, U, F> {
@@ -17,8 +16,7 @@ impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> AndThenOrStrErr<T, P, U,
         Self {
             parser,
             mapper,
-            _t: PhantomData,
-            _u: PhantomData,
+            _p: PhantomData,
         }
     }
 }

@@ -7,14 +7,14 @@ use crate::{PResult, Parser, ParserInput, ParsingError};
 #[perfect_derive(Clone, Copy)]
 pub struct SilentChoice<T: IntoSilentChoice<Outputs>, Outputs> {
     parsers: T,
-    _o: PhantomData<Outputs>,
+    _p: PhantomData<Outputs>,
 }
 
 impl<T: IntoSilentChoice<Outputs>, Outputs> SilentChoice<T, Outputs> {
     pub fn new(parsers: T) -> Self {
         Self {
             parsers,
-            _o: PhantomData,
+            _p: PhantomData,
         }
     }
 }
@@ -43,7 +43,7 @@ macro_rules! _impl_silent_choice {
         impl<$($X: Parser<$Xo>, $Xo),+> Parser<()> for SilentChoice<($($X,)+), ($($Xo,)+)> {
             fn parse_inner(&self, input: &mut ParserInput) -> PResult<()> {
                 #[allow(non_snake_case)]
-                let SilentChoice { parsers: ($($X,)+), _o: _ } = &self;
+                let SilentChoice { parsers: ($($X,)+), _p: _ } = &self;
 
                 // let mut errors = vec![];
 

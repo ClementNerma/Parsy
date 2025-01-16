@@ -8,7 +8,7 @@ use crate::{PResult, Parser, ParserInput, ParsingError};
 pub struct AtomicErr<T, P: Parser<T>> {
     parser: P,
     message: &'static str,
-    _t: PhantomData<T>,
+    _p: PhantomData<T>,
 }
 
 impl<T, P: Parser<T>> AtomicErr<T, P> {
@@ -16,7 +16,7 @@ impl<T, P: Parser<T>> AtomicErr<T, P> {
         Self {
             parser,
             message,
-            _t: PhantomData,
+            _p: PhantomData,
         }
     }
 }

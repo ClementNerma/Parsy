@@ -10,7 +10,7 @@ pub struct Validate<T, P: Parser<T>, F: Fn(&T) -> bool> {
     validator: F,
     err_msg: Option<&'static str>,
     critical: bool,
-    _t: PhantomData<T>,
+    _p: PhantomData<T>,
 }
 
 impl<T, P: Parser<T>, F: Fn(&T) -> bool> Validate<T, P, F> {
@@ -20,7 +20,7 @@ impl<T, P: Parser<T>, F: Fn(&T) -> bool> Validate<T, P, F> {
             validator,
             err_msg: None,
             critical: false,
-            _t: PhantomData,
+            _p: PhantomData,
         }
     }
 

@@ -8,8 +8,7 @@ use crate::{PResult, Parser, ParserInput, Span};
 pub struct MapStr<F, FP: Parser<F>, O, OF: Fn(&str) -> O + Clone> {
     parser: FP,
     mapper: OF,
-    _t: PhantomData<F>,
-    _o: PhantomData<O>,
+    _p: PhantomData<(F, O)>,
 }
 
 impl<F, FP: Parser<F>, O, OF: Fn(&str) -> O + Clone> MapStr<F, FP, O, OF> {
@@ -17,8 +16,7 @@ impl<F, FP: Parser<F>, O, OF: Fn(&str) -> O + Clone> MapStr<F, FP, O, OF> {
         Self {
             parser,
             mapper,
-            _t: PhantomData,
-            _o: PhantomData,
+            _p: PhantomData,
         }
     }
 }

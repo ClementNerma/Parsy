@@ -9,9 +9,7 @@ pub struct DelimitedBy<L, LP: Parser<L>, M, MP: Parser<M>, R, RP: Parser<R>> {
     left: LP,
     middle: MP,
     right: RP,
-    _l: PhantomData<L>,
-    _m: PhantomData<M>,
-    _r: PhantomData<R>,
+    _p: PhantomData<(L, M, R)>,
 }
 
 impl<L, LP: Parser<L>, M, MP: Parser<M>, R, RP: Parser<R>> DelimitedBy<L, LP, M, MP, R, RP> {
@@ -20,9 +18,7 @@ impl<L, LP: Parser<L>, M, MP: Parser<M>, R, RP: Parser<R>> DelimitedBy<L, LP, M,
             left,
             middle,
             right,
-            _l: PhantomData,
-            _m: PhantomData,
-            _r: PhantomData,
+            _p: PhantomData,
         }
     }
 }

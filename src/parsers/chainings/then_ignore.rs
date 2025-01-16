@@ -8,8 +8,7 @@ use crate::{PResult, Parser, ParserInput};
 pub struct ThenIgnore<F, FP: Parser<F>, O, OP: Parser<O>> {
     from: FP,
     to: OP,
-    _f: PhantomData<F>,
-    _o: PhantomData<O>,
+    _p: PhantomData<(F, O)>,
 }
 
 impl<F, FP: Parser<F>, O, OP: Parser<O>> ThenIgnore<F, FP, O, OP> {
@@ -17,8 +16,7 @@ impl<F, FP: Parser<F>, O, OP: Parser<O>> ThenIgnore<F, FP, O, OP> {
         Self {
             from,
             to,
-            _f: PhantomData,
-            _o: PhantomData,
+            _p: PhantomData,
         }
     }
 }

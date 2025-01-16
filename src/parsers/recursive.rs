@@ -7,7 +7,7 @@ use crate::{PResult, Parser, ParserInput};
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Recursive<T> {
     parser: RecursiveRef<T>,
-    _t: PhantomData<T>,
+    _p: PhantomData<T>,
 }
 
 impl<T> Recursive<T> {
@@ -20,7 +20,7 @@ impl<T> Recursive<T> {
 
         Self {
             parser: rf,
-            _t: PhantomData,
+            _p: PhantomData,
         }
     }
 
@@ -36,7 +36,7 @@ impl<T> Recursive<T> {
         (
             Self {
                 parser: rf,
-                _t: PhantomData,
+                _p: PhantomData,
             },
             ret,
         )

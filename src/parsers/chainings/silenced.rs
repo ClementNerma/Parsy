@@ -7,14 +7,14 @@ use crate::{PResult, Parser, ParserInput};
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Silenced<T, P: Parser<T>> {
     parser: P,
-    _t: PhantomData<T>,
+    _p: PhantomData<T>,
 }
 
 impl<T, P: Parser<T>> Silenced<T, P> {
     pub fn new(parser: P) -> Self {
         Self {
             parser,
-            _t: PhantomData,
+            _p: PhantomData,
         }
     }
 }

@@ -10,8 +10,7 @@ pub struct Repeated<T, P: Parser<T>, C: Container<T>> {
     min: Option<usize>,
     max: Option<usize>,
     exactly: Option<usize>,
-    _p: PhantomData<T>,
-    _c: PhantomData<C>,
+    _p: PhantomData<(T, C)>,
 }
 
 impl<T, P: Parser<T>, C: Container<T>> Repeated<T, P, C> {
@@ -22,7 +21,6 @@ impl<T, P: Parser<T>, C: Container<T>> Repeated<T, P, C> {
             max: None,
             exactly: None,
             _p: PhantomData,
-            _c: PhantomData,
         }
     }
 

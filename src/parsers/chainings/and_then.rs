@@ -2,14 +2,13 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{Span, PResult, Parser, ParserInput, ParsingError};
+use crate::{PResult, Parser, ParserInput, ParsingError, Span};
 
 #[perfect_derive(Clone, Copy)]
 pub struct AndThen<T, P: Parser<T>, U, F: Fn(T) -> Result<U, ParsingError>> {
     parser: P,
     mapper: F,
-    _t: PhantomData<T>,
-    _u: PhantomData<U>,
+    _p: PhantomData<(T, U)>,
 }
 
 impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, ParsingError>> AndThen<T, P, U, F> {
@@ -17,8 +16,7 @@ impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, ParsingError>> AndThen<T, P, U, F
         Self {
             parser,
             mapper,
-            _t: PhantomData,
-            _u: PhantomData,
+            _p: PhantomData,
         }
     }
 }

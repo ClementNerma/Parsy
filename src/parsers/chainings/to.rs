@@ -8,7 +8,7 @@ use crate::{PResult, Parser, ParserInput};
 pub struct To<T, P: Parser<T>, U: Copy> {
     parser: P,
     data: U,
-    _t: PhantomData<T>,
+    _p: PhantomData<T>,
 }
 
 impl<T, P: Parser<T>, U: Copy> To<T, P, U> {
@@ -16,7 +16,7 @@ impl<T, P: Parser<T>, U: Copy> To<T, P, U> {
         Self {
             parser,
             data,
-            _t: PhantomData,
+            _p: PhantomData,
         }
     }
 }

@@ -8,8 +8,7 @@ use crate::{PResult, Parser, ParserInput, ParsingError};
 pub struct NotFollowedBy<F, FP: Parser<F>, O, OP: Parser<O>> {
     parser: FP,
     following: OP,
-    _f: PhantomData<F>,
-    _o: PhantomData<O>,
+    _p: PhantomData<(F, O)>,
 }
 
 impl<F, FP: Parser<F>, O, OP: Parser<O>> NotFollowedBy<F, FP, O, OP> {
@@ -17,8 +16,7 @@ impl<F, FP: Parser<F>, O, OP: Parser<O>> NotFollowedBy<F, FP, O, OP> {
         Self {
             parser,
             following,
-            _f: PhantomData,
-            _o: PhantomData,
+            _p: PhantomData,
         }
     }
 }

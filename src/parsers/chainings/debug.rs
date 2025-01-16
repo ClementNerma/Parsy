@@ -14,7 +14,7 @@ pub enum DebugType<'a, 'b, T> {
 pub struct Debugging<T, P: Parser<T>, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>)> {
     parser: P,
     debugger: F,
-    _t: PhantomData<T>,
+    _p: PhantomData<T>,
 }
 
 impl<T, P: Parser<T>, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>)> Debugging<T, P, F> {
@@ -22,7 +22,7 @@ impl<T, P: Parser<T>, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>)> Debugging<T, P, F
         Self {
             parser,
             debugger,
-            _t: PhantomData,
+            _p: PhantomData,
         }
     }
 }

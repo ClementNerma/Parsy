@@ -8,8 +8,7 @@ use crate::{PResult, Parser, ParserInput};
 pub struct Padded<T, TP: Parser<T>, P, PP: Parser<P>> {
     middle: TP,
     padding: PP,
-    _m: PhantomData<T>,
-    _p: PhantomData<P>,
+    _p: PhantomData<(T, P)>,
 }
 
 impl<T, TP: Parser<T>, P, PP: Parser<P>> Padded<T, TP, P, PP> {
@@ -17,7 +16,6 @@ impl<T, TP: Parser<T>, P, PP: Parser<P>> Padded<T, TP, P, PP> {
         Self {
             middle,
             padding,
-            _m: PhantomData,
             _p: PhantomData,
         }
     }

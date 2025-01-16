@@ -9,7 +9,7 @@ pub struct Critical<T, P: Parser<T>> {
     parser: P,
     message: Option<&'static str>,
     unexpected_eof_msg: bool,
-    _t: PhantomData<T>,
+    _p: PhantomData<T>,
 }
 
 impl<T, P: Parser<T>> Critical<T, P> {
@@ -18,7 +18,7 @@ impl<T, P: Parser<T>> Critical<T, P> {
             parser,
             message,
             unexpected_eof_msg: true,
-            _t: PhantomData,
+            _p: PhantomData,
         }
     }
 

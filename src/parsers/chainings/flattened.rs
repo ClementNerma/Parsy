@@ -13,9 +13,7 @@ pub struct Flattened<
     C: Container<T>,
 > {
     parser: P,
-    _i: PhantomData<I>,
-    _t: PhantomData<T>,
-    _c: PhantomData<C>,
+    _p: PhantomData<(I, T, C)>,
 }
 
 impl<T, S: IntoIterator<Item = T>, I: IntoIterator<Item = S>, P: Parser<I>, C: Container<T>>
@@ -24,9 +22,7 @@ impl<T, S: IntoIterator<Item = T>, I: IntoIterator<Item = S>, P: Parser<I>, C: C
     pub fn new(parser: P) -> Self {
         Self {
             parser,
-            _i: PhantomData,
-            _t: PhantomData,
-            _c: PhantomData,
+            _p: PhantomData,
         }
     }
 }
