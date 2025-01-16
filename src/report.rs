@@ -47,7 +47,7 @@ impl<'a, 'b, 'c> ErrorReport<'a, 'b, 'c> {
     }
 }
 
-impl<'a, 'b, 'c> std::fmt::Display for ErrorReport<'a, 'b, 'c> {
+impl std::fmt::Display for ErrorReport<'_, '_, '_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let ErrorReport {
             source,
