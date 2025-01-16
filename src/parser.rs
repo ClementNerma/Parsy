@@ -95,6 +95,13 @@ pub trait Parser<T> {
         Map::new(self, mapper)
     }
 
+    fn map_str<U, F: Fn(&str) -> U + Clone>(self, mapper: F) -> MapStr<T, Self, U, F>
+    where
+        Self: Sized,
+    {
+        MapStr::new(self, mapper)
+    }
+
     fn and_then<U, F: Fn(T) -> Result<U, ParsingError>>(self, mapper: F) -> AndThen<T, Self, U, F>
     where
         Self: Sized,

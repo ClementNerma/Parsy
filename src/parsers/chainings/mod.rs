@@ -9,6 +9,7 @@ mod followed_by;
 mod full;
 mod ignore_then;
 mod map;
+mod map_str;
 mod not_followed_by;
 mod or_not;
 mod repeated;
@@ -32,6 +33,7 @@ pub use self::{
     full::Full,
     ignore_then::IgnoreThen,
     map::Map,
+    map_str::MapStr,
     not_followed_by::NotFollowedBy,
     or_not::OrNot,
     repeated::Repeated,
