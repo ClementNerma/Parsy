@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{ParserResult, Parser, ParserInput, ParsingError};
+use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct AtomicErr<T, P: Parser<T>> {

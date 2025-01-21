@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{ParserResult, Parser, ParserInput};
+use crate::{Parser, ParserInput, ParserResult};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Map<F, FP: Parser<F>, O, OF: Fn(F) -> O + Clone> {

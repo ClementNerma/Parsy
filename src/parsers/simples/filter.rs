@@ -1,6 +1,6 @@
 use perfect_derive::perfect_derive;
 
-use crate::{ParserResult, Parser, ParserInput, ParsingError};
+use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
 #[perfect_derive(Clone, Copy)]
 pub struct Filter<F: Fn(char) -> bool> {

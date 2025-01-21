@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{ParserResult, Parser, ParserInput, Span};
+use crate::{Parser, ParserInput, ParserResult, Span};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct OrNot<T, P: Parser<T>> {

@@ -1,4 +1,4 @@
-use crate::{ParserResult, Parser, ParserInput, ParsingError};
+use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
 #[derive(Clone, Copy)]
 pub struct Just {

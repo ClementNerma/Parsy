@@ -2,7 +2,7 @@ use std::{cell::RefCell, rc::Rc};
 
 use perfect_derive::perfect_derive;
 
-use crate::{ParserResult, Parser, ParserInput};
+use crate::{Parser, ParserInput, ParserResult};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Late<T> {

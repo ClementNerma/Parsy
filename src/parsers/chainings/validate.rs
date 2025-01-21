@@ -2,7 +2,7 @@ use std::{borrow::Cow, marker::PhantomData};
 
 use perfect_derive::perfect_derive;
 
-use crate::{ParserResult, Parser, ParserInput, ParsingError};
+use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Validate<T, P: Parser<T>, F: Fn(&T) -> bool> {

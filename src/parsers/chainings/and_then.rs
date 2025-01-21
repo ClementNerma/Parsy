@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{ParserResult, Parser, ParserInput, ParsingError, Span};
+use crate::{Parser, ParserInput, ParserResult, ParsingError, Span};
 
 #[perfect_derive(Clone, Copy)]
 pub struct AndThen<T, P: Parser<T>, U, F: Fn(T) -> Result<U, ParsingError>> {

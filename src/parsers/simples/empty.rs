@@ -1,4 +1,4 @@
-use crate::{Span, ParserResult, Parser, ParserInput};
+use crate::{Parser, ParserInput, ParserResult, Span};
 
 #[derive(Clone, Copy)]
 pub struct Empty;

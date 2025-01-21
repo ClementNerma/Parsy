@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use crate::{ParserResult, Parser, ParserInput, ParsingError};
+use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
 pub struct OneOfChars {
     set: HashSet<char>,

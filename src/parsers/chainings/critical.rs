@@ -2,7 +2,7 @@ use std::{borrow::Cow, marker::PhantomData};
 
 use perfect_derive::perfect_derive;
 
-use crate::{ParserResult, Parser, ParserInput};
+use crate::{Parser, ParserInput, ParserResult};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Critical<T, P: Parser<T>> {

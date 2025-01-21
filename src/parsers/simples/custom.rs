@@ -1,6 +1,6 @@
 use perfect_derive::perfect_derive;
 
-use crate::{ParserResult, Parser, ParserInput};
+use crate::{Parser, ParserInput, ParserResult};
 
 #[perfect_derive(Clone, Copy)]
 pub struct Custom<F: Fn(&mut ParserInput) -> ParserResult<O>, O> {

@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{container::Container, ParserResult, Parser, ParserInput, ParsingError, Span};
+use crate::{container::Container, Parser, ParserInput, ParserResult, ParsingError, Span};
 
 #[perfect_derive(Clone, Copy)]
 pub struct Repeated<T, P: Parser<T>, C: Container<T>> {
