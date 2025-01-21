@@ -12,10 +12,6 @@ pub fn digits(radix: u32) -> impl Parser<NoAllocContainer> + Copy {
     digit(radix).repeated().at_least(1)
 }
 
-pub fn digits_vec<O>(radix: u32) -> impl Parser<Vec<char>> + Copy {
-    digit(radix).repeated_vec().at_least(1)
-}
-
 pub fn alphabetic() -> impl Parser<char> + Copy {
     filter(|c| c.is_alphabetic())
 }
