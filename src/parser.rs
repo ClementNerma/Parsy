@@ -142,13 +142,6 @@ pub trait Parser<T> {
         StringCollected::new(self)
     }
 
-    fn collect_string_with_data(self) -> StringCollectedWithData<T, Self>
-    where
-        Self: Sized,
-    {
-        StringCollectedWithData::new(self)
-    }
-
     fn atomic_err(self, message: &'static str) -> AtomicErr<T, Self>
     where
         Self: Sized,
