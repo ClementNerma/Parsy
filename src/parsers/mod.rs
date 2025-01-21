@@ -7,6 +7,8 @@ pub mod recursive;
 pub mod simples;
 pub mod textuals;
 
+use std::collections::HashSet;
+
 use crate::{parser::Parser, PResult, ParserInput};
 
 use self::{
@@ -39,6 +41,10 @@ pub fn newline() -> Newline {
 
 pub fn char(char: char) -> Char {
     Char::new(char)
+}
+
+pub fn one_of_chars(set: HashSet<char>) -> OneOfChars {
+    OneOfChars::new(set)
 }
 
 pub fn just(str: &'static str) -> Just {
