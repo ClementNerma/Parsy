@@ -26,7 +26,7 @@ fn parser() -> impl Parser<Program> {
         char(']').to(Instruction::EndLoop),
     ));
 
-    instruction.repeated_vec().full().map(Program)
+    instruction.repeated_into_vec().full().map(Program)
 }
 
 #[derive(Debug)]

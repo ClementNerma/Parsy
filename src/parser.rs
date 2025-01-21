@@ -28,13 +28,13 @@ pub trait Parser<T> {
     ///
     /// Will use [`FileId::None`] as the source
     fn parse_str(&self, str: &str) -> ParserResult<T> {
-        self.parse_str_as_file(str, FileId::None)
+        self.parse_str_with_file_id(str, FileId::None)
     }
 
     /// Parse a string as a file
     ///
     /// Will use the provided file ID
-    fn parse_str_as_file(&self, str: &str, file_id: FileId) -> ParserResult<T> {
+    fn parse_str_with_file_id(&self, str: &str, file_id: FileId) -> ParserResult<T> {
         self.parse(&mut ParserInput::new(str, file_id))
     }
 
@@ -82,7 +82,7 @@ pub trait Parser<T> {
 
     /// Parse as many times as possible, until the parser eventually fails
     ///
-    /// This will not allocate. To get the results directly in a [`Vec`], see [`Parser::repeated_vec`]
+    /// This will not allocate. To get the results directly in a [`Vec`], see [`Parser::repeated_into_vec`]
     fn repeated(self) -> Repeated<T, Self, NoAllocContainer>
     where
         Self: Sized,
@@ -93,8 +93,8 @@ pub trait Parser<T> {
     /// Parse as many times as possible, until the parser eventually fails
     ///
     /// All the parsed values will be put in a [`Vec`].
-    /// To use another container, see [`Parser::repeated_custom`]
-    fn repeated_vec(self) -> Repeated<T, Self, Vec<T>>
+    /// To use another container, see [`Parser::repeated_into_container`]
+    fn repeated_into_vec(self) -> Repeated<T, Self, Vec<T>>
     where
         Self: Sized,
     {
@@ -105,7 +105,7 @@ pub trait Parser<T> {
     ///
     /// All the parsed values will be forwarded to the provided [`Container`] type.
     /// The container will then be returned.
-    fn repeated_custom<C: Container<T>>(self) -> Repeated<T, Self, C>
+    fn repeated_into_container<C: Container<T>>(self) -> Repeated<T, Self, C>
     where
         Self: Sized,
     {
@@ -143,7 +143,7 @@ pub trait Parser<T> {
 
     /// Transform and validate the parsed value using the provided function
     ///
-    /// If you want to only return an error message, see [`Parser::and_then_or_str_err`]
+    /// If you want to only return an error message, see [`Parser::and_then_or_str`]
     fn and_then<U, F: Fn(T) -> Result<U, ParsingError>>(self, mapper: F) -> AndThen<T, Self, U, F>
     where
         Self: Sized,
@@ -152,7 +152,7 @@ pub trait Parser<T> {
     }
 
     /// Transform and validate the parsed value using the provided function
-    fn and_then_or_str_err<U, F: Fn(T) -> Result<U, String>>(
+    fn and_then_or_str<U, F: Fn(T) -> Result<U, String>>(
         self,
         mapper: F,
     ) -> AndThenOrStrErr<T, Self, U, F>
@@ -212,7 +212,7 @@ pub trait Parser<T> {
     /// Mark the parser as critical
     ///
     /// In case of failure, the whole chain of parsing will fail with a default message
-    fn critical_with_no_message(self) -> Critical<T, Self>
+    fn critical_auto_msg(self) -> Critical<T, Self>
     where
         Self: Sized,
     {
@@ -264,8 +264,8 @@ pub trait Parser<T> {
     /// Repeat the parser with the required provided separator between each repetition
     ///
     /// All results are collected into a [`Vec`].
-    /// To use a custom container, see [`Parser::separated_by_custom`]
-    fn separated_by<S, P: Parser<S>>(self, sep: P) -> SeparatedBy<T, Self, S, P, Vec<T>>
+    /// To use a custom container, see [`Parser::separated_by_into_container`]
+    fn separated_by_into_vec<S, P: Parser<S>>(self, sep: P) -> SeparatedBy<T, Self, S, P, Vec<T>>
     where
         Self: Sized,
     {
@@ -275,7 +275,7 @@ pub trait Parser<T> {
     /// Repeat the parser with the required provided separator between each repetition
     ///
     /// All results are forwarded to the provided [`Container`] type, which is then returned.
-    fn separated_by_custom<S, P: Parser<S>, C: Container<T>>(
+    fn separated_by_into_container<S, P: Parser<S>, C: Container<T>>(
         self,
         sep: P,
     ) -> SeparatedBy<T, Self, S, P, C>
@@ -288,7 +288,7 @@ pub trait Parser<T> {
     /// Flatten the parser
     ///
     /// Requires the parser to return a nested iterator.
-    /// The values are discarded. To collect them, see [`Parser::flatten_vec`]
+    /// The values are discarded. To collect them, see [`Parser::flatten_into_vec`]
     fn flatten<U, S>(self) -> Flattened<U, S, T, Self, NoAllocContainer>
     where
         Self: Sized,
@@ -302,8 +302,8 @@ pub trait Parser<T> {
     /// Requires the parser to return a nested iterator.
     ///
     /// The values are collected into a [`Vec`].
-    /// To use a custom container, see [`Parser::flatten_custom`]
-    fn flatten_vec<U, S>(self) -> Flattened<U, S, T, Self, Vec<U>>
+    /// To use a custom container, see [`Parser::flatten_into_container`]
+    fn flatten_into_vec<U, S>(self) -> Flattened<U, S, T, Self, Vec<U>>
     where
         Self: Sized,
         T: IntoIterator<Item = S>,
@@ -316,7 +316,7 @@ pub trait Parser<T> {
     /// Requires the parser to return a nested iterator.
     ///
     /// All results are forwarded to the provided [`Container`] type, which is then returned.
-    fn flatten_custom<U, S, C: Container<U>>(self) -> Flattened<U, S, T, Self, C>
+    fn flatten_into_container<U, S, C: Container<U>>(self) -> Flattened<U, S, T, Self, C>
     where
         Self: Sized,
         T: IntoIterator<Item = S>,
