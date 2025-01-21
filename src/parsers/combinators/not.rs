@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput, ParsingError, Span};
+use crate::{ParserResult, Parser, ParserInput, ParsingError, Span};
 
 #[perfect_derive(Clone, Copy)]
 pub struct Not<T, P: Parser<T>> {
@@ -20,7 +20,7 @@ impl<T, P: Parser<T>> Not<T, P> {
 }
 
 impl<T, P: Parser<T>> Parser<()> for Not<T, P> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<()> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<()> {
         match self.parser.parse(input) {
             Ok(span) => Err(ParsingError::custom(
                 span.at,

@@ -9,7 +9,7 @@ pub mod textuals;
 
 use std::collections::HashSet;
 
-use crate::{parser::Parser, PResult, ParserInput};
+use crate::{parser::Parser, ParserInput, ParserResult};
 
 use self::{
     combinators::*,
@@ -87,6 +87,6 @@ pub fn late<T>() -> Late<T> {
     Late::new()
 }
 
-pub fn custom<F: Fn(&mut ParserInput) -> PResult<O>, O>(func: F) -> Custom<F, O> {
+pub fn custom<F: Fn(&mut ParserInput) -> ParserResult<O>, O>(func: F) -> Custom<F, O> {
     Custom::new(func)
 }

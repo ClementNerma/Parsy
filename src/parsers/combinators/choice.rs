@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput, ParsingError};
+use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
 #[perfect_derive(Clone, Copy)]
 pub struct Choice<T: IntoChoice<O>, O> {
@@ -44,7 +44,7 @@ macro_rules! _impl_choice {
         }
 
         impl<$($X: Parser<Output>),+, Output> Parser<Output> for Choice<($($X,)+), Output> {
-            fn parse_inner(&self, input: &mut ParserInput) -> PResult<Output> {
+            fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<Output> {
                 // let mut errors = vec![];
 
                 #[allow(non_snake_case)]

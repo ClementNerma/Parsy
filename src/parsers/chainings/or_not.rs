@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput, Span};
+use crate::{ParserResult, Parser, ParserInput, Span};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct OrNot<T, P: Parser<T>> {
@@ -20,7 +20,7 @@ impl<T, P: Parser<T>> OrNot<T, P> {
 }
 
 impl<T, P: Parser<T>> Parser<Option<T>> for OrNot<T, P> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<Option<T>> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<Option<T>> {
         let start = input.at();
 
         match self.parser.parse(input) {

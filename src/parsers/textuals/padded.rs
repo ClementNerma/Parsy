@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput};
+use crate::{ParserResult, Parser, ParserInput};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Padded<T, TP: Parser<T>, P, PP: Parser<P>> {
@@ -22,7 +22,7 @@ impl<T, TP: Parser<T>, P, PP: Parser<P>> Padded<T, TP, P, PP> {
 }
 
 impl<T, TP: Parser<T>, P, PP: Parser<P>> Parser<T> for Padded<T, TP, P, PP> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T> {
         let start = self.padding.parse(input)?;
         let middle = self.middle.parse(input)?;
         let end = self.padding.parse(input)?;

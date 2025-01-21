@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput, ParsingError};
+use crate::{ParserResult, Parser, ParserInput, ParsingError};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct NotFollowedBy<F, FP: Parser<F>, O, OP: Parser<O>> {
@@ -22,7 +22,7 @@ impl<F, FP: Parser<F>, O, OP: Parser<O>> NotFollowedBy<F, FP, O, OP> {
 }
 
 impl<F, FP: Parser<F>, O, OP: Parser<O>> Parser<F> for NotFollowedBy<F, FP, O, OP> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<F> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<F> {
         let parsed = self.parser.parse(input)?;
 
         match self.following.parse(input) {

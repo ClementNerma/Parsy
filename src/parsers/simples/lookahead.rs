@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput, Span};
+use crate::{ParserResult, Parser, ParserInput, Span};
 
 #[perfect_derive(Clone, Copy)]
 pub struct Lookahead<T, P: Parser<T>> {
@@ -20,7 +20,7 @@ impl<T, P: Parser<T>> Lookahead<T, P> {
 }
 
 impl<T, P: Parser<T>> Parser<T> for Lookahead<T, P> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T> {
         let mut input_copy = *input;
         let parsed = self.parser.parse(&mut input_copy)?;
         Ok(Span::ate(input.range(0), parsed.data))

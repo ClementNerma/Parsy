@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput};
+use crate::{ParserResult, Parser, ParserInput};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Silenced<T, P: Parser<T>> {
@@ -20,7 +20,7 @@ impl<T, P: Parser<T>> Silenced<T, P> {
 }
 
 impl<T, P: Parser<T>> Parser<()> for Silenced<T, P> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<()> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<()> {
         self.parser.parse(input).map(|input| input.replace(()))
     }
 }

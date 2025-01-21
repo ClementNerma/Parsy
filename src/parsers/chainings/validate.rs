@@ -2,7 +2,7 @@ use std::{borrow::Cow, marker::PhantomData};
 
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput, ParsingError};
+use crate::{ParserResult, Parser, ParserInput, ParsingError};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Validate<T, P: Parser<T>, F: Fn(&T) -> bool> {
@@ -36,7 +36,7 @@ impl<T, P: Parser<T>, F: Fn(&T) -> bool> Validate<T, P, F> {
 }
 
 impl<T, P: Parser<T>, F: Fn(&T) -> bool> Parser<T> for Validate<T, P, F> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T> {
         let start = input.at();
         let parsed = self.parser.parse(input)?;
 

@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use crate::{PResult, Parser, ParserInput, ParsingError};
+use crate::{ParserResult, Parser, ParserInput, ParsingError};
 
 pub struct OneOfChars {
     set: HashSet<char>,
@@ -13,7 +13,7 @@ impl OneOfChars {
 }
 
 impl Parser<char> for OneOfChars {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<char> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<char> {
         let start = input.at();
 
         let span = input

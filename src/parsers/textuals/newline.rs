@@ -1,4 +1,4 @@
-use crate::{Span, PResult, Parser, ParserInput, ParsingError};
+use crate::{Span, ParserResult, Parser, ParserInput, ParsingError};
 
 #[derive(Clone, Copy)]
 pub struct Newline;
@@ -16,7 +16,7 @@ impl Default for Newline {
 }
 
 impl Parser<()> for Newline {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<()> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<()> {
         let input_str = input.inner();
 
         let trimmed = if input_str.starts_with("\r\n") {

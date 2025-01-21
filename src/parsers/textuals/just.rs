@@ -1,4 +1,4 @@
-use crate::{PResult, Parser, ParserInput, ParsingError};
+use crate::{ParserResult, Parser, ParserInput, ParsingError};
 
 #[derive(Clone, Copy)]
 pub struct Just {
@@ -12,7 +12,7 @@ impl Just {
 }
 
 impl Parser<&'static str> for Just {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<&'static str> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<&'static str> {
         let start = input.at();
 
         let span = input

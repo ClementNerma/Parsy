@@ -2,7 +2,7 @@ use std::{borrow::Cow, marker::PhantomData};
 
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput};
+use crate::{ParserResult, Parser, ParserInput};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Critical<T, P: Parser<T>> {
@@ -29,7 +29,7 @@ impl<T, P: Parser<T>> Critical<T, P> {
 }
 
 impl<T, P: Parser<T>> Parser<T> for Critical<T, P> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T> {
         let is_empty = input.inner().is_empty();
 
         self.parser.parse(input).map_err(|err| {

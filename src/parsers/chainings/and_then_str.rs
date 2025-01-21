@@ -2,7 +2,7 @@ use std::{borrow::Cow, marker::PhantomData};
 
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput, ParsingError, Span};
+use crate::{ParserResult, Parser, ParserInput, ParsingError, Span};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct AndThenOrStrErr<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> {
@@ -22,7 +22,7 @@ impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> AndThenOrStrErr<T, P, U,
 }
 
 impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, String>> Parser<U> for AndThenOrStrErr<T, P, U, F> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<U> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<U> {
         let Span { data, at } = self.parser.parse(input)?;
 
         (self.mapper)(data)

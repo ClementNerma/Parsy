@@ -2,7 +2,7 @@ use std::{borrow::Cow, fmt};
 
 use crate::{CodeLocation, CodeRange, Span};
 
-pub type PResult<T> = ::std::result::Result<Span<T>, ParsingError>;
+pub type ParserResult<T> = ::std::result::Result<Span<T>, ParsingError>;
 
 #[derive(Debug)]
 pub struct ParsingError {

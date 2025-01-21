@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput, ParsingError};
+use crate::{ParserResult, Parser, ParserInput, ParsingError};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Full<T, P: Parser<T>> {
@@ -20,7 +20,7 @@ impl<T, P: Parser<T>> Full<T, P> {
 }
 
 impl<T, P: Parser<T>> Parser<T> for Full<T, P> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T> {
         if input.offset() > 0 {
             return Err(ParsingError::custom(
                 input.at().range(0),

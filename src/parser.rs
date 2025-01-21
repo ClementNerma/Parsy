@@ -1,12 +1,12 @@
 use crate::{
-    chainings::*, combinators::*, container::*, textuals::*, FileId, PResult, ParserInput,
+    chainings::*, combinators::*, container::*, textuals::*, FileId, ParserInput, ParserResult,
     ParsingError,
 };
 
 pub trait Parser<T> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T>;
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T>;
 
-    fn parse(&self, input: &mut ParserInput) -> PResult<T> {
+    fn parse(&self, input: &mut ParserInput) -> ParserResult<T> {
         // "Clone" (copy) 'input'
         let mut input_copy = *input;
 
@@ -17,11 +17,11 @@ pub trait Parser<T> {
         result.inspect(|span| input.apply(span))
     }
 
-    fn parse_str(&self, str: &str) -> PResult<T> {
+    fn parse_str(&self, str: &str) -> ParserResult<T> {
         self.parse_str_as_file(str, FileId::None)
     }
 
-    fn parse_str_as_file(&self, str: &str, file_id: FileId) -> PResult<T> {
+    fn parse_str_as_file(&self, str: &str, file_id: FileId) -> ParserResult<T> {
         self.parse(&mut ParserInput::new(str, file_id))
     }
 

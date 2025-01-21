@@ -2,7 +2,7 @@ use std::{cell::RefCell, marker::PhantomData, rc::Rc};
 
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput};
+use crate::{ParserResult, Parser, ParserInput};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Recursive<T> {
@@ -44,7 +44,7 @@ impl<T> Recursive<T> {
 }
 
 impl<T> Parser<T> for Recursive<T> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T> {
         self.parser.parse(input)
     }
 }
@@ -72,7 +72,7 @@ impl<T> RecursiveRef<T> {
 }
 
 impl<T> Parser<T> for RecursiveRef<T> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T> {
         self.parser_ref
             .borrow()
             .as_ref()

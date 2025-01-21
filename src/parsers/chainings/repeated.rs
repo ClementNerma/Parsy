@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{container::Container, PResult, Parser, ParserInput, ParsingError, Span};
+use crate::{container::Container, ParserResult, Parser, ParserInput, ParsingError, Span};
 
 #[perfect_derive(Clone, Copy)]
 pub struct Repeated<T, P: Parser<T>, C: Container<T>> {
@@ -69,7 +69,7 @@ impl<T, P: Parser<T>, C: Container<T>> Repeated<T, P, C> {
 }
 
 impl<T, P: Parser<T>, C: Container<T>> Parser<C> for Repeated<T, P, C> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<C> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<C> {
         let start = input.at();
         let mut ate = 0;
 

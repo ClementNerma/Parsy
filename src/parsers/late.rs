@@ -2,7 +2,7 @@ use std::{cell::RefCell, rc::Rc};
 
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput};
+use crate::{ParserResult, Parser, ParserInput};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Late<T> {
@@ -32,7 +32,7 @@ impl<T> Default for Late<T> {
 }
 
 impl<T> Parser<T> for Late<T> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T> {
         self.parser_ref
             .borrow()
             .as_ref()

@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput, ParsingError};
+use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
 #[perfect_derive(Clone, Copy)]
 pub struct SilentChoice<T: IntoSilentChoice<Outputs>, Outputs> {
@@ -41,7 +41,7 @@ macro_rules! _impl_silent_choice {
         }
 
         impl<$($X: Parser<$Xo>, $Xo),+> Parser<()> for SilentChoice<($($X,)+), ($($Xo,)+)> {
-            fn parse_inner(&self, input: &mut ParserInput) -> PResult<()> {
+            fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<()> {
                 #[allow(non_snake_case)]
                 let SilentChoice { parsers: ($($X,)+), _p: _ } = &self;
 

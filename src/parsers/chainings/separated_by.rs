@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{container::Container, PResult, Parser, ParserInput, ParsingError, Span};
+use crate::{container::Container, ParserResult, Parser, ParserInput, ParsingError, Span};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct SeparatedBy<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> {
@@ -73,7 +73,7 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> SeparatedBy<T, TP, S, 
 impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> Parser<C>
     for SeparatedBy<T, TP, S, SP, C>
 {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<C> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<C> {
         let mut out = C::create();
         let mut size = 0;
         let mut ate = 0;

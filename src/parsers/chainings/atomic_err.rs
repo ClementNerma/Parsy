@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput, ParsingError};
+use crate::{ParserResult, Parser, ParserInput, ParsingError};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct AtomicErr<T, P: Parser<T>> {
@@ -22,7 +22,7 @@ impl<T, P: Parser<T>> AtomicErr<T, P> {
 }
 
 impl<T, P: Parser<T>> Parser<T> for AtomicErr<T, P> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T> {
         self.parser.parse(input).map_err(|err| {
             ParsingError::custom(err.inner().at(), self.message).with_atomic_error(self.message)
         })

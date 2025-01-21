@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{container::Container, PResult, Parser, ParserInput};
+use crate::{container::Container, ParserResult, Parser, ParserInput};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Flattened<
@@ -30,7 +30,7 @@ impl<T, S: IntoIterator<Item = T>, I: IntoIterator<Item = S>, P: Parser<I>, C: C
 impl<T, S: IntoIterator<Item = T>, I: IntoIterator<Item = S>, P: Parser<I>, C: Container<T>>
     Parser<C> for Flattened<T, S, I, P, C>
 {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<C> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<C> {
         let parsed = self.parser.parse(input)?;
         Ok(parsed.map(|data| C::from_iter(data.into_iter().flatten())))
     }

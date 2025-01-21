@@ -2,12 +2,12 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{parser::Parser, PResult, ParserInput};
+use crate::{parser::Parser, ParserResult, ParserInput};
 
 #[derive(Debug)]
 pub enum DebugType<'a, 'b, T> {
     Input(&'a ParserInput<'b>),
-    Result(&'a PResult<T>),
+    Result(&'a ParserResult<T>),
 }
 
 #[perfect_derive(Debug, Clone, Copy)]
@@ -28,7 +28,7 @@ impl<T, P: Parser<T>, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>)> Debugging<T, P, F
 }
 
 impl<T, P: Parser<T>, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>)> Parser<T> for Debugging<T, P, F> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<T> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T> {
         (self.debugger)(DebugType::Input(input));
 
         let result = self.parser.parse(input);

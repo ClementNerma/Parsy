@@ -1,6 +1,6 @@
 use perfect_derive::perfect_derive;
 
-use crate::{PResult, Parser, ParserInput, ParsingError};
+use crate::{ParserResult, Parser, ParserInput, ParsingError};
 
 #[perfect_derive(Clone, Copy)]
 pub struct Filter<F: Fn(char) -> bool> {
@@ -14,7 +14,7 @@ impl<F: Fn(char) -> bool> Filter<F> {
 }
 
 impl<F: Fn(char) -> bool> Parser<char> for Filter<F> {
-    fn parse_inner(&self, input: &mut ParserInput) -> PResult<char> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<char> {
         let start = input.at();
 
         let c = input
