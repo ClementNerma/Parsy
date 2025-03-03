@@ -77,14 +77,24 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> Parser<C>
         let mut out = C::create();
         let mut size = 0;
         let mut ate = 0;
+        let mut ate_separator = None;
         let start = input.at();
 
         let err = loop {
             let parsed = match self.parser.parse(input) {
                 Ok(parsed) => parsed,
-                Err(err) if err.is_critical() => return Err(err),
-                Err(err) => break Some(err),
+                Err(err) => {
+                    if err.is_critical() {
+                        return Err(err);
+                    } else {
+                        break Some(err);
+                    }
+                }
             };
+
+            if let Some(ate_separator) = ate_separator {
+                ate += ate_separator;
+            }
 
             out.add(parsed.data);
             ate += parsed.at.len;
@@ -103,7 +113,9 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> Parser<C>
             }
 
             match self.separator.parse(input) {
-                Ok(parsed) => ate += parsed.at.len,
+                Ok(parsed) => {
+                    ate_separator = Some(parsed.at.len);
+                }
                 Err(err) => {
                     if err.is_critical() {
                         return Err(err);
