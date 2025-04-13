@@ -1,3 +1,4 @@
+pub mod arc_late_init;
 pub mod atoms;
 pub mod chainings;
 pub mod combinators;
@@ -12,6 +13,7 @@ use std::collections::HashSet;
 use crate::{parser::Parser, ParserInput, ParserResult};
 
 use self::{
+    arc_late_init::ArcLateInit,
     combinators::*,
     late_init::LateInit,
     recursive::{Recursive, RecursiveRef},
@@ -85,6 +87,10 @@ pub fn recursive_with_value<T, P: Parser<T> + 'static, R>(
 
 pub fn late_init<T>() -> LateInit<T> {
     LateInit::new()
+}
+
+pub fn arc_late_init<T>() -> ArcLateInit<T> {
+    ArcLateInit::new()
 }
 
 pub fn custom<F: Fn(&mut ParserInput) -> ParserResult<O>, O>(func: F) -> Custom<F, O> {
