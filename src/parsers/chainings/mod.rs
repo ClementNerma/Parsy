@@ -1,5 +1,5 @@
 mod and_then;
-mod and_then_str;
+mod and_then_or_str;
 mod atomic_err;
 mod critical;
 mod debug;
@@ -23,7 +23,7 @@ mod validate;
 
 pub use self::{
     and_then::AndThen,
-    and_then_str::AndThenOrStrErr,
+    and_then_or_str::AndThenOrStrErr,
     atomic_err::AtomicErr,
     critical::Critical,
     debug::{DebugType, Debugging},

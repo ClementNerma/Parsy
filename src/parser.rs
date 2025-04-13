@@ -152,7 +152,7 @@ pub trait Parser<T> {
     }
 
     /// Transform and validate the parsed value using the provided function
-    fn and_then_or_str<U, F: Fn(T) -> Result<U, String>>(
+    fn and_then_or_str<U, F: Fn(T) -> Result<U, &'static str>>(
         self,
         mapper: F,
     ) -> AndThenOrStrErr<T, Self, U, F>
