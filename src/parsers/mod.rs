@@ -4,7 +4,6 @@ pub mod chainings;
 pub mod combinators;
 pub mod container;
 pub mod late_init;
-pub mod recursive;
 pub mod simples;
 pub mod textuals;
 
@@ -13,12 +12,7 @@ use std::collections::HashSet;
 use crate::{parser::Parser, ParserInput, ParserResult};
 
 use self::{
-    arc_late_init::ArcLateInit,
-    combinators::*,
-    late_init::LateInit,
-    recursive::{Recursive, RecursiveRef},
-    simples::*,
-    textuals::*,
+    arc_late_init::ArcLateInit, combinators::*, late_init::LateInit, simples::*, textuals::*,
 };
 
 pub fn start() -> Start {
@@ -73,24 +67,26 @@ pub fn lookahead<T, P: Parser<T>>(parser: P) -> Lookahead<T, P> {
     Lookahead::new(parser)
 }
 
-pub fn recursive<T, P: Parser<T> + 'static>(
-    decl: impl FnOnce(RecursiveRef<T>) -> P,
-) -> Recursive<T> {
-    Recursive::declarative(decl)
-}
-
-pub fn recursive_with_value<T, P: Parser<T> + 'static, R>(
-    decl: impl FnOnce(RecursiveRef<T>) -> (P, R),
-) -> (Recursive<T>, R) {
-    Recursive::declarative_with_value(decl)
-}
-
 pub fn late_init<T>() -> LateInit<T> {
     LateInit::new()
 }
 
 pub fn arc_late_init<T>() -> ArcLateInit<T> {
     ArcLateInit::new()
+}
+
+pub fn recursive<T, P: Parser<T> + 'static>(decl: impl FnOnce(LateInit<T>) -> P) -> LateInit<T> {
+    let parser = late_init::<T>();
+    parser.define(decl(parser.clone()));
+    parser
+}
+
+pub fn arc_recursive<T, P: Parser<T> + Send + Sync + 'static>(
+    decl: impl FnOnce(ArcLateInit<T>) -> P,
+) -> ArcLateInit<T> {
+    let parser = arc_late_init::<T>();
+    parser.define(decl(parser.clone()));
+    parser
 }
 
 pub fn custom<F: Fn(&mut ParserInput) -> ParserResult<O>, O>(func: F) -> Custom<F, O> {
