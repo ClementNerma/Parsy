@@ -263,6 +263,16 @@ pub trait Parser<T> {
 
     /// Repeat the parser with the required provided separator between each repetition
     ///
+    /// If you want to collect the results, see [`Parser::separated_by_into_vec`].
+    fn separated_by<S, P: Parser<S>>(self, sep: P) -> SeparatedBy<T, Self, S, P, NoAllocContainer>
+    where
+        Self: Sized,
+    {
+        SeparatedBy::new(self, sep)
+    }
+
+    /// Repeat the parser with the required provided separator between each repetition
+    ///
     /// All results are collected into a [`Vec`].
     /// To use a custom container, see [`Parser::separated_by_into_container`]
     fn separated_by_into_vec<S, P: Parser<S>>(self, sep: P) -> SeparatedBy<T, Self, S, P, Vec<T>>
