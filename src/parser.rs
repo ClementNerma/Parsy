@@ -285,7 +285,7 @@ pub trait Parser<T> {
     /// Repeat the parser with the required provided separator between each repetition
     ///
     /// All results are forwarded to the provided [`Container`] type, which is then returned.
-    fn separated_by_into_container<S, P: Parser<S>, C: Container<T>>(
+    fn separated_by_into_container<C: Container<T>, S, P: Parser<S>>(
         self,
         sep: P,
     ) -> SeparatedBy<T, Self, S, P, C>
