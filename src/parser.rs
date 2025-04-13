@@ -126,7 +126,7 @@ pub trait Parser<T> {
     /// Map the parsed value using a function
     ///
     /// Aking to [`Option::map`]
-    fn map<U, F: Fn(T) -> U + Clone>(self, mapper: F) -> Map<T, Self, U, F>
+    fn map<U, F: Fn(T) -> U>(self, mapper: F) -> Map<T, Self, U, F>
     where
         Self: Sized,
     {
@@ -134,7 +134,7 @@ pub trait Parser<T> {
     }
 
     /// Get the input string matched by the parser and map it using a function
-    fn map_str<U, F: Fn(&str) -> U + Clone>(self, mapper: F) -> MapStr<T, Self, U, F>
+    fn map_str<U, F: Fn(&str) -> U>(self, mapper: F) -> MapStr<T, Self, U, F>
     where
         Self: Sized,
     {
@@ -378,10 +378,7 @@ pub trait Parser<T> {
     }
 
     /// Debug the input and output values of the parser using the provided debugger
-    fn debug<F: for<'a, 'b> Fn(DebugType<'a, 'b, T>) + Clone>(
-        self,
-        debugger: F,
-    ) -> Debugging<T, Self, F>
+    fn debug<F: for<'a, 'b> Fn(DebugType<'a, 'b, T>)>(self, debugger: F) -> Debugging<T, Self, F>
     where
         Self: Sized,
     {
