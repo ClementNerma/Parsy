@@ -2,7 +2,7 @@ pub mod atoms;
 pub mod chainings;
 pub mod combinators;
 pub mod container;
-pub mod late;
+pub mod late_init;
 pub mod recursive;
 pub mod simples;
 pub mod textuals;
@@ -13,7 +13,7 @@ use crate::{parser::Parser, ParserInput, ParserResult};
 
 use self::{
     combinators::*,
-    late::Late,
+    late_init::LateInit,
     recursive::{Recursive, RecursiveRef},
     simples::*,
     textuals::*,
@@ -83,8 +83,8 @@ pub fn recursive_with_value<T, P: Parser<T> + 'static, R>(
     Recursive::declarative_with_value(decl)
 }
 
-pub fn late<T>() -> Late<T> {
-    Late::new()
+pub fn late_init<T>() -> LateInit<T> {
+    LateInit::new()
 }
 
 pub fn custom<F: Fn(&mut ParserInput) -> ParserResult<O>, O>(func: F) -> Custom<F, O> {

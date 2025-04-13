@@ -42,11 +42,11 @@ pub fn recursive_test() {
 
 #[test]
 pub fn late_test() {
-    let a = late();
+    let a = late_init();
 
     let ba = a.clone().then(char('b')).then(a.clone());
 
-    a.finish(char('a'));
+    a.define(char('a'));
 
     ba.parse_str("aba").unwrap();
 }
