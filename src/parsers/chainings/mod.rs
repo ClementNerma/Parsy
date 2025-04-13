@@ -19,6 +19,7 @@ mod spanned;
 mod then;
 mod then_ignore;
 mod to;
+mod try_map;
 mod validate;
 
 pub use self::{
@@ -43,5 +44,6 @@ pub use self::{
     then::Then,
     then_ignore::ThenIgnore,
     to::To,
+    try_map::TryMap,
     validate::Validate,
 };

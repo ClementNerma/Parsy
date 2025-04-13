@@ -141,6 +141,14 @@ pub trait Parser<T> {
         MapStr::new(self, mapper)
     }
 
+    /// Try to map the parsed value using a function
+    fn try_map<U, F: Fn(T) -> Option<U>>(self, mapper: F) -> TryMap<T, Self, U, F>
+    where
+        Self: Sized,
+    {
+        TryMap::new(self, mapper)
+    }
+
     /// Transform and validate the parsed value using the provided function
     ///
     /// If you want to only return an error message, see [`Parser::and_then_or_str`]
