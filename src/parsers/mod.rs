@@ -1,18 +1,18 @@
-pub mod arc_late_init;
 pub mod atoms;
 pub mod chainings;
 pub mod combinators;
 pub mod container;
-pub mod late_init;
 pub mod simples;
 pub mod textuals;
+pub mod to_define;
+pub mod to_define_shared;
 
 use std::collections::HashSet;
 
 use crate::{parser::Parser, ParserInput, ParserResult};
 
 use self::{
-    arc_late_init::ArcLateInit, combinators::*, late_init::LateInit, simples::*, textuals::*,
+    combinators::*, simples::*, textuals::*, to_define::ToDefine, to_define_shared::ToDefineShared,
 };
 
 pub fn start() -> Start {
@@ -67,24 +67,24 @@ pub fn lookahead<T, P: Parser<T>>(parser: P) -> Lookahead<T, P> {
     Lookahead::new(parser)
 }
 
-pub fn late_init<T>() -> LateInit<T> {
-    LateInit::new()
+pub fn to_define<T>() -> ToDefine<T> {
+    ToDefine::new()
 }
 
-pub fn arc_late_init<T>() -> ArcLateInit<T> {
-    ArcLateInit::new()
+pub fn to_define_shared<T>() -> ToDefineShared<T> {
+    ToDefineShared::new()
 }
 
-pub fn recursive<T, P: Parser<T> + 'static>(decl: impl FnOnce(LateInit<T>) -> P) -> LateInit<T> {
-    let parser = late_init::<T>();
+pub fn recursive<T, P: Parser<T> + 'static>(decl: impl FnOnce(ToDefine<T>) -> P) -> ToDefine<T> {
+    let parser = to_define::<T>();
     parser.define(decl(parser.clone()));
     parser
 }
 
-pub fn arc_recursive<T, P: Parser<T> + Send + Sync + 'static>(
-    decl: impl FnOnce(ArcLateInit<T>) -> P,
-) -> ArcLateInit<T> {
-    let parser = arc_late_init::<T>();
+pub fn recursive_shared<T, P: Parser<T> + Send + Sync + 'static>(
+    decl: impl FnOnce(ToDefineShared<T>) -> P,
+) -> ToDefineShared<T> {
+    let parser = to_define_shared::<T>();
     parser.define(decl(parser.clone()));
     parser
 }

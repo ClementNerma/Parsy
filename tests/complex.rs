@@ -42,7 +42,7 @@ pub fn recursive_test() {
 
 #[test]
 pub fn late_test() {
-    let a = late_init();
+    let a = to_define();
 
     let ba = a.clone().then(char('b')).then(a.clone());
 
