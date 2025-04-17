@@ -170,6 +170,18 @@ pub trait Parser<T> {
         AndThenOrStrErr::new(self, mapper)
     }
 
+    /// Transform and validate the parsed value using the provided function
+    /// Failures are [critical](`Parser::critical`)
+    fn and_then_or_critical<U, F: Fn(T) -> Result<U, String>>(
+        self,
+        mapper: F,
+    ) -> AndThenOrCritical<T, Self, U, F>
+    where
+        Self: Sized,
+    {
+        AndThenOrCritical::new(self, mapper)
+    }
+
     /// Wrap the parsed value in a [`Spanned`]
     fn spanned(self) -> Spanned<T, Self>
     where
