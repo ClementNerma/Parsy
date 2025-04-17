@@ -1,3 +1,5 @@
+use std::sync::LazyLock;
+
 use parsy::{atoms::whitespace, chainings::DebugType, parsers::*, Parser};
 
 #[test]
@@ -26,18 +28,24 @@ pub fn complex_test() {
 
 #[test]
 pub fn recursive_test() {
-    let parser_1212 =
+    let parser =
         recursive(|number| just("1").then(just("2")).then(number.or_not().map(|_| ()))).full();
 
-    parser_1212.parse_str("12").unwrap();
+    let parser_shared =
+        recursive_shared(|number| just("1").then(just("2")).then(number.or_not().map(|_| ())))
+            .full();
 
-    parser_1212.parse_str("1212").unwrap();
+    for input in ["12", "1212", "121212", "12121212"] {
+        parser.parse_str(input).unwrap();
+        parser_shared.parse_str(input).unwrap();
+        PARSER_SHARED.parse_str(input).unwrap();
+    }
 
-    parser_1212.parse_str("121212").unwrap();
-
-    parser_1212.parse_str("12121212").unwrap();
-
-    parser_1212.parse_str("1").err().unwrap();
+    for input in ["1", "2", "21", "22", "3", "13", "23", "123"] {
+        parser.parse_str(input).err().unwrap();
+        parser_shared.parse_str(input).err().unwrap();
+        PARSER_SHARED.parse_str(input).err().unwrap();
+    }
 }
 
 #[test]
@@ -80,3 +88,11 @@ fn simple_debug<T>(debug: DebugType<'_, '_, T>) {
         },
     }
 }
+
+static PARSER_SHARED: LazyLock<Box<dyn Parser<()> + Send + Sync + 'static>> = LazyLock::new(|| {
+    Box::new(
+        recursive_shared(|number| just("1").then(just("2")).then(number.or_not().map(|_| ())))
+            .full()
+            .map(|_| ()),
+    )
+});
