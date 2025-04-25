@@ -1,3 +1,5 @@
+use std::borrow::Cow;
+
 use crate::{
     chainings::*, combinators::*, container::*, textuals::*, FileId, ParserInput, ParserResult,
     ParsingError,
@@ -172,7 +174,7 @@ pub trait Parser<T> {
 
     /// Transform and validate the parsed value using the provided function
     /// Failures are [critical](`Parser::critical`)
-    fn and_then_or_critical<U, F: Fn(T) -> Result<U, String>>(
+    fn and_then_or_critical<U, F: Fn(T) -> Result<U, Cow<'static, str>>>(
         self,
         mapper: F,
     ) -> AndThenOrCritical<T, Self, U, F>
@@ -390,7 +392,7 @@ pub trait Parser<T> {
     }
 
     /// Validate the parsed value with a predicate or return an error message
-    fn validate_or_critical<F: Fn(&T) -> Result<(), String>>(
+    fn validate_or_critical<F: Fn(&T) -> Result<(), Cow<'static, str>>>(
         self,
         validator: F,
     ) -> ValidateOrCritical<T, Self, F>
