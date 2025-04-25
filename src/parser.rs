@@ -389,6 +389,17 @@ pub trait Parser<T> {
         Validate::new(self, validator)
     }
 
+    /// Validate the parsed value with a predicate or return an error message
+    fn validate_or_critical<F: Fn(&T) -> Result<(), String>>(
+        self,
+        validator: F,
+    ) -> ValidateOrCritical<T, Self, F>
+    where
+        Self: Sized,
+    {
+        ValidateOrCritical::new(self, validator)
+    }
+
     /// Debug the input and output values of the parser using the provided debugger
     fn debug<F: for<'a, 'b> Fn(DebugType<'a, 'b, T>)>(self, debugger: F) -> Debugging<T, Self, F>
     where
