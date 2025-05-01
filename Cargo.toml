@@ -12,5 +12,5 @@ error-reporting = ["dep:annotate-snippets"]
 
 [dependencies]
 perfect-derive = "0.1.5"
-serde = { optional = true, version = "1.0.217", features = ["derive"] }
+serde = { optional = true, version = "1.0.219", features = ["derive"] }
 annotate-snippets = { optional = true, version = "0.11.5" }
