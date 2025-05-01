@@ -9,7 +9,7 @@ pub mod to_define_shared;
 
 use std::collections::HashSet;
 
-use crate::{parser::Parser, ParserInput, ParserResult};
+use crate::{ParserInput, ParserResult, parser::Parser};
 
 use self::{
     combinators::*, simples::*, textuals::*, to_define::ToDefine, to_define_shared::ToDefineShared,

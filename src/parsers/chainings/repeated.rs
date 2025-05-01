@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{container::Container, Parser, ParserInput, ParserResult, ParsingError, Span};
+use crate::{Parser, ParserInput, ParserResult, ParsingError, Span, container::Container};
 
 #[perfect_derive(Clone, Copy)]
 pub struct Repeated<T, P: Parser<T>, C: Container<T>> {
@@ -31,7 +31,10 @@ impl<T, P: Parser<T>, C: Container<T>> Repeated<T, P, C> {
         );
 
         if let Some(max) = self.max {
-            assert!(min <= max, "Minimum number of repetitions ({min}) cannot be higher than the maximum ({max}) number of repetitoins");
+            assert!(
+                min <= max,
+                "Minimum number of repetitions ({min}) cannot be higher than the maximum ({max}) number of repetitoins"
+            );
         }
 
         self.min = Some(min);
@@ -45,7 +48,10 @@ impl<T, P: Parser<T>, C: Container<T>> Repeated<T, P, C> {
         );
 
         if let Some(min) = self.min {
-            assert!(min <= max, "Minimum number of repetitions ({min}) cannot be higher than the maximum ({max}) number of repetitoins");
+            assert!(
+                min <= max,
+                "Minimum number of repetitions ({min}) cannot be higher than the maximum ({max}) number of repetitoins"
+            );
         }
 
         self.max = Some(max);

@@ -1,4 +1,4 @@
-use crate::{chainings::DelimitedBy, Parser};
+use crate::{Parser, chainings::DelimitedBy};
 
 use super::Whitespaces;
 

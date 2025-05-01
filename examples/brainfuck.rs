@@ -1,4 +1,4 @@
-use parsy::{char, choice, Parser};
+use parsy::{Parser, char, choice};
 
 fn main() {
     let bf_parser = parser();

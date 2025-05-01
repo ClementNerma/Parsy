@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{container::Container, Parser, ParserInput, ParserResult, ParsingError, Span};
+use crate::{Parser, ParserInput, ParserResult, ParsingError, Span, container::Container};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct SeparatedBy<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> {
@@ -33,7 +33,10 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> SeparatedBy<T, TP, S, 
         );
 
         if let Some(max) = self.max {
-            assert!(min <= max, "Minimum number of repetitions ({min}) cannot be higher than the maximum ({max}) number of repetitoins");
+            assert!(
+                min <= max,
+                "Minimum number of repetitions ({min}) cannot be higher than the maximum ({max}) number of repetitoins"
+            );
         }
 
         self.min = Some(min);
@@ -47,7 +50,10 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> SeparatedBy<T, TP, S, 
         );
 
         if let Some(min) = self.min {
-            assert!(min <= max, "Minimum number of repetitions ({min}) cannot be higher than the maximum ({max}) number of repetitoins");
+            assert!(
+                min <= max,
+                "Minimum number of repetitions ({min}) cannot be higher than the maximum ({max}) number of repetitoins"
+            );
         }
 
         self.max = Some(max);

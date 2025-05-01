@@ -1,8 +1,8 @@
 use std::borrow::Cow;
 
 use crate::{
-    chainings::*, combinators::*, container::*, textuals::*, FileId, ParserInput, ParserResult,
-    ParsingError,
+    FileId, ParserInput, ParserResult, ParsingError, chainings::*, combinators::*, container::*,
+    textuals::*,
 };
 
 /// A parser takes an input and tries to consume the upcoming character(s) and transform it

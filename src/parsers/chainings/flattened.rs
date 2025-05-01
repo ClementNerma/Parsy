@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{container::Container, Parser, ParserInput, ParserResult};
+use crate::{Parser, ParserInput, ParserResult, container::Container};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Flattened<
