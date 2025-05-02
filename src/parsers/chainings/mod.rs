@@ -22,6 +22,7 @@ mod to;
 mod try_map;
 mod validate;
 mod validate_or_critical;
+mod validate_or_dynamic_critical;
 
 pub use self::{
     and_then::AndThen,
@@ -47,5 +48,6 @@ pub use self::{
     to::To,
     try_map::TryMap,
     validate::Validate,
-    validate_or_critical::ValidateOrCritical,
+    validate_or_critical::ValidateOrCriticalMsg,
+    validate_or_dynamic_critical::ValidateOrCritical,
 };

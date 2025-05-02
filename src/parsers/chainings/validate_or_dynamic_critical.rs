@@ -5,36 +5,36 @@ use perfect_derive::perfect_derive;
 use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
 #[perfect_derive(Debug, Clone, Copy)]
-pub struct ValidateOrCriticalMsg<T, P: Parser<T>, F: Fn(&T) -> bool> {
+pub struct ValidateOrCritical<T, P: Parser<T>, F: Fn(&T) -> Result<(), Cow<'static, str>>> {
     parser: P,
     validator: F,
-    message: &'static str,
     _p: PhantomData<T>,
 }
 
-impl<T, P: Parser<T>, F: Fn(&T) -> bool> ValidateOrCriticalMsg<T, P, F> {
-    pub fn new(parser: P, validator: F, message: &'static str) -> Self {
+impl<T, P: Parser<T>, F: Fn(&T) -> Result<(), Cow<'static, str>>> ValidateOrCritical<T, P, F> {
+    pub fn new(parser: P, validator: F) -> Self {
         Self {
             parser,
             validator,
-            message,
             _p: PhantomData,
         }
     }
 }
 
-impl<T, P: Parser<T>, F: Fn(&T) -> bool> Parser<T> for ValidateOrCriticalMsg<T, P, F> {
+impl<T, P: Parser<T>, F: Fn(&T) -> Result<(), Cow<'static, str>>> Parser<T>
+    for ValidateOrCritical<T, P, F>
+{
     fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T> {
         let start = input.at();
         let parsed = self.parser.parse(input)?;
 
-        if (self.validator)(&parsed.data) {
-            Ok(parsed)
-        } else {
-            Err(
+        match (self.validator)(&parsed.data) {
+            Ok(()) => Ok(parsed),
+
+            Err(msg) => Err(
                 ParsingError::custom(start.range(parsed.at.len), "Validator failed")
-                    .criticalize(Cow::Borrowed(self.message)),
-            )
+                    .criticalize(msg),
+            ),
         }
     }
 }

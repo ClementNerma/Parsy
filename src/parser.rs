@@ -380,8 +380,24 @@ pub trait Parser<T> {
         Validate::new(self, validator)
     }
 
-    /// Validate the parsed value with a predicate or return an error message
-    fn validate_or_critical<F: Fn(&T) -> Result<(), Cow<'static, str>>>(
+    /// Validate the parsed value with a predicate or return a provided critical error message
+    ///
+    /// If you want to customize the validation message, use [`Parser::validate_or_dynamic_critical`]
+    fn validate_or_critical<F: Fn(&T) -> bool>(
+        self,
+        validator: F,
+        message: &'static str,
+    ) -> ValidateOrCriticalMsg<T, Self, F>
+    where
+        Self: Sized,
+    {
+        ValidateOrCriticalMsg::new(self, validator, message)
+    }
+
+    /// Validate the parsed value with a predicate or return a critical error message
+    ///
+    /// The error message will be provided by the Err() variant of the validator
+    fn validate_or_dynamic_critical<F: Fn(&T) -> Result<(), Cow<'static, str>>>(
         self,
         validator: F,
     ) -> ValidateOrCritical<T, Self, F>
