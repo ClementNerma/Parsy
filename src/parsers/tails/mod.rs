@@ -27,5 +27,5 @@ pub use self::{
     to::To,
     validate::Validate,
     validate_or_critical::ValidateOrCriticalMsg,
-    validate_or_dynamic_critical::ValidateOrCritical,
+    validate_or_dynamic_critical::ValidateOrDynamicCriticalMsg,
 };

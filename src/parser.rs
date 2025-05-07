@@ -400,11 +400,11 @@ pub trait Parser<T> {
     fn validate_or_dynamic_critical<F: Fn(&T) -> Result<(), Cow<'static, str>>>(
         self,
         validator: F,
-    ) -> ValidateOrCritical<T, Self, F>
+    ) -> ValidateOrDynamicCriticalMsg<T, Self, F>
     where
         Self: Sized,
     {
-        ValidateOrCritical::new(self, validator)
+        ValidateOrDynamicCriticalMsg::new(self, validator)
     }
 
     /// Debug the input and output values of the parser using the provided debugger
