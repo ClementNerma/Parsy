@@ -33,11 +33,11 @@ impl<C> Default for GetContext<C> {
 impl<C: Any> Parser<Box<C>> for GetContext<C> {
     fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<Box<C>> {
         let logic = || -> Result<_, _> {
-            let ctx = input.get_ctx().ok_or(
+            let get_ctx = input.ctx().ok_or(
                 "Internal error: Expected a context in the parser input, but context is missing",
             )?;
 
-            <Box<dyn Any>>::downcast::<C>(ctx)
+            <Box<dyn Any>>::downcast::<C>(get_ctx())
                 .map_err(|_| "Internal error: Context found in the parser input does not have the expected type")
         };
 

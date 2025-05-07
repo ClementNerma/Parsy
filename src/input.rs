@@ -29,8 +29,8 @@ impl<'a> ParserInput<'a> {
         }
     }
 
-    pub fn get_ctx(&self) -> Option<Box<dyn Any>> {
-        self.ctx.as_ref().map(|ctx| ctx())
+    pub fn ctx(&self) -> Option<fn() -> Box<dyn Any>> {
+        self.ctx
     }
 
     pub const fn inner(&self) -> &str {
