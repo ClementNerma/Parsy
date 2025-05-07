@@ -10,7 +10,7 @@ pub struct LazilyDefined<T> {
 }
 
 impl<T> LazilyDefined<T> {
-    pub fn new(lazy_define: fn() -> Box<dyn Parser<T> + Send + Sync>) -> Self {
+    pub const fn new(lazy_define: fn() -> Box<dyn Parser<T> + Send + Sync>) -> Self {
         Self {
             parser_ref: LazyLock::new(lazy_define),
         }
