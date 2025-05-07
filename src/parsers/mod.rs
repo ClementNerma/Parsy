@@ -1,5 +1,5 @@
-pub mod atoms;
 pub mod chainings;
+pub mod chars;
 pub mod combinators;
 pub mod containers;
 pub mod contentless;

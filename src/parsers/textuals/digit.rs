@@ -1,28 +1,26 @@
-use perfect_derive::perfect_derive;
-
 use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
-#[perfect_derive(Clone, Copy)]
-pub struct Filter {
-    func: fn(char) -> bool,
+#[derive(Clone, Copy)]
+pub struct Digit {
+    radix: u32,
 }
 
-impl Filter {
-    pub fn new(func: fn(char) -> bool) -> Self {
-        Self { func }
+impl Digit {
+    pub fn new(radix: u32) -> Self {
+        Self { radix }
     }
 }
 
-impl Parser<char> for Filter {
-    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<char> {
+impl Parser<()> for Digit {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<()> {
         let start = input.at();
 
         let c = input
             .try_eat_char()
             .ok_or_else(|| ParsingError::custom(start.range(0), "No character left"))?;
 
-        if (self.func)(c.data) {
-            Ok(c)
+        if c.data.is_digit(self.radix) {
+            Ok(c.replace(()))
         } else {
             Err(ParsingError::custom(
                 start.range(1),

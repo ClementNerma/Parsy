@@ -6,7 +6,7 @@ use super::{
     combinators::{Choice, IntoChoice, IntoSilentChoice, Lookahead, Not, SilentChoice, StaticRef},
     contentless::{Empty, End, Start},
     custom::Custom,
-    textuals::{Char, Filter, Just, Newline, OneOfChars, Whitespace, Whitespaces},
+    textuals::{Char, DynamicFilter, Filter, Just, Newline, OneOfChars, Whitespace, Whitespaces},
     timed::{LazilyDefined, ToDefine, ToDefineShared},
 };
 
@@ -46,8 +46,12 @@ pub fn just(str: &'static str) -> Just {
     Just::new(str)
 }
 
-pub fn filter<F: Fn(char) -> bool>(func: F) -> Filter<F> {
+pub fn filter(func: fn(char) -> bool) -> Filter {
     Filter::new(func)
+}
+
+pub fn dynamic_filter<F: Fn(char) -> bool>(func: F) -> DynamicFilter<F> {
+    DynamicFilter::new(func)
 }
 
 pub fn choice<O, T: IntoChoice<O>>(parsers: T) -> Choice<T, O> {

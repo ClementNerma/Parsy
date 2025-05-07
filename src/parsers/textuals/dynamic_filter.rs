@@ -3,17 +3,17 @@ use perfect_derive::perfect_derive;
 use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
 #[perfect_derive(Clone, Copy)]
-pub struct Filter {
-    func: fn(char) -> bool,
+pub struct DynamicFilter<F: Fn(char) -> bool> {
+    func: F,
 }
 
-impl Filter {
-    pub fn new(func: fn(char) -> bool) -> Self {
+impl<F: Fn(char) -> bool> DynamicFilter<F> {
+    pub fn new(func: F) -> Self {
         Self { func }
     }
 }
 
-impl Parser<char> for Filter {
+impl<F: Fn(char) -> bool> Parser<char> for DynamicFilter<F> {
     fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<char> {
         let start = input.at();
 
