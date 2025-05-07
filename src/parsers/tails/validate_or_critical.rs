@@ -1,4 +1,4 @@
-use std::{borrow::Cow, marker::PhantomData};
+use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
@@ -33,7 +33,7 @@ impl<T, P: Parser<T>, F: Fn(&T) -> bool> Parser<T> for ValidateOrCriticalMsg<T, 
         } else {
             Err(
                 ParsingError::custom(start.range(parsed.at.len), "Validator failed")
-                    .criticalize(Cow::Borrowed(self.message)),
+                    .criticalize(self.message),
             )
         }
     }

@@ -1,4 +1,4 @@
-use std::{borrow::Cow, marker::PhantomData};
+use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
@@ -36,8 +36,7 @@ impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, ParsingError>> Parser<U> for AndT
             .map(|data| Span::ate(at, data))
             .map_err(|err| match self.custom_err_msg {
                 None => err,
-                Some(msg) => ParsingError::custom(at, "an error was returned")
-                    .criticalize(Cow::Borrowed(msg)),
+                Some(msg) => ParsingError::custom(at, "an error was returned").criticalize(msg),
             })
     }
 }

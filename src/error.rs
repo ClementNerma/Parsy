@@ -36,9 +36,9 @@ impl ParsingError {
         self.critical.is_some()
     }
 
-    pub fn criticalize(mut self, critical: Cow<'static, str>) -> Self {
+    pub fn criticalize(mut self, critical: impl Into<Cow<'static, str>>) -> Self {
         if self.critical.is_none() {
-            self.critical = Some(critical);
+            self.critical = Some(critical.into());
         }
 
         self
