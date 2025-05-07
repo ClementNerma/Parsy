@@ -2,10 +2,6 @@ use crate::{Parser, containers::NoAllocContainer};
 
 use super::helpers::filter;
 
-pub fn whitespace() -> impl Parser<char> + Copy {
-    filter(|c| c.is_whitespace())
-}
-
 pub fn digit(radix: u32) -> impl Parser<char> + Copy {
     filter(move |c| c.is_digit(radix))
 }
