@@ -6,7 +6,9 @@ use super::{
     combinators::{Choice, IntoChoice, IntoSilentChoice, Lookahead, Not, SilentChoice, StaticRef},
     contentless::{Empty, End, Start},
     custom::Custom,
-    textuals::{Char, DynamicFilter, Filter, Just, Newline, OneOfChars, Whitespace, Whitespaces},
+    textuals::{
+        Char, Digit, DynamicFilter, Filter, Just, Newline, OneOfChars, Whitespace, Whitespaces,
+    },
     timed::{LazilyDefined, ToDefine, ToDefineShared},
 };
 
@@ -44,6 +46,10 @@ pub fn one_of_chars(set: HashSet<char>) -> OneOfChars {
 
 pub fn just(str: &'static str) -> Just {
     Just::new(str)
+}
+
+pub fn digit(radix: u32) -> Digit {
+    Digit::new(radix)
 }
 
 pub fn filter(func: fn(char) -> bool) -> Filter {
