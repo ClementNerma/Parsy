@@ -8,7 +8,7 @@ pub struct Filter {
 }
 
 impl Filter {
-    pub fn new(func: fn(char) -> bool) -> Self {
+    pub const fn new(func: fn(char) -> bool) -> Self {
         Self { func }
     }
 }

@@ -6,11 +6,11 @@ pub struct Whitespace {
 }
 
 impl Whitespace {
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         Self { no_newline: false }
     }
 
-    pub fn no_newline(mut self) -> Self {
+    pub const fn no_newline(mut self) -> Self {
         self.no_newline = true;
         self
     }

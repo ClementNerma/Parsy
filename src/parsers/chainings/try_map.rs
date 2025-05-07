@@ -12,7 +12,7 @@ pub struct TryMap<T, P: Parser<T>, U, F: Fn(T) -> Option<U>> {
 }
 
 impl<T, P: Parser<T>, U, F: Fn(T) -> Option<U>> TryMap<T, P, U, F> {
-    pub fn new(parser: P, mapper: F) -> Self {
+    pub const fn new(parser: P, mapper: F) -> Self {
         Self {
             parser,
             mapper,

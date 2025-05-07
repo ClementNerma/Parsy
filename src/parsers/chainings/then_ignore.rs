@@ -12,7 +12,7 @@ pub struct ThenIgnore<F, FP: Parser<F>, O, OP: Parser<O>> {
 }
 
 impl<F, FP: Parser<F>, O, OP: Parser<O>> ThenIgnore<F, FP, O, OP> {
-    pub fn new(from: FP, to: OP) -> Self {
+    pub const fn new(from: FP, to: OP) -> Self {
         Self {
             from,
             to,

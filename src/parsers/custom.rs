@@ -8,7 +8,7 @@ pub struct Custom<F: Fn(&mut ParserInput) -> ParserResult<O>, O> {
 }
 
 impl<F: Fn(&mut ParserInput) -> ParserResult<O>, O> Custom<F, O> {
-    pub fn new(func: F) -> Self {
+    pub const fn new(func: F) -> Self {
         Self { func }
     }
 }

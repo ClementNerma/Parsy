@@ -15,7 +15,7 @@ pub struct SeparatedBy<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> {
 }
 
 impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> SeparatedBy<T, TP, S, SP, C> {
-    pub fn new(parser: TP, separator: SP) -> Self {
+    pub const fn new(parser: TP, separator: SP) -> Self {
         Self {
             parser,
             separator,
@@ -60,7 +60,7 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> SeparatedBy<T, TP, S, 
         self
     }
 
-    pub fn exactly(mut self, exactly: usize) -> Self {
+    pub const fn exactly(mut self, exactly: usize) -> Self {
         assert!(
             self.min.is_none(),
             "Cannot specify both a minimum and an exact number of repetitions"

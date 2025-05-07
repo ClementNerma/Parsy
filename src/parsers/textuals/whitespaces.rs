@@ -7,19 +7,19 @@ pub struct Whitespaces {
 }
 
 impl Whitespaces {
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         Self {
             at_least_one: false,
             no_newline: false,
         }
     }
 
-    pub fn at_least_one(mut self) -> Self {
+    pub const fn at_least_one(mut self) -> Self {
         self.at_least_one = true;
         self
     }
 
-    pub fn no_newline(mut self) -> Self {
+    pub const fn no_newline(mut self) -> Self {
         self.no_newline = true;
         self
     }

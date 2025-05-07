@@ -12,7 +12,7 @@ pub struct AtomicErr<T, P: Parser<T>> {
 }
 
 impl<T, P: Parser<T>> AtomicErr<T, P> {
-    pub fn new(parser: P, message: &'static str) -> Self {
+    pub const fn new(parser: P, message: &'static str) -> Self {
         Self {
             parser,
             message,

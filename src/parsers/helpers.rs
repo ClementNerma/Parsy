@@ -12,67 +12,67 @@ use super::{
     timed::{LazilyDefined, ToDefine, ToDefineShared},
 };
 
-pub fn start() -> Start {
+pub const fn start() -> Start {
     Start
 }
 
-pub fn end() -> End {
+pub const fn end() -> End {
     End
 }
 
-pub fn empty() -> Empty {
+pub const fn empty() -> Empty {
     Empty
 }
 
-pub fn whitespace() -> Whitespace {
-    Whitespace::default()
+pub const fn whitespace() -> Whitespace {
+    Whitespace::new()
 }
 
-pub fn whitespaces() -> Whitespaces {
-    Whitespaces::default()
+pub const fn whitespaces() -> Whitespaces {
+    Whitespaces::new()
 }
 
-pub fn newline() -> Newline {
+pub const fn newline() -> Newline {
     Newline
 }
 
-pub fn char(char: char) -> Char {
+pub const fn char(char: char) -> Char {
     Char::new(char)
 }
 
-pub fn one_of_chars(set: HashSet<char>) -> OneOfChars {
+pub const fn one_of_chars(set: HashSet<char>) -> OneOfChars {
     OneOfChars::new(set)
 }
 
-pub fn just(str: &'static str) -> Just {
+pub const fn just(str: &'static str) -> Just {
     Just::new(str)
 }
 
-pub fn digit(radix: u32) -> Digit {
+pub const fn digit(radix: u32) -> Digit {
     Digit::new(radix)
 }
 
-pub fn filter(func: fn(char) -> bool) -> Filter {
+pub const fn filter(func: fn(char) -> bool) -> Filter {
     Filter::new(func)
 }
 
-pub fn dynamic_filter<F: Fn(char) -> bool>(func: F) -> DynamicFilter<F> {
+pub const fn dynamic_filter<F: Fn(char) -> bool>(func: F) -> DynamicFilter<F> {
     DynamicFilter::new(func)
 }
 
-pub fn choice<O, T: IntoChoice<O>>(parsers: T) -> Choice<T, O> {
+pub const fn choice<O, T: IntoChoice<O>>(parsers: T) -> Choice<T, O> {
     Choice::new(parsers)
 }
 
-pub fn silent_choice<O, T: IntoSilentChoice<O>>(parsers: T) -> SilentChoice<T, O> {
+pub const fn silent_choice<O, T: IntoSilentChoice<O>>(parsers: T) -> SilentChoice<T, O> {
     SilentChoice::new(parsers)
 }
 
-pub fn not<T, P: Parser<T>>(parser: P) -> Not<T, P> {
+pub const fn not<T, P: Parser<T>>(parser: P) -> Not<T, P> {
     Not::new(parser)
 }
 
-pub fn lookahead<T, P: Parser<T>>(parser: P) -> Lookahead<T, P> {
+pub const fn lookahead<T, P: Parser<T>>(parser: P) -> Lookahead<T, P> {
     Lookahead::new(parser)
 }
 
@@ -82,6 +82,20 @@ pub fn to_define<T>() -> ToDefine<T> {
 
 pub fn to_define_shared<T>() -> ToDefineShared<T> {
     ToDefineShared::new()
+}
+
+pub const fn lazily_defined<T>(
+    setup: fn() -> Box<dyn Parser<T> + Send + Sync>,
+) -> LazilyDefined<T> {
+    LazilyDefined::new(setup)
+}
+
+pub const fn static_ref<T, P: Parser<T>>(parser: &'static P) -> StaticRef<T, P> {
+    StaticRef::new(parser)
+}
+
+pub const fn custom<F: Fn(&mut ParserInput) -> ParserResult<O>, O>(func: F) -> Custom<F, O> {
+    Custom::new(func)
 }
 
 pub fn recursive<T, P: Parser<T> + 'static>(decl: impl FnOnce(ToDefine<T>) -> P) -> ToDefine<T> {
@@ -96,18 +110,4 @@ pub fn recursive_shared<T, P: Parser<T> + Send + Sync + 'static>(
     let parser = to_define_shared::<T>();
     parser.define(decl(parser.clone()));
     parser
-}
-
-pub const fn lazily_defined<T>(
-    setup: fn() -> Box<dyn Parser<T> + Send + Sync>,
-) -> LazilyDefined<T> {
-    LazilyDefined::new(setup)
-}
-
-pub const fn static_ref<T, P: Parser<T>>(parser: &'static P) -> StaticRef<T, P> {
-    StaticRef::new(parser)
-}
-
-pub fn custom<F: Fn(&mut ParserInput) -> ParserResult<O>, O>(func: F) -> Custom<F, O> {
-    Custom::new(func)
 }

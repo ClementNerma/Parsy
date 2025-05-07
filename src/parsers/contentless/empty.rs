@@ -4,7 +4,7 @@ use crate::{Parser, ParserInput, ParserResult, Span};
 pub struct Empty;
 
 impl Empty {
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         Self
     }
 }

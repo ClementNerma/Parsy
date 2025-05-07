@@ -13,7 +13,7 @@ pub struct ValidateOrCriticalMsg<T, P: Parser<T>, F: Fn(&T) -> bool> {
 }
 
 impl<T, P: Parser<T>, F: Fn(&T) -> bool> ValidateOrCriticalMsg<T, P, F> {
-    pub fn new(parser: P, validator: F, message: &'static str) -> Self {
+    pub const fn new(parser: P, validator: F, message: &'static str) -> Self {
         Self {
             parser,
             validator,

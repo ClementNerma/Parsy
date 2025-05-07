@@ -4,7 +4,7 @@ use crate::{Parser, ParserInput, ParserResult, ParsingError, Span};
 pub struct End;
 
 impl End {
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         Self
     }
 }

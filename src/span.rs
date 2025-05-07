@@ -6,7 +6,7 @@ pub struct Span<T> {
 }
 
 impl<T> Span<T> {
-    pub fn ate(at: CodeRange, data: T) -> Span<T> {
+    pub const fn ate(at: CodeRange, data: T) -> Span<T> {
         Span { at, data }
     }
 
@@ -18,7 +18,7 @@ impl<T> Span<T> {
         self.data = data;
     }
 
-    pub fn forge_here<U>(&self, data: U) -> Span<U> {
+    pub const fn forge_here<U>(&self, data: U) -> Span<U> {
         Span { at: self.at, data }
     }
 
@@ -66,22 +66,22 @@ pub struct CodeLocation {
 impl CodeLocation {
     #[must_use]
     #[allow(clippy::should_implement_trait)]
-    pub fn add(self, offset: usize) -> Self {
+    pub const fn add(self, offset: usize) -> Self {
         Self {
             file_id: self.file_id,
             offset: self.offset + offset,
         }
     }
 
-    pub fn file_id(self) -> FileId {
+    pub const fn file_id(self) -> FileId {
         self.file_id
     }
 
-    pub fn offset(self) -> usize {
+    pub const fn offset(self) -> usize {
         self.offset
     }
 
-    pub fn range(self, len: usize) -> CodeRange {
+    pub const fn range(self, len: usize) -> CodeRange {
         CodeRange::new(self, len)
     }
 
@@ -139,11 +139,11 @@ pub struct CodeRange {
 }
 
 impl CodeRange {
-    pub fn new(start: CodeLocation, len: usize) -> Self {
+    pub const fn new(start: CodeLocation, len: usize) -> Self {
         Self { start, len }
     }
 
-    pub fn contains(&self, other: CodeRange) -> Result<bool, CodeRangeComparisonError> {
+    pub const fn contains(&self, other: CodeRange) -> Result<bool, CodeRangeComparisonError> {
         match (self.start.file_id, other.start.file_id) {
             (FileId::None | FileId::Internal, _) | (_, FileId::None | FileId::Internal) => {
                 Err(CodeRangeComparisonError::FileIdIsNoneOrInternal)
@@ -152,7 +152,7 @@ impl CodeRange {
             (FileId::Custom(_), FileId::SourceFile(_))
             | (FileId::SourceFile(_), FileId::Custom(_)) => Ok(false),
 
-            (FileId::SourceFile(id), FileId::SourceFile(other_id)) => Ok(id == other_id
+            (FileId::SourceFile(id), FileId::SourceFile(other_id)) => Ok(id.const_eq(other_id)
                 && other.start.offset >= self.start.offset
                 && other.start.offset + other.len <= self.start.offset + self.len),
 
@@ -204,5 +204,11 @@ impl From<u64> for SourceFileID {
 impl From<SourceFileID> for u64 {
     fn from(value: SourceFileID) -> Self {
         value.0
+    }
+}
+
+impl SourceFileID {
+    pub const fn const_eq(self, other: Self) -> bool {
+        self.0 == other.0
     }
 }

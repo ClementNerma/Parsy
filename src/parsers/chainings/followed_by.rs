@@ -12,7 +12,7 @@ pub struct FollowedBy<F, FP: Parser<F>, O, OP: Parser<O>> {
 }
 
 impl<F, FP: Parser<F>, O, OP: Parser<O>> FollowedBy<F, FP, O, OP> {
-    pub fn new(parser: FP, following: OP) -> Self {
+    pub const fn new(parser: FP, following: OP) -> Self {
         Self {
             parser,
             following,

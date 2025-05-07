@@ -6,7 +6,7 @@ pub struct Char {
 }
 
 impl Char {
-    pub fn new(char: char) -> Self {
+    pub const fn new(char: char) -> Self {
         Self { char }
     }
 }

@@ -11,7 +11,7 @@ pub struct Choice<T: IntoChoice<O>, O> {
 }
 
 impl<T: IntoChoice<O>, O> Choice<T, O> {
-    pub fn new(parsers: T) -> Self {
+    pub const fn new(parsers: T) -> Self {
         Self {
             parsers,
             _p: PhantomData,

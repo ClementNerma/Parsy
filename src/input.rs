@@ -8,7 +8,7 @@ pub struct ParserInput<'a> {
 }
 
 impl<'a> ParserInput<'a> {
-    pub fn new(str: &'a str, file_id: FileId) -> Self {
+    pub const fn new(str: &'a str, file_id: FileId) -> Self {
         Self {
             str,
             at: CodeLocation { file_id, offset: 0 },
@@ -16,23 +16,23 @@ impl<'a> ParserInput<'a> {
         }
     }
 
-    pub fn inner(&self) -> &str {
+    pub const fn inner(&self) -> &str {
         self.str
     }
 
-    pub fn at(&self) -> CodeLocation {
+    pub const fn at(&self) -> CodeLocation {
         self.at
     }
 
-    pub fn range(&self, len: usize) -> CodeRange {
+    pub const fn range(&self, len: usize) -> CodeRange {
         CodeRange::new(self.at, len)
     }
 
-    pub fn offset(&self) -> usize {
+    pub const fn offset(&self) -> usize {
         self.at.offset()
     }
 
-    pub fn original(&self) -> &'a str {
+    pub const fn original(&self) -> &'a str {
         self.original
     }
 

@@ -13,7 +13,7 @@ pub struct Validate<T, P: Parser<T>, F: Fn(&T) -> bool> {
 }
 
 impl<T, P: Parser<T>, F: Fn(&T) -> bool> Validate<T, P, F> {
-    pub fn new(parser: P, validator: F) -> Self {
+    pub const fn new(parser: P, validator: F) -> Self {
         Self {
             parser,
             validator,
@@ -22,7 +22,7 @@ impl<T, P: Parser<T>, F: Fn(&T) -> bool> Validate<T, P, F> {
         }
     }
 
-    pub fn with_custom_msg(mut self, msg: &'static str) -> Self {
+    pub const fn with_custom_msg(mut self, msg: &'static str) -> Self {
         self.err_msg = Some(msg);
         self
     }

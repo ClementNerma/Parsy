@@ -12,7 +12,7 @@ pub struct ValidateOrCritical<T, P: Parser<T>, F: Fn(&T) -> Result<(), Cow<'stat
 }
 
 impl<T, P: Parser<T>, F: Fn(&T) -> Result<(), Cow<'static, str>>> ValidateOrCritical<T, P, F> {
-    pub fn new(parser: P, validator: F) -> Self {
+    pub const fn new(parser: P, validator: F) -> Self {
         Self {
             parser,
             validator,

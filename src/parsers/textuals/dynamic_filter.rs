@@ -8,7 +8,7 @@ pub struct DynamicFilter<F: Fn(char) -> bool> {
 }
 
 impl<F: Fn(char) -> bool> DynamicFilter<F> {
-    pub fn new(func: F) -> Self {
+    pub const fn new(func: F) -> Self {
         Self { func }
     }
 }

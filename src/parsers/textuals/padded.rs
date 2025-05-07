@@ -12,7 +12,7 @@ pub struct Padded<T, TP: Parser<T>, P, PP: Parser<P>> {
 }
 
 impl<T, TP: Parser<T>, P, PP: Parser<P>> Padded<T, TP, P, PP> {
-    pub fn new(middle: TP, padding: PP) -> Self {
+    pub const fn new(middle: TP, padding: PP) -> Self {
         Self {
             middle,
             padding,

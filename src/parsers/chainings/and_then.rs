@@ -13,7 +13,7 @@ pub struct AndThen<T, P: Parser<T>, U, F: Fn(T) -> Result<U, ParsingError>> {
 }
 
 impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, ParsingError>> AndThen<T, P, U, F> {
-    pub fn new(parser: P, mapper: F) -> Self {
+    pub const fn new(parser: P, mapper: F) -> Self {
         Self {
             parser,
             mapper,
@@ -22,7 +22,7 @@ impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, ParsingError>> AndThen<T, P, U, F
         }
     }
 
-    pub fn with_custom_err(mut self, err: &'static str) -> Self {
+    pub const fn with_custom_err(mut self, err: &'static str) -> Self {
         self.custom_err_msg = Some(err);
         self
     }

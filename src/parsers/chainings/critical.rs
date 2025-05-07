@@ -13,7 +13,7 @@ pub struct Critical<T, P: Parser<T>> {
 }
 
 impl<T, P: Parser<T>> Critical<T, P> {
-    pub fn new(parser: P, message: Option<&'static str>) -> Self {
+    pub const fn new(parser: P, message: Option<&'static str>) -> Self {
         Self {
             parser,
             message,
@@ -22,7 +22,7 @@ impl<T, P: Parser<T>> Critical<T, P> {
         }
     }
 
-    pub fn unexpected_eof_msg(mut self, enable: bool) -> Self {
+    pub const fn unexpected_eof_msg(mut self, enable: bool) -> Self {
         self.unexpected_eof_msg = enable;
         self
     }

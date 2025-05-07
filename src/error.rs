@@ -12,7 +12,7 @@ pub struct ParsingError {
 }
 
 impl ParsingError {
-    pub fn new(inner: ParsingErrorInner) -> Self {
+    pub const fn new(inner: ParsingErrorInner) -> Self {
         Self {
             inner,
             atomic_error: None,
@@ -20,7 +20,7 @@ impl ParsingError {
         }
     }
 
-    pub fn inner(&self) -> &ParsingErrorInner {
+    pub const fn inner(&self) -> &ParsingErrorInner {
         &self.inner
     }
 
@@ -32,7 +32,7 @@ impl ParsingError {
         self.critical.as_deref()
     }
 
-    pub fn is_critical(&self) -> bool {
+    pub const fn is_critical(&self) -> bool {
         self.critical.is_some()
     }
 
@@ -44,37 +44,37 @@ impl ParsingError {
         self
     }
 
-    pub fn atomic_error(&self) -> Option<&'static str> {
+    pub const fn atomic_error(&self) -> Option<&'static str> {
         self.atomic_error
     }
 
-    pub fn with_atomic_error(mut self, atomic_err: &'static str) -> Self {
+    pub const fn with_atomic_error(mut self, atomic_err: &'static str) -> Self {
         self.atomic_error = Some(atomic_err);
         self
     }
 
-    pub fn expected_char(range: CodeRange, expected: char) -> ParsingError {
+    pub const fn expected_char(range: CodeRange, expected: char) -> ParsingError {
         ParsingError::new(ParsingErrorInner::new(
             range,
             ParserExpectation::Char(expected),
         ))
     }
 
-    pub fn expected_str(range: CodeRange, expected: &'static str) -> ParsingError {
+    pub const fn expected_str(range: CodeRange, expected: &'static str) -> ParsingError {
         ParsingError::new(ParsingErrorInner::new(
             range,
             ParserExpectation::Str(expected),
         ))
     }
 
-    pub fn custom(range: CodeRange, message: &'static str) -> ParsingError {
+    pub const fn custom(range: CodeRange, message: &'static str) -> ParsingError {
         ParsingError::new(ParsingErrorInner::new(
             range,
             ParserExpectation::Custom(message),
         ))
     }
 
-    pub fn just_break(loc: CodeLocation) -> ParsingError {
+    pub const fn just_break(loc: CodeLocation) -> ParsingError {
         ParsingError::new(ParsingErrorInner::new(
             loc.range(0),
             ParserExpectation::Break,
@@ -111,19 +111,19 @@ pub struct ParsingErrorInner {
 }
 
 impl ParsingErrorInner {
-    pub fn new(at: CodeRange, expected: ParserExpectation) -> Self {
+    pub const fn new(at: CodeRange, expected: ParserExpectation) -> Self {
         Self { at, expected }
     }
 
-    pub fn at(&self) -> CodeRange {
+    pub const fn at(&self) -> CodeRange {
         self.at
     }
 
-    pub fn is_empty(&self) -> bool {
+    pub const fn is_empty(&self) -> bool {
         self.at.len == 0
     }
 
-    pub fn expected(&self) -> &ParserExpectation {
+    pub const fn expected(&self) -> &ParserExpectation {
         &self.expected
     }
 }

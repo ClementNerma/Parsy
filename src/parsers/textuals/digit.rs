@@ -6,7 +6,7 @@ pub struct Digit {
 }
 
 impl Digit {
-    pub fn new(radix: u32) -> Self {
+    pub const fn new(radix: u32) -> Self {
         Self { radix }
     }
 }

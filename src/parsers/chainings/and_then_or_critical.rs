@@ -12,7 +12,7 @@ pub struct AndThenOrCritical<T, P: Parser<T>, U, F: Fn(T) -> Result<U, Cow<'stat
 }
 
 impl<T, P: Parser<T>, U, F: Fn(T) -> Result<U, Cow<'static, str>>> AndThenOrCritical<T, P, U, F> {
-    pub fn new(parser: P, mapper: F) -> Self {
+    pub const fn new(parser: P, mapper: F) -> Self {
         Self {
             parser,
             mapper,

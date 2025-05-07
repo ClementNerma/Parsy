@@ -13,7 +13,7 @@ pub struct DelimitedBy<L, LP: Parser<L>, M, MP: Parser<M>, R, RP: Parser<R>> {
 }
 
 impl<L, LP: Parser<L>, M, MP: Parser<M>, R, RP: Parser<R>> DelimitedBy<L, LP, M, MP, R, RP> {
-    pub fn new(left: LP, middle: MP, right: RP) -> Self {
+    pub const fn new(left: LP, middle: MP, right: RP) -> Self {
         Self {
             left,
             middle,

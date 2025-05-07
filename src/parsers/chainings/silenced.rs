@@ -11,7 +11,7 @@ pub struct Silenced<T, P: Parser<T>> {
 }
 
 impl<T, P: Parser<T>> Silenced<T, P> {
-    pub fn new(parser: P) -> Self {
+    pub const fn new(parser: P) -> Self {
         Self {
             parser,
             _p: PhantomData,

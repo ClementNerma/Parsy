@@ -7,7 +7,7 @@ pub struct OneOfChars {
 }
 
 impl OneOfChars {
-    pub fn new(set: HashSet<char>) -> Self {
+    pub const fn new(set: HashSet<char>) -> Self {
         Self { set }
     }
 }

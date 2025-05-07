@@ -36,7 +36,12 @@ impl<'a, 'b, 'c> ErrorReport<'a, 'b, 'c> {
         }
     }
 
-    pub fn with_range(source: &'a str, source_path: &'b str, at: CodeRange, msg: &'c str) -> Self {
+    pub const fn with_range(
+        source: &'a str,
+        source_path: &'b str,
+        at: CodeRange,
+        msg: &'c str,
+    ) -> Self {
         Self {
             source,
             source_path,

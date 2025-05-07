@@ -12,7 +12,7 @@ pub struct MapStr<F, FP: Parser<F>, O, OF: Fn(&str) -> O> {
 }
 
 impl<F, FP: Parser<F>, O, OF: Fn(&str) -> O> MapStr<F, FP, O, OF> {
-    pub fn new(parser: FP, mapper: OF) -> Self {
+    pub const fn new(parser: FP, mapper: OF) -> Self {
         Self {
             parser,
             mapper,

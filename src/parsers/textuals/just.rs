@@ -6,7 +6,7 @@ pub struct Just {
 }
 
 impl Just {
-    pub fn new(str: &'static str) -> Self {
+    pub const fn new(str: &'static str) -> Self {
         Self { str }
     }
 }

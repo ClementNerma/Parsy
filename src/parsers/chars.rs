@@ -1,13 +1,13 @@
 use super::{helpers::filter, textuals::Filter};
 
-pub fn any_char() -> Filter {
+pub const fn any_char() -> Filter {
     filter(|_| true)
 }
 
-pub fn alphabetic() -> Filter {
+pub const fn alphabetic() -> Filter {
     filter(|c| c.is_alphabetic())
 }
 
-pub fn alphanumeric() -> Filter {
+pub const fn alphanumeric() -> Filter {
     filter(|c| c.is_alphanumeric())
 }

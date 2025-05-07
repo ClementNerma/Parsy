@@ -18,7 +18,7 @@ pub struct Debugging<T, P: Parser<T>, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>)> {
 }
 
 impl<T, P: Parser<T>, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>)> Debugging<T, P, F> {
-    pub fn new(parser: P, debugger: F) -> Self {
+    pub const fn new(parser: P, debugger: F) -> Self {
         Self {
             parser,
             debugger,

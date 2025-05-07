@@ -11,7 +11,7 @@ pub struct SilentChoice<T: IntoSilentChoice<Outputs>, Outputs> {
 }
 
 impl<T: IntoSilentChoice<Outputs>, Outputs> SilentChoice<T, Outputs> {
-    pub fn new(parsers: T) -> Self {
+    pub const fn new(parsers: T) -> Self {
         Self {
             parsers,
             _p: PhantomData,

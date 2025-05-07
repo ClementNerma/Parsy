@@ -4,7 +4,7 @@ use crate::{Parser, ParserInput, ParserResult, ParsingError, Span};
 pub struct Start;
 
 impl Start {
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         Self
     }
 }

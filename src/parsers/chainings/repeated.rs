@@ -14,7 +14,7 @@ pub struct Repeated<T, P: Parser<T>, C: Container<T>> {
 }
 
 impl<T, P: Parser<T>, C: Container<T>> Repeated<T, P, C> {
-    pub fn new(parser: P) -> Self {
+    pub const fn new(parser: P) -> Self {
         Self {
             parser,
             min: None,
@@ -58,7 +58,7 @@ impl<T, P: Parser<T>, C: Container<T>> Repeated<T, P, C> {
         self
     }
 
-    pub fn exactly(mut self, exactly: usize) -> Self {
+    pub const fn exactly(mut self, exactly: usize) -> Self {
         assert!(
             self.min.is_none(),
             "Cannot specify both a minimum and an exact number of repetitions"

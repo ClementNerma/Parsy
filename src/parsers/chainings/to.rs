@@ -12,7 +12,7 @@ pub struct To<T, P: Parser<T>, U: Copy> {
 }
 
 impl<T, P: Parser<T>, U: Copy> To<T, P, U> {
-    pub fn new(parser: P, data: U) -> Self {
+    pub const fn new(parser: P, data: U) -> Self {
         Self {
             parser,
             data,
