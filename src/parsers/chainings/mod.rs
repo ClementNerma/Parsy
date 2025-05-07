@@ -16,6 +16,7 @@ mod repeated;
 mod separated_by;
 mod silenced;
 mod spanned;
+mod string_collected;
 mod then;
 mod then_ignore;
 mod to;
@@ -43,6 +44,7 @@ pub use self::{
     separated_by::SeparatedBy,
     silenced::Silenced,
     spanned::Spanned,
+    string_collected::StringCollected,
     then::Then,
     then_ignore::ThenIgnore,
     to::To,
