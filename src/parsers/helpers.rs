@@ -6,7 +6,7 @@ use super::{
     combinators::{Choice, IntoChoice, IntoSilentChoice, Lookahead, Not, SilentChoice},
     contentless::{Empty, End, Start},
     custom::Custom,
-    textuals::{Char, Filter, Just, Newline, OneOfChars, Whitespaces},
+    textuals::{Char, Filter, Just, Newline, OneOfChars, Whitespace, Whitespaces},
     timed::{ToDefine, ToDefineShared},
 };
 
@@ -20,6 +20,10 @@ pub fn end() -> End {
 
 pub fn empty() -> Empty {
     Empty
+}
+
+pub fn whitespace() -> Whitespace {
+    Whitespace::default()
 }
 
 pub fn whitespaces() -> Whitespaces {
