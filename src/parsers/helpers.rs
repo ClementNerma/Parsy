@@ -7,7 +7,7 @@ use super::{
     contentless::{Empty, End, Start},
     custom::Custom,
     textuals::{Char, Filter, Just, Newline, OneOfChars, Whitespace, Whitespaces},
-    timed::{ToDefine, ToDefineShared},
+    timed::{LazilyDefined, ToDefine, ToDefineShared},
 };
 
 pub fn start() -> Start {
@@ -86,6 +86,12 @@ pub fn recursive_shared<T, P: Parser<T> + Send + Sync + 'static>(
     let parser = to_define_shared::<T>();
     parser.define(decl(parser.clone()));
     parser
+}
+
+pub const fn lazily_defined<T>(
+    setup: fn() -> Box<dyn Parser<T> + Send + Sync>,
+) -> LazilyDefined<T> {
+    LazilyDefined::new(setup)
 }
 
 pub fn custom<F: Fn(&mut ParserInput) -> ParserResult<O>, O>(func: F) -> Custom<F, O> {
