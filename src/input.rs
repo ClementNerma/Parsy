@@ -1,3 +1,5 @@
+use std::any::Any;
+
 use crate::{CodeLocation, CodeRange, FileId, Span};
 
 #[derive(Debug, Clone, Copy)]
@@ -5,6 +7,7 @@ pub struct ParserInput<'a> {
     str: &'a str,
     at: CodeLocation,
     original: &'a str,
+    ctx: Option<fn() -> Box<dyn Any>>,
 }
 
 impl<'a> ParserInput<'a> {
@@ -13,7 +16,21 @@ impl<'a> ParserInput<'a> {
             str,
             at: CodeLocation { file_id, offset: 0 },
             original: str,
+            ctx: None,
         }
+    }
+
+    pub const fn new_with_ctx(str: &'a str, file_id: FileId, ctx: fn() -> Box<dyn Any>) -> Self {
+        Self {
+            str,
+            at: CodeLocation { file_id, offset: 0 },
+            original: str,
+            ctx: Some(ctx),
+        }
+    }
+
+    pub fn get_ctx(&self) -> Option<Box<dyn Any>> {
+        self.ctx.as_ref().map(|ctx| ctx())
     }
 
     pub const fn inner(&self) -> &str {

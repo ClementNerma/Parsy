@@ -1,6 +1,6 @@
-use std::sync::LazyLock;
+use std::{any::Any, ops::Deref, sync::LazyLock};
 
-use parsy::{Parser, helpers::*, tails::DebugType};
+use parsy::{FileId, Parser, ParserInput, helpers::*, tails::DebugType};
 
 #[test]
 pub fn complex_test() {
@@ -76,6 +76,30 @@ pub fn utf8_boundaries() {
     let token = parser.parse_str("é").unwrap();
 
     assert_eq!(token.at.len, 'é'.len_utf8());
+}
+
+#[test]
+pub fn context() {
+    let parser = get_context::<String>();
+
+    fn prepare_input(ctx: fn() -> Box<dyn Any>) -> ParserInput<'static> {
+        ParserInput::new_with_ctx("", FileId::None, ctx)
+    }
+
+    assert_eq!(
+        parser
+            .parse(&mut prepare_input(|| Box::new("yoh".to_owned())))
+            .unwrap()
+            .data
+            .deref(),
+        "yoh"
+    );
+
+    assert!(
+        parser
+            .parse(&mut prepare_input(|| Box::new("yoh")))
+            .is_err()
+    );
 }
 
 #[allow(dead_code)]

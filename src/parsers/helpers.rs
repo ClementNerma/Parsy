@@ -1,10 +1,11 @@
-use std::collections::HashSet;
+use std::{any::Any, collections::HashSet};
 
 use crate::{ParserInput, ParserResult, parser::Parser};
 
 use super::{
     combinators::{Choice, IntoChoice, IntoSilentChoice, Lookahead, Not, SilentChoice, StaticRef},
     contentless::{Empty, End, Start},
+    context::GetContext,
     custom::Custom,
     textuals::{
         Char, Digit, DynamicFilter, Filter, Just, Newline, OneOfChars, Whitespace, Whitespaces,
@@ -110,4 +111,8 @@ pub fn recursive_shared<T, P: Parser<T> + Send + Sync + 'static>(
     let parser = to_define_shared::<T>();
     parser.define(decl(parser.clone()));
     parser
+}
+
+pub const fn get_context<C: Any>() -> GetContext<C> {
+    GetContext::new()
 }

@@ -3,6 +3,7 @@ pub mod chars;
 pub mod combinators;
 pub mod containers;
 pub mod contentless;
+pub mod context;
 pub mod custom;
 pub mod helpers;
 pub mod tails;
