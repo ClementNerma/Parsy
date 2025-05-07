@@ -4,16 +4,14 @@ pub mod combinators;
 pub mod container;
 pub mod simples;
 pub mod textuals;
-pub mod to_define;
-pub mod to_define_shared;
+mod to_define;
+mod to_define_shared;
 
 use std::collections::HashSet;
 
 use crate::{ParserInput, ParserResult, parser::Parser};
 
-use self::{
-    combinators::*, simples::*, textuals::*, to_define::ToDefine, to_define_shared::ToDefineShared,
-};
+use self::{combinators::*, simples::*, textuals::*, to_define::*, to_define_shared::*};
 
 pub fn start() -> Start {
     Start
