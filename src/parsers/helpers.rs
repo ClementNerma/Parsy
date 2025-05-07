@@ -3,7 +3,7 @@ use std::collections::HashSet;
 use crate::{ParserInput, ParserResult, parser::Parser};
 
 use super::{
-    combinators::{Choice, IntoChoice, IntoSilentChoice, Lookahead, Not, SilentChoice},
+    combinators::{Choice, IntoChoice, IntoSilentChoice, Lookahead, Not, SilentChoice, StaticRef},
     contentless::{Empty, End, Start},
     custom::Custom,
     textuals::{Char, Filter, Just, Newline, OneOfChars, Whitespace, Whitespaces},
@@ -92,6 +92,10 @@ pub const fn lazily_defined<T>(
     setup: fn() -> Box<dyn Parser<T> + Send + Sync>,
 ) -> LazilyDefined<T> {
     LazilyDefined::new(setup)
+}
+
+pub const fn static_ref<T, P: Parser<T>>(parser: &'static P) -> StaticRef<T, P> {
+    StaticRef::new(parser)
 }
 
 pub fn custom<F: Fn(&mut ParserInput) -> ParserResult<O>, O>(func: F) -> Custom<F, O> {

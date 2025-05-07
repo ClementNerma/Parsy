@@ -414,4 +414,21 @@ pub trait Parser<T> {
     {
         Debugging::new(self, debugger)
     }
+
+    /// Wrap a static reference to this parser inside a new parser
+    ///
+    /// This is useful to reference e.g. [`crate::timed::LazilyDefined`] parsers
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// static A: LazilyDefined<()> = lazily_defined(|| Box::new(B.static_ref().to(())));
+    /// static B: LazilyDefined<()> = lazily_defined(|| Box::new(A.static_ref().to(())));
+    /// ```
+    fn static_ref(&'static self) -> StaticRef<T, Self>
+    where
+        Self: Sized,
+    {
+        StaticRef::new(self)
+    }
 }
