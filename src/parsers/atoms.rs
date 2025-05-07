@@ -1,4 +1,6 @@
-use crate::{Parser, container::NoAllocContainer, filter};
+use crate::{Parser, containers::NoAllocContainer};
+
+use super::helpers::filter;
 
 pub fn whitespace() -> impl Parser<char> + Copy {
     filter(|c| c.is_whitespace())

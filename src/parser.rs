@@ -1,7 +1,7 @@
 use std::borrow::Cow;
 
 use crate::{
-    FileId, ParserInput, ParserResult, ParsingError, chainings::*, combinators::*, container::*,
+    FileId, ParserInput, ParserResult, ParsingError, chainings::*, combinators::*, containers::*,
     textuals::*,
 };
 
