@@ -2,7 +2,7 @@ use std::borrow::Cow;
 
 use crate::{
     FileId, ParserInput, ParserResult, ParsingError, chainings::*, combinators::*, containers::*,
-    textuals::*,
+    tails::*, textuals::*,
 };
 
 /// A parser takes an input and tries to consume the upcoming character(s) and transform it

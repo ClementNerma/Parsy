@@ -1,6 +1,6 @@
 use std::sync::LazyLock;
 
-use parsy::{Parser, chainings::DebugType, helpers::*};
+use parsy::{Parser, helpers::*, tails::DebugType};
 
 #[test]
 pub fn complex_test() {

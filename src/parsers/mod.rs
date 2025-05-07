@@ -5,5 +5,6 @@ pub mod containers;
 pub mod contentless;
 pub mod custom;
 pub mod helpers;
+pub mod tails;
 pub mod textuals;
 pub mod timed;
