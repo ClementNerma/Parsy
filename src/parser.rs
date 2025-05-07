@@ -422,6 +422,8 @@ pub trait Parser<T> {
     /// # Example
     ///
     /// ```rust
+    /// use parsy::{Parser, helpers::lazily_defined, timed::LazilyDefined};
+    ///
     /// static A: LazilyDefined<()> = lazily_defined(|| Box::new(B.static_ref().to(())));
     /// static B: LazilyDefined<()> = lazily_defined(|| Box::new(A.static_ref().to(())));
     /// ```
