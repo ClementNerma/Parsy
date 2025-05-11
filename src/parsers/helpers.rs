@@ -85,9 +85,7 @@ pub fn to_define_shared<T>() -> ToDefineShared<T> {
     ToDefineShared::new()
 }
 
-pub const fn lazily_defined<T>(
-    setup: fn() -> Box<dyn Parser<T> + Send + Sync>,
-) -> LazilyDefined<T> {
+pub const fn lazily_define<T>(setup: fn() -> Box<dyn Parser<T> + Send + Sync>) -> LazilyDefined<T> {
     LazilyDefined::new(setup)
 }
 
