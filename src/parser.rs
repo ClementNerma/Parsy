@@ -415,6 +415,26 @@ pub trait Parser<T> {
         Debugging::new(self, debugger)
     }
 
+    /// "Erase" the parser's type
+    ///
+    /// This is useful when requiring a parser whose type is very simple,
+    /// instead of having a combination of nested parsers with lots of generics.
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    ///  use parsy::{Parser, helpers::{just, lazily_defined}, timed::LazilyDefined};
+    ///
+    /// static PARSER_1: LazilyDefined<&'static str> = lazily_defined(|| Box::new(just("yeah")));
+    /// static PARSER_2: LazilyDefined<&'static str> = lazily_defined(|| just("yeah").erase_type());
+    /// ```
+    fn erase_type(self) -> Box<dyn Parser<T> + Send + Sync>
+    where
+        Self: Sized + Send + Sync + 'static,
+    {
+        Box::new(self)
+    }
+
     /// Wrap a static reference to this parser inside a new parser
     ///
     /// This is useful to reference e.g. [`crate::timed::LazilyDefined`] parsers
