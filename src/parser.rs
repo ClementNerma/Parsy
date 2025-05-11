@@ -261,15 +261,15 @@ pub trait Parser<T> {
     /// Require the parser to be preceded by and followed by the provided parsers
     ///
     /// The parsers' values are discarded
-    fn delimited_by<L, LP: Parser<L>, R, RP: Parser<R>>(
+    fn surrounded_by<L, LP: Parser<L>, R, RP: Parser<R>>(
         self,
         left: LP,
         right: RP,
-    ) -> DelimitedBy<L, LP, T, Self, R, RP>
+    ) -> SurroundedBy<L, LP, T, Self, R, RP>
     where
         Self: Sized,
     {
-        DelimitedBy::new(left, self, right)
+        SurroundedBy::new(left, self, right)
     }
 
     /// Repeat the parser with the required provided separator between each repetition

@@ -1,8 +1,8 @@
-use crate::{Parser, chainings::DelimitedBy};
+use crate::{Parser, chainings::SurroundedBy};
 
 use super::Whitespaces;
 
-pub type LinePadded<T, P> = DelimitedBy<(), Whitespaces, T, P, (), Whitespaces>;
+pub type LinePadded<T, P> = SurroundedBy<(), Whitespaces, T, P, (), Whitespaces>;
 
 impl<M, MP: Parser<M>> LinePadded<M, MP> {
     pub const fn line_padded(middle: MP) -> LinePadded<M, MP> {
