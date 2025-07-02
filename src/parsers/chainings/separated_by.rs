@@ -11,6 +11,7 @@ pub struct SeparatedBy<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> {
     min: Option<usize>,
     max: Option<usize>,
     exactly: Option<usize>,
+    critical_if_fails_after_sep: Option<&'static str>,
     _p: PhantomData<(T, S, C)>,
 }
 
@@ -22,6 +23,7 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> SeparatedBy<T, TP, S, 
             min: None,
             max: None,
             exactly: None,
+            critical_if_fails_after_sep: None,
             _p: PhantomData,
         }
     }
@@ -74,6 +76,11 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> SeparatedBy<T, TP, S, 
         self.exactly = Some(exactly);
         self
     }
+
+    pub fn critical_if_fails_after_sep(mut self, msg: &'static str) -> Self {
+        self.critical_if_fails_after_sep = Some(msg);
+        self
+    }
 }
 
 impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> Parser<C>
@@ -92,6 +99,13 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> Parser<C>
                 Err(err) => {
                     if err.is_critical() {
                         return Err(err);
+                    } else if size > 0
+                        && let Some(msg) = self.critical_if_fails_after_sep
+                    {
+                        return Err(ParsingError::custom(
+                            input.at().add(ate + ate_separator.unwrap_or(0)).range(0),
+                            msg,
+                        ));
                     } else {
                         break Some(err);
                     }
