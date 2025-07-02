@@ -106,16 +106,16 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> Parser<C>
             ate += parsed.at.len;
             size += 1;
 
-            if let Some(max) = self.max {
-                if size > max {
-                    break None;
-                }
+            if let Some(max) = self.max
+                && size > max
+            {
+                break None;
             }
 
-            if let Some(exactly) = self.exactly {
-                if size == exactly {
-                    break None;
-                }
+            if let Some(exactly) = self.exactly
+                && size == exactly
+            {
+                break None;
             }
 
             match self.separator.parse(input) {
@@ -132,12 +132,12 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> Parser<C>
             }
         };
 
-        if let Some(min) = self.min {
-            if size < min {
-                return Err(err.filter(|_| size == 0).unwrap_or_else(|| {
-                    ParsingError::custom(input.at().range(ate), "Not enough repetitions")
-                }));
-            }
+        if let Some(min) = self.min
+            && size < min
+        {
+            return Err(err.filter(|_| size == 0).unwrap_or_else(|| {
+                ParsingError::custom(input.at().range(ate), "Not enough repetitions")
+            }));
         }
 
         Ok(Span::ate(start.range(ate), out))

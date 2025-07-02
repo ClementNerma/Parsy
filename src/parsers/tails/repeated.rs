@@ -92,27 +92,27 @@ impl<T, P: Parser<T>, C: Container<T>> Parser<C> for Repeated<T, P, C> {
 
                     out.add(span.data);
 
-                    if let Some(max) = self.max {
-                        if count > max {
-                            break None;
-                        }
+                    if let Some(max) = self.max
+                        && count > max
+                    {
+                        break None;
                     }
 
-                    if let Some(exactly) = self.exactly {
-                        if count == exactly {
-                            break None;
-                        }
+                    if let Some(exactly) = self.exactly
+                        && count == exactly
+                    {
+                        break None;
                     }
                 }
             }
         };
 
-        if let Some(min) = self.min {
-            if count < min {
-                return Err(err.filter(|_| count == 0).unwrap_or_else(|| {
-                    ParsingError::custom(input.at().range(ate), "Not enough repetitions")
-                }));
-            }
+        if let Some(min) = self.min
+            && count < min
+        {
+            return Err(err.filter(|_| count == 0).unwrap_or_else(|| {
+                ParsingError::custom(input.at().range(ate), "Not enough repetitions")
+            }));
         }
 
         Ok(Span::ate(start.range(ate), out))
