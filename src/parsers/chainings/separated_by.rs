@@ -104,8 +104,9 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> Parser<C>
                     {
                         return Err(ParsingError::custom(
                             input.at().add(ate + ate_separator.unwrap_or(0)).range(0),
-                            msg,
-                        ));
+                            "repeated value parser failed after separator",
+                        )
+                        .criticalize(msg));
                     } else {
                         break Some(err);
                     }
