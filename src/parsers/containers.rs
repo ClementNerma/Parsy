@@ -1,3 +1,8 @@
+use std::{
+    collections::{BTreeSet, HashSet},
+    hash::Hash,
+};
+
 pub trait Container<T> {
     fn create() -> Self;
     fn with_capacity(size: usize) -> Self;
@@ -21,6 +26,43 @@ impl<T> Container<T> for Vec<T> {
 
     fn add(&mut self, value: T) {
         Vec::push(self, value);
+    }
+}
+
+impl<T: Eq + Hash> Container<T> for HashSet<T> {
+    fn create() -> Self {
+        HashSet::new()
+    }
+
+    fn with_capacity(size: usize) -> Self {
+        HashSet::with_capacity(size)
+    }
+
+    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self {
+        iter.into_iter().collect::<HashSet<_>>()
+    }
+
+    fn add(&mut self, value: T) {
+        HashSet::insert(self, value);
+    }
+}
+
+impl<T: Eq + Ord + Hash> Container<T> for BTreeSet<T> {
+    fn create() -> Self {
+        BTreeSet::new()
+    }
+
+    fn with_capacity(_: usize) -> Self {
+        // It is not possible to create a BTreeSet with a provisioned storage
+        BTreeSet::new()
+    }
+
+    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self {
+        iter.into_iter().collect::<BTreeSet<_>>()
+    }
+
+    fn add(&mut self, value: T) {
+        BTreeSet::insert(self, value);
     }
 }
 
