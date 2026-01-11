@@ -24,7 +24,7 @@ impl Parser<char> for OneOfChars {
             Ok(span)
         } else {
             Err(ParsingError::custom(
-                start.range(1),
+                start.range(span.data.len_utf8()),
                 "character did not match against the provided set",
             ))
         }

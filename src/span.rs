@@ -113,6 +113,14 @@ impl CodeLocation {
             col,
         })
     }
+
+    pub fn extract_str<'a>(&self, input: &'a str) -> Result<&'a str, LocationOutOfBoundsErr> {
+        if self.offset < input.len() {
+            Ok(&input[self.offset..])
+        } else {
+            Err(LocationOutOfBoundsErr)
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy)]

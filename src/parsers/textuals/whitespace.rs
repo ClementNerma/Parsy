@@ -34,7 +34,7 @@ impl Parser<()> for Whitespace {
             Ok(c.replace(()))
         } else {
             Err(ParsingError::custom(
-                start.range(1),
+                start.range(c.data.len_utf8()),
                 "Character filter failed",
             ))
         }

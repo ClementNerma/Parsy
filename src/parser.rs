@@ -423,10 +423,10 @@ pub trait Parser<T> {
     /// # Example
     ///
     /// ```rust
-    ///  use parsy::{Parser, helpers::{just, lazily_defined}, timed::LazilyDefined};
+    ///  use parsy::{Parser, helpers::{just, lazily_define}, timed::LazilyDefined};
     ///
-    /// static PARSER_1: LazilyDefined<&'static str> = lazily_defined(|| Box::new(just("yeah")));
-    /// static PARSER_2: LazilyDefined<&'static str> = lazily_defined(|| just("yeah").erase_type());
+    /// static PARSER_1: LazilyDefined<&'static str> = lazily_define(|| Box::new(just("yeah")));
+    /// static PARSER_2: LazilyDefined<&'static str> = lazily_define(|| just("yeah").erase_type());
     /// ```
     fn erase_type(self) -> Box<dyn Parser<T> + Send + Sync>
     where
@@ -442,10 +442,10 @@ pub trait Parser<T> {
     /// # Example
     ///
     /// ```rust
-    /// use parsy::{Parser, helpers::lazily_defined, timed::LazilyDefined};
+    /// use parsy::{Parser, helpers::lazily_define, timed::LazilyDefined};
     ///
-    /// static A: LazilyDefined<()> = lazily_defined(|| Box::new(B.static_ref().to(())));
-    /// static B: LazilyDefined<()> = lazily_defined(|| Box::new(A.static_ref().to(())));
+    /// static A: LazilyDefined<()> = lazily_define(|| Box::new(B.static_ref().to(())));
+    /// static B: LazilyDefined<()> = lazily_define(|| Box::new(A.static_ref().to(())));
     /// ```
     fn static_ref(&'static self) -> StaticRef<T, Self>
     where

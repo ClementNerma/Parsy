@@ -25,7 +25,7 @@ impl Parser<char> for Filter {
             Ok(c)
         } else {
             Err(ParsingError::custom(
-                start.range(1),
+                start.range(c.data.len_utf8()),
                 "Character filter failed",
             ))
         }

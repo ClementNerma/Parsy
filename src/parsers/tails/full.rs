@@ -31,8 +31,10 @@ impl<T, P: Parser<T>> Parser<T> for Full<T, P> {
         let data = self.parser.parse(input)?;
 
         if data.at.len < input.original().len() {
+            let next_char = input.original()[data.at.len..].chars().next().unwrap();
+
             return Err(ParsingError::custom(
-                data.at.start.add(data.at.len).range(1),
+                data.at.start.add(data.at.len).range(next_char.len_utf8()),
                 "Unexpected symbol",
             ));
         }

@@ -22,7 +22,10 @@ impl Parser<char> for Char {
         if span.data == self.char {
             Ok(span)
         } else {
-            Err(ParsingError::expected_char(start.range(1), self.char))
+            Err(ParsingError::expected_char(
+                start.range(span.data.len_utf8()),
+                self.char,
+            ))
         }
     }
 }
