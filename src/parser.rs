@@ -340,7 +340,7 @@ pub const trait ParserConstUtils<T>: Parser<T> {
     ///
     /// Requires the parser to return a nested iterator.
     /// The values are discarded. To collect them, see [`ParserConstUtils::flatten_into_vec`]
-    fn flatten<U, S>(self) -> Flattened<U, S, T, Self, NoAllocContainer>
+    fn flattened<U, S>(self) -> Flattened<U, S, T, Self, NoAllocContainer>
     where
         Self: Sized,
         T: IntoIterator<Item = S>,
