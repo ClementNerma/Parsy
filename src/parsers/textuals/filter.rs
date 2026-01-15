@@ -4,17 +4,17 @@ use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
 /// See [`filter`](`crate::parsers::helpers::filter`)
 #[perfect_derive(Clone, Copy)]
-pub struct Filter {
-    func: fn(char) -> bool,
+pub struct Filter<F: Fn(char) -> bool = fn(char) -> bool> {
+    func: F,
 }
 
-impl Filter {
-    pub const fn new(func: fn(char) -> bool) -> Self {
+impl<F: Fn(char) -> bool> Filter<F> {
+    pub const fn new(func: F) -> Self {
         Self { func }
     }
 }
 
-impl Parser<char> for Filter {
+impl<F: Fn(char) -> bool> Parser<char> for Filter<F> {
     fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<char> {
         let start = input.at();
 

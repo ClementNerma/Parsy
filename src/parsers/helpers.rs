@@ -7,9 +7,9 @@ use std::{any::Any, collections::HashSet};
 use crate::{ParserInput, ParserResult, parser::Parser};
 
 use super::{
-    Char, Choice, Custom, Digit, DynamicFilter, Empty, End, Filter, GetContext, IntoChoice,
-    IntoSilentChoice, Just, LazilyDefined, Lookahead, Newline, Not, OneOfChars, SilentChoice,
-    Start, StaticRef, ToDefine, ToDefineShared, Whitespace, Whitespaces,
+    Char, Choice, Custom, Digit, Empty, End, Filter, GetContext, IntoChoice, IntoSilentChoice,
+    Just, LazilyDefined, Lookahead, Newline, Not, OneOfChars, SilentChoice, Start, StaticRef,
+    ToDefine, ToDefineShared, Whitespace, Whitespaces,
 };
 
 /// Match the start of the input (doesn't consume the input)
@@ -69,13 +69,8 @@ pub const fn digit(radix: u32) -> Digit {
 }
 
 /// Match any character that passes the provided filter
-pub const fn filter(func: fn(char) -> bool) -> Filter {
+pub const fn filter<F: Fn(char) -> bool>(func: F) -> Filter<F> {
     Filter::new(func)
-}
-
-/// Equivalent to [`filter`] but allows using a non-pointer function
-pub const fn dynamic_filter<F: Fn(char) -> bool>(func: F) -> DynamicFilter<F> {
-    DynamicFilter::new(func)
 }
 
 /// Create a parser that returns the value of the first parser to succeed in a set
