@@ -29,7 +29,7 @@ pub trait ParserNonConstUtils<T>: Parser<T> {
 
         // Only apply changes to input (cursor advance) if the parsing was successful
         // Otherwise, keep the original intact (this is equivalent to rollbacking in case of error)
-        result.inspect(|span| input.apply(span))
+        result.inspect(|span| input.advance(span.at))
     }
 
     /// Parse a string
@@ -115,7 +115,7 @@ pub const trait ParserConstUtils<T>: Parser<T> {
 
     /// Parse as many times as possible, until the parser eventually fails
     ///
-    /// This will not allocate. To get the results directly in a [`Vec`], see [`Parser::repeated_into_vec`]
+    /// This will not allocate. To get the results directly in a [`Vec`], see [`ParserConstUtils::repeated_into_vec`]
     fn repeated(self) -> Repeated<T, Self, NoAllocContainer>
     where
         Self: Sized,
@@ -126,7 +126,7 @@ pub const trait ParserConstUtils<T>: Parser<T> {
     /// Parse as many times as possible, until the parser eventually fails
     ///
     /// All the parsed values will be put in a [`Vec`].
-    /// To use another container, see [`Parser::repeated_into_container`]
+    /// To use another container, see [`ParserConstUtils::repeated_into_container`]
     fn repeated_into_vec(self) -> Repeated<T, Self, Vec<T>>
     where
         Self: Sized,
@@ -184,7 +184,7 @@ pub const trait ParserConstUtils<T>: Parser<T> {
 
     /// Transform and validate the parsed value using the provided function
     ///
-    /// If you want to only return an error message, see [`Parser::and_then_or_str`]
+    /// If you only want to return a critical error message, see [`ParserConstUtils::and_then_or_critical`]
     fn and_then<U, F: Fn(T) -> Result<U, ParsingError>>(self, mapper: F) -> AndThen<T, Self, U, F>
     where
         Self: Sized,
@@ -193,7 +193,7 @@ pub const trait ParserConstUtils<T>: Parser<T> {
     }
 
     /// Transform and validate the parsed value using the provided function
-    /// Failures are [critical](`Parser::critical`)
+    /// Failures are [critical](`ParserConstUtils::critical`)
     fn and_then_or_critical<U, F: Fn(T) -> Result<U, Cow<'static, str>>>(
         self,
         mapper: F,
@@ -305,7 +305,7 @@ pub const trait ParserConstUtils<T>: Parser<T> {
 
     /// Repeat the parser with the required provided separator between each repetition
     ///
-    /// If you want to collect the results, see [`Parser::separated_by_into_vec`].
+    /// If you want to collect the results, see [`ParserConstUtils::separated_by_into_vec`].
     fn separated_by<S, P: Parser<S>>(self, sep: P) -> SeparatedBy<T, Self, S, P, NoAllocContainer>
     where
         Self: Sized,
@@ -316,7 +316,7 @@ pub const trait ParserConstUtils<T>: Parser<T> {
     /// Repeat the parser with the required provided separator between each repetition
     ///
     /// All results are collected into a [`Vec`].
-    /// To use a custom container, see [`Parser::separated_by_into_container`]
+    /// To use a custom container, see [`ParserConstUtils::separated_by_into_container`]
     fn separated_by_into_vec<S, P: Parser<S>>(self, sep: P) -> SeparatedBy<T, Self, S, P, Vec<T>>
     where
         Self: Sized,
@@ -340,7 +340,7 @@ pub const trait ParserConstUtils<T>: Parser<T> {
     /// Flatten the parser
     ///
     /// Requires the parser to return a nested iterator.
-    /// The values are discarded. To collect them, see [`Parser::flatten_into_vec`]
+    /// The values are discarded. To collect them, see [`ParserConstUtils::flatten_into_vec`]
     fn flatten<U, S>(self) -> Flattened<U, S, T, Self, NoAllocContainer>
     where
         Self: Sized,
@@ -354,7 +354,7 @@ pub const trait ParserConstUtils<T>: Parser<T> {
     /// Requires the parser to return a nested iterator.
     ///
     /// The values are collected into a [`Vec`].
-    /// To use a custom container, see [`Parser::flatten_into_container`]
+    /// To use a custom container, see [`ParserConstUtils::flatten_into_container`]
     fn flatten_into_vec<U, S>(self) -> Flattened<U, S, T, Self, Vec<U>>
     where
         Self: Sized,
@@ -395,7 +395,7 @@ pub const trait ParserConstUtils<T>: Parser<T> {
 
     /// Allow the parser to fallback to another parser in case of failure
     ///
-    /// If you have multiple choices, see [`crate::parsers::choice`]
+    /// If you have multiple choices, see [`crate::helpers::choice`]
     fn or<P: Parser<T>>(self, other: P) -> Choice<(Self, P), T>
     where
         Self: Sized,
@@ -413,7 +413,7 @@ pub const trait ParserConstUtils<T>: Parser<T> {
 
     /// Validate the parsed value with a predicate or return a provided critical error message
     ///
-    /// If you want to customize the validation message, use [`Parser::validate_or_dynamic_critical`]
+    /// If you want to customize the validation message, use [`ParserConstUtils::validate_or_dynamic_critical`]
     fn validate_or_critical<F: Fn(&T) -> bool>(
         self,
         validator: F,
@@ -484,14 +484,3 @@ impl<T, P: Parser<T>> Parser<T> for LazyLock<P> {
         self.deref().parse_inner(input)
     }
 }
-
-// // Implement for Deref types, such as Box or Arc
-// impl<T, P> Parser<T> for P
-// where
-//     P: Deref,
-//     P::Target: Parser<T>,
-// {
-//     fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T> {
-//         self.deref().parse_inner(input)
-//     }
-// }

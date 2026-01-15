@@ -4,6 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult};
 
+/// See [`crate::ParserConstUtils::followed_by`]
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct FollowedBy<F, FP: Parser<F>, O, OP: Parser<O>> {
     parser: FP,

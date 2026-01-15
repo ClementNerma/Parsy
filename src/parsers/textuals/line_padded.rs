@@ -2,6 +2,7 @@ use crate::{Parser, chainings::SurroundedBy};
 
 use super::Whitespaces;
 
+/// See [`crate::ParserConstUtils::line_padded`]
 pub type LinePadded<T, P> = SurroundedBy<(), Whitespaces, T, P, (), Whitespaces>;
 
 impl<M, MP: Parser<M>> LinePadded<M, MP> {

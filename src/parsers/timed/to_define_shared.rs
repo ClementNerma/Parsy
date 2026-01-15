@@ -4,6 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult};
 
+/// See [`crate::helpers::to_define_shared`]
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct ToDefineShared<T> {
     parser_ref: Arc<RwLock<Option<Box<dyn Parser<T> + Send + Sync>>>>,

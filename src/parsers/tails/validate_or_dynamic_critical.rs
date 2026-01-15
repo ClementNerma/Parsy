@@ -4,6 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError};
 
+/// See [`crate::ParserConstUtils::validate_or_dynamic_critical`]
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct ValidateOrDynamicCriticalMsg<T, P: Parser<T>, F: Fn(&T) -> Result<(), Cow<'static, str>>>
 {

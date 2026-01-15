@@ -4,6 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, Span};
 
+/// See [`crate::ParserConstUtils::collect_string`]
 #[perfect_derive(Clone, Copy)]
 pub struct StringCollected<T, P: Parser<T>> {
     parser: P,

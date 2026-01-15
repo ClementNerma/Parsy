@@ -1,5 +1,6 @@
 use crate::{Parser, ParserInput, ParserResult, Span};
 
+/// See [`crate::helpers::empty`]
 #[derive(Clone, Copy)]
 pub struct Empty;
 

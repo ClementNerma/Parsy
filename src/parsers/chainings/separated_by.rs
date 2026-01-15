@@ -7,6 +7,7 @@ use crate::{
     containers::Container,
 };
 
+/// See [`crate::ParserConstUtils::separated_by`]
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct SeparatedBy<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> {
     parser: TP,

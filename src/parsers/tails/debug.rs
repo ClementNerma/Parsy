@@ -4,12 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{ParserInput, ParserNonConstUtils, ParserResult, parser::Parser};
 
-#[derive(Debug)]
-pub enum DebugType<'a, 'b, T> {
-    Input(&'a ParserInput<'b>),
-    Result(&'a ParserResult<T>),
-}
-
+/// See [`crate::ParserConstUtils::debug`]
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Debugging<T, P: Parser<T>, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>)> {
     parser: P,
@@ -37,4 +32,10 @@ impl<T, P: Parser<T>, F: for<'a, 'b> Fn(DebugType<'a, 'b, T>)> Parser<T> for Deb
 
         result
     }
+}
+
+#[derive(Debug)]
+pub enum DebugType<'a, 'b, T> {
+    Input(&'a ParserInput<'b>),
+    Result(&'a ParserResult<T>),
 }

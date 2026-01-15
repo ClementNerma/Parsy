@@ -1,5 +1,6 @@
 use crate::{Parser, ParserInput, ParserResult, ParsingError, Span};
 
+/// See [`crate::helpers::whitespaces`]
 #[derive(Clone, Copy)]
 pub struct Whitespaces {
     at_least_one: bool,

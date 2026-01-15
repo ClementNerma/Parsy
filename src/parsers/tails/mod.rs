@@ -7,6 +7,7 @@ mod or_not;
 mod repeated;
 mod silenced;
 mod spanned;
+mod static_ref;
 mod string_collected;
 mod to;
 mod validate;
@@ -23,6 +24,7 @@ pub use self::{
     repeated::Repeated,
     silenced::Silenced,
     spanned::Spanned,
+    static_ref::StaticRef,
     string_collected::StringCollected,
     to::To,
     validate::Validate,

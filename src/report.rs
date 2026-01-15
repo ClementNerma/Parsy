@@ -2,18 +2,32 @@ use std::borrow::Cow;
 
 use annotate_snippets::{Level, Renderer, Snippet};
 
-use crate::{CodeRange, ParserExpectation, ParsingError};
+use crate::{InputRange, ParserExpectation, ParsingError};
 
+/// An error report, that will display a nice, human-readable extract of the
+/// input content along with the error message at the location it happened.
+///
+/// Uses [`annotate_snippets`] under the hood.
 #[derive(Clone)]
 pub struct ErrorReport<'a, 'b, 'c> {
+    /// Source content the parser originally used
     source: &'a str,
+
+    /// Path to the source
     source_path: &'b str,
+
+    /// Error message
     err_msg: Cow<'c, str>,
+
+    /// Offset in the source content
     offset: usize,
+
+    /// Number of input bytes covered by the error
     len: usize,
 }
 
 impl<'a, 'b, 'c> ErrorReport<'a, 'b, 'c> {
+    /// Create an error report from a [`ParsingError`]
     pub fn parsing_error(
         source: &'a str,
         source_path: &'b str,
@@ -36,10 +50,11 @@ impl<'a, 'b, 'c> ErrorReport<'a, 'b, 'c> {
         }
     }
 
+    /// Create an error report from a [`CodeRange`]
     pub const fn with_range(
         source: &'a str,
         source_path: &'b str,
-        at: CodeRange,
+        at: InputRange,
         msg: &'c str,
     ) -> Self {
         Self {

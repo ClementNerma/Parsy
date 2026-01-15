@@ -4,6 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError, Span};
 
+/// See [`crate::ParserConstUtils::and_then_or_critical`]
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct AndThenOrCritical<T, P: Parser<T>, U, F: Fn(T) -> Result<U, Cow<'static, str>>> {
     parser: P,

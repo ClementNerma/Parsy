@@ -4,6 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError};
 
+/// See [`crate::ParserConstUtils::validate`]
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Validate<T, P: Parser<T>, F: Fn(&T) -> bool> {
     parser: P,

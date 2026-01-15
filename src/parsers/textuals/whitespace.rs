@@ -1,5 +1,6 @@
 use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
+/// See [`crate::helpers::whitespace`]
 #[derive(Clone, Copy)]
 pub struct Whitespace {
     no_newline: bool,
@@ -31,7 +32,7 @@ impl Parser<()> for Whitespace {
             .ok_or_else(|| ParsingError::custom(start.range(0), "No character left"))?;
 
         if c.data.is_whitespace() {
-            Ok(c.replace(()))
+            Ok(c.forge_here(()))
         } else {
             Err(ParsingError::custom(
                 start.range(c.data.len_utf8()),

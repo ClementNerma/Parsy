@@ -2,6 +2,7 @@ use std::collections::HashSet;
 
 use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
+/// See [`crate::helpers::one_of_chars`]
 pub struct OneOfChars {
     set: HashSet<char>,
 }

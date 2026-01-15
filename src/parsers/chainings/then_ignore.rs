@@ -4,6 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult};
 
+/// See [`crate::ParserConstUtils::then_ignore`]
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct ThenIgnore<F, FP: Parser<F>, O, OP: Parser<O>> {
     from: FP,

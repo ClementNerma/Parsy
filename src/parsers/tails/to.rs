@@ -4,6 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult};
 
+/// See [`crate::ParserConstUtils::to`]
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct To<T, P: Parser<T>, U: Copy> {
     parser: P,
@@ -23,6 +24,8 @@ impl<T, P: Parser<T>, U: Copy> To<T, P, U> {
 
 impl<T, P: Parser<T>, U: Copy> Parser<U> for To<T, P, U> {
     fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<U> {
-        self.parser.parse(input).map(|span| span.replace(self.data))
+        self.parser
+            .parse(input)
+            .map(|span| span.forge_here(self.data))
     }
 }

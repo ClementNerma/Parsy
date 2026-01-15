@@ -1,5 +1,6 @@
 use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
+/// See [`crate::helpers::digit`]
 #[derive(Clone, Copy)]
 pub struct Digit {
     radix: u32,
@@ -20,7 +21,7 @@ impl Parser<()> for Digit {
             .ok_or_else(|| ParsingError::custom(start.range(0), "No character left"))?;
 
         if c.data.is_digit(self.radix) {
-            Ok(c.replace(()))
+            Ok(c.forge_here(()))
         } else {
             Err(ParsingError::custom(
                 start.range(c.data.len_utf8()),

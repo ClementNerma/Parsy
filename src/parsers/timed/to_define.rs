@@ -4,6 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult};
 
+/// See [`crate::helpers::to_define`]
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct ToDefine<T> {
     parser_ref: Rc<RefCell<Option<Box<dyn Parser<T>>>>>,

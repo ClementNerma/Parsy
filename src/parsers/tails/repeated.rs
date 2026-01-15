@@ -2,9 +2,13 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError, Span, containers::Container};
+use crate::{
+    Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError, Span,
+    containers::Container,
+};
 
-#[perfect_derive(Clone, Copy)]
+/// See [`crate::ParserConstUtils::repeated`]
+#[perfect_derive(Debug, Clone, Copy)]
 pub struct Repeated<T, P: Parser<T>, C: Container<T>> {
     parser: P,
     min: Option<usize>,

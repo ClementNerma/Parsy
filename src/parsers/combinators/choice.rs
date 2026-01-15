@@ -4,6 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError};
 
+/// See [`crate::helpers::choice`]
 #[perfect_derive(Clone, Copy)]
 pub struct Choice<T: IntoChoice<O>, O> {
     parsers: T,
