@@ -11,6 +11,7 @@ impl Whitespace {
         Self { no_newline: false }
     }
 
+    /// Don't accept newline symbols
     pub const fn no_newline(mut self) -> Self {
         self.no_newline = true;
         self

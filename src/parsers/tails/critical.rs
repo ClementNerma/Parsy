@@ -23,6 +23,8 @@ impl<T, P: Parser<T>> Critical<T, P> {
         }
     }
 
+    /// Return a specific error message if the parser fails
+    /// because it reached the end of the input
     pub const fn unexpected_eof_msg(mut self, enable: bool) -> Self {
         self.unexpected_eof_msg = enable;
         self

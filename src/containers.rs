@@ -7,11 +7,17 @@ use std::{
 ///
 /// See [`collect`](`crate::ParserConstUtils::collect`)
 pub trait Container<T> {
+    /// Create a container
     fn create() -> Self;
+
+    /// Create a container with the provided capacity reserved ahead-of-time
     fn with_capacity(size: usize) -> Self;
+
+    /// Create a container from the provided iterator
     fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self;
 
-    fn add(&mut self, value: T);
+    /// Push a new value into the container
+    fn push(&mut self, value: T);
 }
 
 impl<T> Container<T> for Vec<T> {
@@ -27,7 +33,7 @@ impl<T> Container<T> for Vec<T> {
         iter.into_iter().collect()
     }
 
-    fn add(&mut self, value: T) {
+    fn push(&mut self, value: T) {
         Vec::push(self, value);
     }
 }
@@ -45,7 +51,7 @@ impl<T: Eq + Hash> Container<T> for HashSet<T> {
         iter.into_iter().collect::<HashSet<_>>()
     }
 
-    fn add(&mut self, value: T) {
+    fn push(&mut self, value: T) {
         HashSet::insert(self, value);
     }
 }
@@ -64,7 +70,7 @@ impl<T: Eq + Ord + Hash> Container<T> for BTreeSet<T> {
         iter.into_iter().collect::<BTreeSet<_>>()
     }
 
-    fn add(&mut self, value: T) {
+    fn push(&mut self, value: T) {
         BTreeSet::insert(self, value);
     }
 }
@@ -82,7 +88,7 @@ impl Container<char> for String {
         iter.into_iter().collect()
     }
 
-    fn add(&mut self, value: char) {
+    fn push(&mut self, value: char) {
         self.push(value)
     }
 }
@@ -100,11 +106,14 @@ impl Container<String> for String {
         iter.into_iter().collect()
     }
 
-    fn add(&mut self, value: String) {
+    fn push(&mut self, value: String) {
         self.push_str(&value)
     }
 }
 
+/// A container that discards every value
+///
+/// Does not allocate any memory
 #[derive(Clone, Copy)]
 pub struct NoAllocContainer;
 
@@ -123,5 +132,5 @@ impl<T> Container<T> for NoAllocContainer {
         Self
     }
 
-    fn add(&mut self, _: T) {}
+    fn push(&mut self, _: T) {}
 }

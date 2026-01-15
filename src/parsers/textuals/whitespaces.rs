@@ -15,13 +15,15 @@ impl Whitespaces {
         }
     }
 
-    pub const fn at_least_one(mut self) -> Self {
-        self.at_least_one = true;
+    /// Don't accept newline symbols
+    pub const fn no_newline(mut self) -> Self {
+        self.no_newline = true;
         self
     }
 
-    pub const fn no_newline(mut self) -> Self {
-        self.no_newline = true;
+    /// Require at least one whitespace for the parser to succeed
+    pub const fn at_least_one(mut self) -> Self {
+        self.at_least_one = true;
         self
     }
 }

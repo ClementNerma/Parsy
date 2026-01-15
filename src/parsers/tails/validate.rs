@@ -9,7 +9,6 @@ use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError
 pub struct Validate<T, P: Parser<T>, F: Fn(&T) -> bool> {
     parser: P,
     validator: F,
-    err_msg: Option<&'static str>,
     _p: PhantomData<T>,
 }
 
@@ -18,14 +17,8 @@ impl<T, P: Parser<T>, F: Fn(&T) -> bool> Validate<T, P, F> {
         Self {
             parser,
             validator,
-            err_msg: None,
             _p: PhantomData,
         }
-    }
-
-    pub const fn with_custom_msg(mut self, msg: &'static str) -> Self {
-        self.err_msg = Some(msg);
-        self
     }
 }
 
@@ -39,7 +32,7 @@ impl<T, P: Parser<T>, F: Fn(&T) -> bool> Parser<T> for Validate<T, P, F> {
         } else {
             Err(ParsingError::custom(
                 start.range(parsed.at.len),
-                self.err_msg.unwrap_or("Validator failed"),
+                "validator failed",
             ))
         }
     }

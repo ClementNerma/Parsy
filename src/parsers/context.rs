@@ -19,6 +19,7 @@ impl<C> GetContext<C> {
         }
     }
 
+    /// Dont't generate a critical error when failing
     pub const fn not_critical(mut self) -> Self {
         self.not_critical = true;
         self

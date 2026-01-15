@@ -32,6 +32,9 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> SeparatedBy<T, TP, S, 
         }
     }
 
+    /// Require the parser to succeed at least the provided number of times (successively)
+    ///
+    /// Panics if [`Self::at_most`] or [`Self::exactly`] were called
     pub fn at_least(mut self, min: usize) -> Self {
         assert!(
             self.exactly.is_none(),
@@ -49,6 +52,9 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> SeparatedBy<T, TP, S, 
         self
     }
 
+    /// Require the parser to succeed at most the provided number of times (successively)
+    ///
+    /// Panics if [`Self::at_least`] or [`Self::exactly`] were called
     pub fn at_most(mut self, max: usize) -> Self {
         assert!(
             self.exactly.is_none(),
@@ -66,6 +72,9 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> SeparatedBy<T, TP, S, 
         self
     }
 
+    /// Require the parser to succeed exactly the provided number of times (successively)
+    ///
+    /// Panics if [`Self::at_least`] or [`Self::at_most`] were called
     pub const fn exactly(mut self, exactly: usize) -> Self {
         assert!(
             self.min.is_none(),
@@ -81,6 +90,10 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> SeparatedBy<T, TP, S, 
         self
     }
 
+    /// Return a critical error if the parser fails after the separator
+    ///
+    /// If not set, no error will be returned, as the parser will simply stop with
+    /// what it will have collected into the container
     pub fn critical_if_fails_after_sep(mut self, msg: &'static str) -> Self {
         self.critical_if_fails_after_sep = Some(msg);
         self
@@ -121,7 +134,7 @@ impl<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> Parser<C>
                 ate += ate_separator;
             }
 
-            out.add(parsed.data);
+            out.push(parsed.data);
             ate += parsed.at.len;
             size += 1;
 

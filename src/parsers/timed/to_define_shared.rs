@@ -17,6 +17,9 @@ impl<T> ToDefineShared<T> {
         }
     }
 
+    /// Set the parser's final content
+    ///
+    /// Panics if called twice
     pub fn define(&self, parser: impl Parser<T> + Send + Sync + 'static) {
         let mut borrowed = self.parser_ref.write().unwrap();
 

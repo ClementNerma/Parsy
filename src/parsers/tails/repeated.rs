@@ -28,6 +28,9 @@ impl<T, P: Parser<T>, C: Container<T>> Repeated<T, P, C> {
         }
     }
 
+    /// Require the parser to succeed at least the provided number of times (successively)
+    ///
+    /// Panics if [`Self::at_most`] or [`Self::exactly`] were called
     pub fn at_least(mut self, min: usize) -> Self {
         assert!(
             self.exactly.is_none(),
@@ -45,6 +48,9 @@ impl<T, P: Parser<T>, C: Container<T>> Repeated<T, P, C> {
         self
     }
 
+    /// Require the parser to succeed at most the provided number of times (successively)
+    ///
+    /// Panics if [`Self::at_least`] or [`Self::exactly`] were called
     pub fn at_most(mut self, max: usize) -> Self {
         assert!(
             self.exactly.is_none(),
@@ -62,6 +68,9 @@ impl<T, P: Parser<T>, C: Container<T>> Repeated<T, P, C> {
         self
     }
 
+    /// Require the parser to succeed exactly the provided number of times (successively)
+    ///
+    /// Panics if [`Self::at_least`] or [`Self::at_most`] were called
     pub const fn exactly(mut self, exactly: usize) -> Self {
         assert!(
             self.min.is_none(),
@@ -94,7 +103,7 @@ impl<T, P: Parser<T>, C: Container<T>> Parser<C> for Repeated<T, P, C> {
                     ate += span.at.len;
                     count += 1;
 
-                    out.add(span.data);
+                    out.push(span.data);
 
                     if let Some(max) = self.max
                         && count > max
