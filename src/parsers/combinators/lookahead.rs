@@ -4,7 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, Span};
 
-/// See [`crate::helpers::lookahead`]
+/// See [`lookahead`](`crate::parsers::helpers::lookahead`)
 #[perfect_derive(Clone, Copy)]
 pub struct Lookahead<T, P: Parser<T>> {
     parser: P,

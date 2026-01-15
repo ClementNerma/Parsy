@@ -4,7 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError};
 
-/// See [`crate::helpers::silent_choice`]
+/// See [`silent_choice`](`crate::parsers::helpers::silent_choice`)
 #[perfect_derive(Clone, Copy)]
 pub struct SilentChoice<T: IntoSilentChoice<Outputs>, Outputs> {
     parsers: T,
@@ -20,6 +20,8 @@ impl<T: IntoSilentChoice<Outputs>, Outputs> SilentChoice<T, Outputs> {
     }
 }
 
+/// Constraint type to ensure that all parsers provided to a [`SilentChoice`]
+/// do implement the [`Parser`] trait
 pub trait IntoSilentChoice<Outputs> {
     fn into_silent_choice(self) -> SilentChoice<Self, Outputs>
     where

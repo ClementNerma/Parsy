@@ -4,7 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult};
 
-/// See [`crate::ParserConstUtils::surrounded_by`]
+/// See [`surrounded_by`](`crate::ParserConstUtils::surrounded_by`)
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct SurroundedBy<L, LP: Parser<L>, M, MP: Parser<M>, R, RP: Parser<R>> {
     left: LP,

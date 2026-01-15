@@ -1,6 +1,6 @@
 use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
-/// See [`crate::helpers::just`]
+/// See [`just`](`crate::parsers::helpers::just`)
 #[derive(Clone, Copy)]
 pub struct Just {
     str: &'static str,

@@ -1,6 +1,6 @@
 use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
-/// See [`crate::helpers::digit`]
+/// See [`digit`](`crate::parsers::helpers::digit`)
 #[derive(Clone, Copy)]
 pub struct Digit {
     radix: u32,

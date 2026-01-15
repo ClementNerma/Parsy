@@ -4,7 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult};
 
-/// See [`crate::ParserConstUtils::map`]
+/// See [`map`](`crate::ParserConstUtils::map`)
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Map<F, FP: Parser<F>, O, OF: Fn(F) -> O> {
     parser: FP,

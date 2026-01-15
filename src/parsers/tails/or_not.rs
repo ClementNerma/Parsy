@@ -4,7 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, Span};
 
-/// See [`crate::ParserConstUtils::or_not`]
+/// See [`or_not`](`crate::ParserConstUtils::or_not`)
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct OrNot<T, P: Parser<T>> {
     parser: P,

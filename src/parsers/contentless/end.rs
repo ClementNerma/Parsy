@@ -1,6 +1,6 @@
 use crate::{Parser, ParserInput, ParserResult, ParsingError, Span};
 
-/// See [`crate::helpers::end`]
+/// See [`end`](`crate::parsers::helpers::end`)
 #[derive(Clone, Copy)]
 pub struct End;
 

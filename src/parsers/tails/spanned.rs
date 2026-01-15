@@ -4,7 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, Span};
 
-/// See [`crate::ParserConstUtils::spanned`]
+/// See [`spanned`](`crate::ParserConstUtils::spanned`)
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Spanned<T, P: Parser<T>> {
     parser: P,

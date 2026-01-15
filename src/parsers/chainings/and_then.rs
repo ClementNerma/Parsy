@@ -4,7 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError, Span};
 
-/// See [`crate::ParserConstUtils::and_then`]
+/// See [`and_then`](`crate::ParserConstUtils::and_then`)
 #[perfect_derive(Clone, Copy)]
 pub struct AndThen<T, P: Parser<T>, U, F: Fn(T) -> Result<U, ParsingError>> {
     parser: P,

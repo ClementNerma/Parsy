@@ -4,7 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult};
 
-/// See [`crate::ParserConstUtils::static_ref`]
+/// See [`static_ref`](`crate::ParserConstUtils::static_ref`)
 #[perfect_derive(Clone, Copy)]
 pub struct StaticRef<T, P: Parser<T> + 'static> {
     parser: &'static P,

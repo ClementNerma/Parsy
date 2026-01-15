@@ -4,7 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult};
 
-/// See [`crate::helpers::lazily_define`]
+/// See [`lazily_define`](`crate::parsers::helpers::lazily_define`)
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct LazilyDefined<T> {
     parser_ref: LazyLock<Box<dyn Parser<T> + Send + Sync>>,

@@ -2,7 +2,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
-/// See [`crate::helpers::dynamic_filter`]
+/// See [`dynamic_filter`](`crate::parsers::helpers::dynamic_filter`)
 #[perfect_derive(Clone, Copy)]
 pub struct DynamicFilter<F: Fn(char) -> bool> {
     func: F,

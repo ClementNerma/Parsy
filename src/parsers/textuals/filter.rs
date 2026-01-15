@@ -2,7 +2,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
-/// See [`crate::helpers::filter`]
+/// See [`filter`](`crate::parsers::helpers::filter`)
 #[perfect_derive(Clone, Copy)]
 pub struct Filter {
     func: fn(char) -> bool,

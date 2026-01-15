@@ -2,7 +2,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserResult};
 
-/// See [`crate::helpers::custom`]
+/// See [`custom`](`crate::parsers::helpers::custom`)
 #[perfect_derive(Clone, Copy)]
 pub struct Custom<F: Fn(&mut ParserInput) -> ParserResult<O>, O> {
     func: F,

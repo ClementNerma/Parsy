@@ -394,7 +394,7 @@ pub const trait ParserConstUtils<T>: Parser<T> {
 
     /// Allow the parser to fallback to another parser in case of failure
     ///
-    /// If you have multiple choices, see [`crate::helpers::choice`]
+    /// If you have multiple choices, see [`choice`](`crate::parsers::helpers::choice`)
     fn or<P: Parser<T>>(self, other: P) -> Choice<(Self, P), T>
     where
         Self: Sized,
@@ -447,7 +447,7 @@ pub const trait ParserConstUtils<T>: Parser<T> {
 
     /// Wrap a static reference to this parser inside a new parser
     ///
-    /// This is useful to reference e.g. [`crate::timed::LazilyDefined`] parsers
+    /// This is useful to reference e.g. [`crate::parsers::LazilyDefined`] parsers
     ///
     /// # Example
     ///

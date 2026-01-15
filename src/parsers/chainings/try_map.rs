@@ -4,7 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError, Span};
 
-/// See [`crate::ParserConstUtils::try_map`]
+/// See [`try_map`](`crate::ParserConstUtils::try_map`)
 #[perfect_derive(Clone, Copy)]
 pub struct TryMap<T, P: Parser<T>, U, F: Fn(T) -> Option<U>> {
     parser: P,

@@ -34,7 +34,7 @@ impl<'a> ParserInput<'a> {
     /// The context can be of any type ; it can be fetched by any parser, even nested,
     /// using the [`Self::ctx`] method.
     ///
-    /// For easier handling, prefer using the [`crate::helpers::get_context`] helper function.
+    /// For easier handling, prefer using the [`get_context`](`crate::parsers::helpers::get_context`) helper function.
     pub const fn new_with_ctx(str: &'a str, file_id: FileId, ctx: fn() -> Box<dyn Any>) -> Self {
         Self {
             str,
@@ -47,7 +47,7 @@ impl<'a> ParserInput<'a> {
     /// Get the raw context from the input
     ///
     /// For easier manipulation (especially downcasting), prefer using the
-    /// [`crate::helpers::get_context`] helper function.
+    /// [`get_context`](`crate::parsers::helpers::get_context`) helper function.
     pub fn ctx(&self) -> Option<fn() -> Box<dyn Any>> {
         self.ctx
     }

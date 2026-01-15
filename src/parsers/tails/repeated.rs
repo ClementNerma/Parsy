@@ -7,7 +7,7 @@ use crate::{
     containers::Container,
 };
 
-/// See [`crate::ParserConstUtils::repeated`]
+/// See [`repeated`](`crate::ParserConstUtils::repeated`)
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Repeated<T, P: Parser<T>, C: Container<T>> {
     parser: P,

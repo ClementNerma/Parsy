@@ -4,7 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError, Span};
 
-/// See [`crate::helpers::not`]
+/// See [`not`](`crate::parsers::helpers::not`)
 #[perfect_derive(Clone, Copy)]
 pub struct Not<T, P: Parser<T>> {
     parser: P,

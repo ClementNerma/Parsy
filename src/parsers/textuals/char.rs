@@ -1,6 +1,6 @@
 use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
-/// See [`crate::helpers::char`]
+/// See [`char`](`crate::parsers::helpers::char`)
 #[derive(Clone, Copy)]
 pub struct Char {
     char: char,

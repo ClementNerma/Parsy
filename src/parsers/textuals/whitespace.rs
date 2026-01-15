@@ -1,6 +1,6 @@
 use crate::{Parser, ParserInput, ParserResult, ParsingError};
 
-/// See [`crate::helpers::whitespace`]
+/// See [`whitespace`](`crate::parsers::helpers::whitespace`)
 #[derive(Clone, Copy)]
 pub struct Whitespace {
     no_newline: bool,

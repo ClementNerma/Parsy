@@ -1,6 +1,6 @@
 use crate::{Parser, ParserInput, ParserResult, ParsingError, Span};
 
-/// See [`crate::helpers::start`]
+/// See [`start`](`crate::parsers::helpers::start`)
 #[derive(Clone, Copy)]
 pub struct Start;
 

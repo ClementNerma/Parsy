@@ -4,7 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError};
 
-/// See [`crate::ParserConstUtils::atomic_err`]
+/// See [`atomic_err`](`crate::ParserConstUtils::atomic_err`)
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct AtomicErr<T, P: Parser<T>> {
     parser: P,

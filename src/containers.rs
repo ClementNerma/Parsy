@@ -5,7 +5,7 @@ use std::{
 
 /// A container to collect values into
 ///
-/// See [`crate::ParserConstUtils::collect`]
+/// See [`collect`](`crate::ParserConstUtils::collect`)
 pub trait Container<T> {
     fn create() -> Self;
     fn with_capacity(size: usize) -> Self;

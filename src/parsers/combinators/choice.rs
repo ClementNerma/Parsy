@@ -4,7 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError};
 
-/// See [`crate::helpers::choice`]
+/// See [`choice`](`crate::parsers::helpers::choice`)
 #[perfect_derive(Clone, Copy)]
 pub struct Choice<T: IntoChoice<O>, O> {
     parsers: T,
@@ -20,9 +20,8 @@ impl<T: IntoChoice<O>, O> Choice<T, O> {
     }
 }
 
-/// This whole `IntoChoice` thing is here to ensure that all parsers provided
-/// when creating a `Choice` are actually parsers and that they all output the
-/// same exact type.
+/// Constraint type to ensure that all parsers provided to a [`Choice`]
+/// do implement the [`Parser`] trait and that they all output the same exact type
 pub trait IntoChoice<O> {
     fn into_choice(self) -> Choice<Self, O>
     where

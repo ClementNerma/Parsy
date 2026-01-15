@@ -1,6 +1,6 @@
 use crate::{Parser, ParserInput, ParserResult, ParsingError, Span};
 
-/// See [`crate::helpers::newline`]
+/// See [`newline`](`crate::parsers::helpers::newline`)
 #[derive(Clone, Copy)]
 pub struct Newline;
 
