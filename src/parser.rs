@@ -166,19 +166,11 @@ pub const trait ParserConstUtils<T>: Parser<T> {
     }
 
     /// Get the input string matched by the parser and map it using a function
-    fn map_str<U, F: Fn(&str) -> U>(self, mapper: F) -> MapStr<T, Self, U, F>
+    fn map_consumed_str<U, F: Fn(&str) -> U>(self, mapper: F) -> MapConsumedStr<T, Self, U, F>
     where
         Self: Sized,
     {
-        MapStr::new(self, mapper)
-    }
-
-    /// Try to map the parsed value using a function
-    fn try_map<U, F: Fn(T) -> Option<U>>(self, mapper: F) -> TryMap<T, Self, U, F>
-    where
-        Self: Sized,
-    {
-        TryMap::new(self, mapper)
+        MapConsumedStr::new(self, mapper)
     }
 
     /// Transform and validate the parsed value using the provided function
