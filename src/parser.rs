@@ -223,11 +223,11 @@ pub const trait ParserConstUtils<T>: Parser<T> {
     }
 
     /// Collect the input string matched by the parser
-    fn collect_string(self) -> StringCollected<T, Self>
+    fn collect_string(self) -> CollectString<T, Self>
     where
         Self: Sized,
     {
-        StringCollected::new(self)
+        CollectString::new(self)
     }
 
     /// Provide an atomic error if the parser fails
@@ -264,7 +264,7 @@ pub const trait ParserConstUtils<T>: Parser<T> {
     /// Make the parser silent
     ///
     /// The parsed value will be `()`. Akin to using `.map(|_| ())` on the parser.
-    fn silent(self) -> Silenced<T, Self>
+    fn silenced(self) -> Silenced<T, Self>
     where
         Self: Sized,
     {
@@ -274,11 +274,11 @@ pub const trait ParserConstUtils<T>: Parser<T> {
     /// Require the parser to be preceded by and followed by the provided padding
     ///
     /// The padding parser's values are discarded
-    fn padded_by<P, PP: Parser<P>>(self, padding: PP) -> Padded<T, Self, P, PP>
+    fn padded_by<P, PP: Parser<P>>(self, padding: PP) -> PaddedBy<T, Self, P, PP>
     where
         Self: Sized,
     {
-        Padded::new(self, padding)
+        PaddedBy::new(self, padding)
     }
 
     /// Allow the parser to be surrounded by whitespaces (not newlines)

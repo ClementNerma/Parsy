@@ -4,7 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult};
 
-/// See [`crate::ParserConstUtils::silent`]
+/// See [`crate::ParserConstUtils::silenced`]
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Silenced<T, P: Parser<T>> {
     parser: P,

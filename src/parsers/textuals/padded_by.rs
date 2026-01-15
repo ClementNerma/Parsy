@@ -6,13 +6,13 @@ use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult};
 
 /// See [`crate::ParserConstUtils::padded_by`]
 #[perfect_derive(Debug, Clone, Copy)]
-pub struct Padded<T, TP: Parser<T>, P, PP: Parser<P>> {
+pub struct PaddedBy<T, TP: Parser<T>, P, PP: Parser<P>> {
     middle: TP,
     padding: PP,
     _p: PhantomData<(T, P)>,
 }
 
-impl<T, TP: Parser<T>, P, PP: Parser<P>> Padded<T, TP, P, PP> {
+impl<T, TP: Parser<T>, P, PP: Parser<P>> PaddedBy<T, TP, P, PP> {
     pub const fn new(middle: TP, padding: PP) -> Self {
         Self {
             middle,
@@ -22,7 +22,7 @@ impl<T, TP: Parser<T>, P, PP: Parser<P>> Padded<T, TP, P, PP> {
     }
 }
 
-impl<T, TP: Parser<T>, P, PP: Parser<P>> Parser<T> for Padded<T, TP, P, PP> {
+impl<T, TP: Parser<T>, P, PP: Parser<P>> Parser<T> for PaddedBy<T, TP, P, PP> {
     fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T> {
         let start = self.padding.parse(input)?;
         let middle = self.middle.parse(input)?;

@@ -6,12 +6,12 @@ mod just;
 mod line_padded;
 mod newline;
 mod one_of_chars;
-mod padded;
+mod padded_by;
 mod whitespace;
 mod whitespaces;
 
 pub use self::{
     char::Char, digit::Digit, dynamic_filter::DynamicFilter, filter::Filter, just::Just,
-    line_padded::LinePadded, newline::Newline, one_of_chars::OneOfChars, padded::Padded,
+    line_padded::LinePadded, newline::Newline, one_of_chars::OneOfChars, padded_by::PaddedBy,
     whitespace::Whitespace, whitespaces::Whitespaces,
 };

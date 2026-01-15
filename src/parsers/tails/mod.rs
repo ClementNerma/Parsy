@@ -1,4 +1,5 @@
 mod atomic_err;
+mod collect_string;
 mod critical;
 mod debug;
 mod flattened;
@@ -8,7 +9,6 @@ mod repeated;
 mod silenced;
 mod spanned;
 mod static_ref;
-mod string_collected;
 mod to;
 mod validate;
 mod validate_or_critical;
@@ -16,6 +16,7 @@ mod validate_or_dynamic_critical;
 
 pub use self::{
     atomic_err::AtomicErr,
+    collect_string::CollectString,
     critical::Critical,
     debug::{DebugType, Debugging},
     flattened::Flattened,
@@ -25,7 +26,6 @@ pub use self::{
     silenced::Silenced,
     spanned::Spanned,
     static_ref::StaticRef,
-    string_collected::StringCollected,
     to::To,
     validate::Validate,
     validate_or_critical::ValidateOrCriticalMsg,

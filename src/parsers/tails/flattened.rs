@@ -4,7 +4,7 @@ use perfect_derive::perfect_derive;
 
 use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, containers::Container};
 
-/// See [`crate::ParserConstUtils::flatten`]
+/// See [`crate::ParserConstUtils::flattened`]
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Flattened<
     T,
