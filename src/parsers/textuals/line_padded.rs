@@ -1,4 +1,4 @@
-use crate::{Parser, chainings::SurroundedBy};
+use crate::{Parser, parsers::SurroundedBy};
 
 use super::Whitespaces;
 

@@ -1,11 +1,16 @@
-pub mod chainings;
-pub mod chars;
-pub mod combinators;
-pub mod containers;
-pub mod contentless;
-pub mod context;
-pub mod custom;
+mod chainings;
+mod chars;
+mod combinators;
+mod contentless;
+mod context;
+mod custom;
+mod tails;
+mod textuals;
+mod timed;
+
 pub mod helpers;
-pub mod tails;
-pub mod textuals;
-pub mod timed;
+
+pub use self::{
+    chainings::*, chars::*, combinators::*, contentless::*, context::*, custom::*, tails::*,
+    textuals::*, timed::*,
+};

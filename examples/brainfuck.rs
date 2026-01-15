@@ -1,6 +1,6 @@
 use parsy::{
     Parser, ParserConstUtils, ParserNonConstUtils,
-    helpers::{char, choice},
+    parsers::helpers::{char, choice},
 };
 
 fn main() {

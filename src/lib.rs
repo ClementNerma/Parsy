@@ -4,13 +4,15 @@
 // TODO: remove once stabilized (nightly)
 #![feature(const_trait_impl)]
 
+mod containers;
 mod error;
 mod input;
 mod parser;
-mod parsers;
 mod span;
 
-pub use self::{error::*, input::*, parser::*, parsers::*, span::*};
+pub mod parsers;
+
+pub use self::{containers::*, error::*, input::*, parser::*, span::*};
 
 #[cfg(feature = "error-reporting")]
 mod report;

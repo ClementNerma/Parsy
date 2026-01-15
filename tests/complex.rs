@@ -1,8 +1,8 @@
 use std::{any::Any, ops::Deref, sync::LazyLock};
 
 use parsy::{
-    FileId, Parser, ParserConstUtils, ParserInput, ParserNonConstUtils, helpers::*,
-    tails::DebugType,
+    FileId, Parser, ParserConstUtils, ParserInput, ParserNonConstUtils,
+    parsers::{DebugType, helpers::*},
 };
 
 #[test]

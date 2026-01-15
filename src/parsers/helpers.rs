@@ -7,15 +7,9 @@ use std::{any::Any, collections::HashSet};
 use crate::{ParserInput, ParserResult, parser::Parser};
 
 use super::{
-    combinators::{Choice, IntoChoice, IntoSilentChoice, Lookahead, Not, SilentChoice},
-    contentless::{Empty, End, Start},
-    context::GetContext,
-    custom::Custom,
-    tails::StaticRef,
-    textuals::{
-        Char, Digit, DynamicFilter, Filter, Just, Newline, OneOfChars, Whitespace, Whitespaces,
-    },
-    timed::{LazilyDefined, ToDefine, ToDefineShared},
+    Char, Choice, Custom, Digit, DynamicFilter, Empty, End, Filter, GetContext, IntoChoice,
+    IntoSilentChoice, Just, LazilyDefined, Lookahead, Newline, Not, OneOfChars, SilentChoice,
+    Start, StaticRef, ToDefine, ToDefineShared, Whitespace, Whitespaces,
 };
 
 /// Match the start of the input (doesn't consume the input)

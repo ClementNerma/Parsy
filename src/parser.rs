@@ -1,8 +1,7 @@
 use std::{borrow::Cow, ops::Deref, sync::LazyLock};
 
 use crate::{
-    FileId, ParserInput, ParserResult, ParsingError, chainings::*, combinators::*, containers::*,
-    tails::*, textuals::*,
+    Container, FileId, NoAllocContainer, ParserInput, ParserResult, ParsingError, parsers::*,
 };
 
 /// A parser takes an input and tries to consume the upcoming character(s) and transform it
@@ -54,7 +53,7 @@ pub trait ParserNonConstUtils<T>: Parser<T> {
     /// # Example
     ///
     /// ```rust
-    ///  use parsy::{Parser, helpers::{just, lazily_define}, timed::LazilyDefined};
+    ///  use parsy::{Parser, ParserNonConstUtils, parsers::{LazilyDefined, helpers::{just, lazily_define}}};
     ///
     /// static PARSER_1: LazilyDefined<&'static str> = lazily_define(|| Box::new(just("yeah")));
     /// static PARSER_2: LazilyDefined<&'static str> = lazily_define(|| just("yeah").erase_type());
@@ -453,7 +452,7 @@ pub const trait ParserConstUtils<T>: Parser<T> {
     /// # Example
     ///
     /// ```rust
-    /// use parsy::{Parser, helpers::lazily_define, timed::LazilyDefined};
+    /// use parsy::{Parser, ParserConstUtils, parsers::{LazilyDefined, helpers::{just, lazily_define}}};
     ///
     /// static A: LazilyDefined<()> = lazily_define(|| Box::new(B.static_ref().to(())));
     /// static B: LazilyDefined<()> = lazily_define(|| Box::new(A.static_ref().to(())));
