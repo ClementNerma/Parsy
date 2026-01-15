@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{ParserInput, ParserResult, parser::Parser};
+use crate::{ParserInput, ParserNonConstUtils, ParserResult, parser::Parser};
 
 #[derive(Debug)]
 pub enum DebugType<'a, 'b, T> {

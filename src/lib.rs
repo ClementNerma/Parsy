@@ -1,6 +1,8 @@
 #![forbid(unsafe_code)]
 #![forbid(unused_must_use)]
 #![warn(unused_extern_crates)]
+// TODO: remove once stabilized (nightly)
+#![feature(const_trait_impl)]
 
 mod error;
 mod input;

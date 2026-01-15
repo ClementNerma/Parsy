@@ -1,5 +1,5 @@
 use parsy::{
-    Parser,
+    Parser, ParserConstUtils, ParserNonConstUtils,
     helpers::{char, choice},
 };
 

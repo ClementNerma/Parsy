@@ -2,7 +2,10 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{Parser, ParserInput, ParserResult, ParsingError, Span, containers::Container};
+use crate::{
+    Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError, Span,
+    containers::Container,
+};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct SeparatedBy<T, TP: Parser<T>, S, SP: Parser<S>, C: Container<T>> {

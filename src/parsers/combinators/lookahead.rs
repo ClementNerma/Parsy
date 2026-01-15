@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{Parser, ParserInput, ParserResult, Span};
+use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, Span};
 
 #[perfect_derive(Clone, Copy)]
 pub struct Lookahead<T, P: Parser<T>> {

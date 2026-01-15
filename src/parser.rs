@@ -1,4 +1,4 @@
-use std::borrow::Cow;
+use std::{borrow::Cow, ops::Deref, sync::LazyLock};
 
 use crate::{
     FileId, ParserInput, ParserResult, ParsingError, chainings::*, combinators::*, containers::*,
@@ -7,10 +7,16 @@ use crate::{
 
 /// A parser takes an input and tries to consume the upcoming character(s) and transform it
 /// into a value.
+///
+/// Implement this trait will also perform auto-implementation for the [`ParserConstUtils`] and
+/// [`ParserNonConstUtils`] traits.
 pub trait Parser<T> {
     /// Inner parsing function, to implement
     fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T>;
+}
 
+/// Non-constant-function utilities for parsers
+pub trait ParserNonConstUtils<T>: Parser<T> {
     /// Parse an input with the current parser
     ///
     /// The input position will advance if the parsing is successful,
@@ -40,6 +46,31 @@ pub trait Parser<T> {
         self.parse(&mut ParserInput::new(str, file_id))
     }
 
+    /// "Erase" the parser's type
+    ///
+    /// This is useful when requiring a parser whose type is very simple,
+    /// instead of having a combination of nested parsers with lots of generics.
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    ///  use parsy::{Parser, helpers::{just, lazily_define}, timed::LazilyDefined};
+    ///
+    /// static PARSER_1: LazilyDefined<&'static str> = lazily_define(|| Box::new(just("yeah")));
+    /// static PARSER_2: LazilyDefined<&'static str> = lazily_define(|| just("yeah").erase_type());
+    /// ```
+    fn erase_type(self) -> Box<dyn Parser<T> + Send + Sync>
+    where
+        Self: Sized + Send + Sync + 'static,
+    {
+        Box::new(self)
+    }
+}
+
+/// Constant function utilities for parsers
+///
+/// These can be evaluated at build time
+pub const trait ParserConstUtils<T>: Parser<T> {
     /// Chain this parser with another, getting both parsers' results combined
     fn then<U, P: Parser<U>>(self, other: P) -> Then<T, Self, U, P>
     where
@@ -415,26 +446,6 @@ pub trait Parser<T> {
         Debugging::new(self, debugger)
     }
 
-    /// "Erase" the parser's type
-    ///
-    /// This is useful when requiring a parser whose type is very simple,
-    /// instead of having a combination of nested parsers with lots of generics.
-    ///
-    /// # Example
-    ///
-    /// ```rust
-    ///  use parsy::{Parser, helpers::{just, lazily_define}, timed::LazilyDefined};
-    ///
-    /// static PARSER_1: LazilyDefined<&'static str> = lazily_define(|| Box::new(just("yeah")));
-    /// static PARSER_2: LazilyDefined<&'static str> = lazily_define(|| just("yeah").erase_type());
-    /// ```
-    fn erase_type(self) -> Box<dyn Parser<T> + Send + Sync>
-    where
-        Self: Sized + Send + Sync + 'static,
-    {
-        Box::new(self)
-    }
-
     /// Wrap a static reference to this parser inside a new parser
     ///
     /// This is useful to reference e.g. [`crate::timed::LazilyDefined`] parsers
@@ -454,3 +465,33 @@ pub trait Parser<T> {
         StaticRef::new(self)
     }
 }
+
+// Add cosnt utilities to all parsers
+impl<T, P: Parser<T>> const ParserConstUtils<T> for P {}
+
+// Add non-const utilities to all parsers
+impl<T, P: Parser<T>> ParserNonConstUtils<T> for P {}
+
+// Implement for
+impl<T, P: Parser<T> + ?Sized> Parser<T> for Box<P> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T> {
+        self.deref().parse_inner(input)
+    }
+}
+
+impl<T, P: Parser<T>> Parser<T> for LazyLock<P> {
+    fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T> {
+        self.deref().parse_inner(input)
+    }
+}
+
+// // Implement for Deref types, such as Box or Arc
+// impl<T, P> Parser<T> for P
+// where
+//     P: Deref,
+//     P::Target: Parser<T>,
+// {
+//     fn parse_inner(&self, input: &mut ParserInput) -> ParserResult<T> {
+//         self.deref().parse_inner(input)
+//     }
+// }

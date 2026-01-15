@@ -1,6 +1,9 @@
 use std::{any::Any, ops::Deref, sync::LazyLock};
 
-use parsy::{FileId, Parser, ParserInput, helpers::*, tails::DebugType};
+use parsy::{
+    FileId, Parser, ParserConstUtils, ParserInput, ParserNonConstUtils, helpers::*,
+    tails::DebugType,
+};
 
 #[test]
 pub fn complex_test() {

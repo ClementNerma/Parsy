@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{Parser, ParserInput, ParserResult, Span};
+use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, Span};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct Spanned<T, P: Parser<T>> {

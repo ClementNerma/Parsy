@@ -1,4 +1,4 @@
-use parsy::{Parser, helpers::char};
+use parsy::{ParserNonConstUtils, helpers::char};
 
 #[test]
 fn longer_chars() {

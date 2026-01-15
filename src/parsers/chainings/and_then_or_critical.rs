@@ -2,7 +2,7 @@ use std::{borrow::Cow, marker::PhantomData};
 
 use perfect_derive::perfect_derive;
 
-use crate::{Parser, ParserInput, ParserResult, ParsingError, Span};
+use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError, Span};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct AndThenOrCritical<T, P: Parser<T>, U, F: Fn(T) -> Result<U, Cow<'static, str>>> {

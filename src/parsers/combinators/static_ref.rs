@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{Parser, ParserInput, ParserResult};
+use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult};
 
 #[perfect_derive(Clone, Copy)]
 pub struct StaticRef<T, P: Parser<T> + 'static> {

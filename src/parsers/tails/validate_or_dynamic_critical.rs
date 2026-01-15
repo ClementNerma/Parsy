@@ -2,7 +2,7 @@ use std::{borrow::Cow, marker::PhantomData};
 
 use perfect_derive::perfect_derive;
 
-use crate::{Parser, ParserInput, ParserResult, ParsingError};
+use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct ValidateOrDynamicCriticalMsg<T, P: Parser<T>, F: Fn(&T) -> Result<(), Cow<'static, str>>>

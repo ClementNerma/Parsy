@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{Parser, ParserInput, ParserResult, ParsingError};
+use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError};
 
 #[perfect_derive(Debug, Clone, Copy)]
 pub struct ValidateOrCriticalMsg<T, P: Parser<T>, F: Fn(&T) -> bool> {

@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use perfect_derive::perfect_derive;
 
-use crate::{Parser, ParserInput, ParserResult, ParsingError};
+use crate::{Parser, ParserInput, ParserNonConstUtils, ParserResult, ParsingError};
 
 #[perfect_derive(Clone, Copy)]
 pub struct SilentChoice<T: IntoSilentChoice<Outputs>, Outputs> {
