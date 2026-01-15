@@ -280,14 +280,6 @@ pub const trait ParserConstUtils<T>: Parser<T> {
         PaddedBy::new(self, padding)
     }
 
-    /// Allow the parser to be surrounded by whitespaces (not newlines)
-    fn line_padded(self) -> LinePadded<T, Self>
-    where
-        Self: Sized,
-    {
-        LinePadded::line_padded(self)
-    }
-
     /// Require the parser to be preceded by and followed by the provided parsers
     ///
     /// The parsers' values are discarded
